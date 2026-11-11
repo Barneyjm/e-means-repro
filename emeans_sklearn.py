@@ -176,7 +176,9 @@ class EMeans(ClassNamePrefixFeaturesOutMixin, TransformerMixin, ClusterMixin, Ba
         # centre j is S[j] / N[j]; both are decayed running totals (paper Eq. 2-4)
         N = np.full(k, 1e-10, dtype=dt)
         S = N[:, None] * C
-        delta = 2.0**-7
+        # Split offset at revival. The paper says 2**-7; the authors' released code uses 1e-4. On most data the two give
+        # the same result, but on Last.fm (65-d, dense clumps) 2**-7 left ~10x more near-empty clusters.
+        delta = 1e-4
         sign = np.where(np.arange(d) % 2 == 0, 1.0, -1.0).astype(dt)
         up, down = 1 + delta * sign, 1 - delta * sign
         nb = n // B

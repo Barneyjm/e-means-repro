@@ -81,12 +81,16 @@ and full tables are in `results/beyond/`. All runs: Apple M2 Max GPU, random ini
 The three experiments below came first. A second, larger round is written up in [EXTENSIONS.md](EXTENSIONS.md):
 
 - Search indexes on six datasets, checked in a real Faiss index against Faiss's own k-means.
-- A dozen old ideas tried on top of the recipe. One helped: a cluster-size penalty (`EMeans(balance=0.3)`), worth
-  3–11% of search cost on image descriptors and 60–80% on one clumpy dataset, nothing on word vectors.
+- A dozen old ideas tried on top of the recipe. One helped on some data: a cluster-size penalty
+  (`EMeans(balance=0.3)`), worth roughly 3–10% of search cost on SIFT, news and landmark embeddings, nothing on
+  question embeddings, and a loss on Last.fm. Its one large result (60–80% on the New York Times dataset) comes
+  from duplicate rows in that file.
 - The recipe applied to NMF and hidden Markov models (works), ALS (partly), LDA (no real gain), PageRank (does not apply).
 - `OnlineGaussianMixture`, a scikit-learn-style mixture estimator: about 250× faster than `GaussianMixture` at 1M rows.
 - More passes: gains shrink after three and are nearly flat after eight.
 - A comparison with the authors' released code, which exposed one bug in mine and one rule I had missed.
+- A recheck that runs the authors' code next to mine in real Faiss indexes (section 14). It confirmed the paper,
+  exposed a second bug in mine (fixed), and cut the size penalty's claim down to the lines above.
 
 ### 1. Does a search index built on the centroids get better?
 
@@ -245,7 +249,7 @@ For each cluster keep a decayed count `N` and a decayed sum `S`; the centre is `
 2. `N ← (1 − α)·N + α·(batch count)`, `S ← (1 − α)·S + α·(batch sum)`.
 3. `α` follows a cosine from `α0` down to `0.1·α0` over the whole run.
 4. Every 5 batches, any cluster whose `N` is below 10% of the average takes half of a large cluster, picked with
-   probability proportional to `N`. The two halves are nudged apart by ±2⁻⁷.
+   probability proportional to `N`. The two halves are nudged apart by ±1e-4 (the authors' code; the paper says ±2⁻⁷).
 5. At the end, each centre is replaced by the plain average of the vectors it won during the last pass.
 
 Batch size and `α0` come from the paper's Table 2:
@@ -313,6 +317,7 @@ its scoring are two commands. Two processes on one Apple GPU at the same time ca
 | `experiments/pq_codebooks.py` | Product-quantization test |
 | `experiments/emeans_lab.py`, `run_lab.py` | e-means with nine old ideas as switches, and its runner (search cost, MSE) |
 | `experiments/faiss_ivf_bench.py`, `faiss_kmeans.py` | Real Faiss index and Faiss k-means for outside checks |
+| `experiments/centroid_sets.py`, `prep_h5.py`, `summarize_check.py`, `summarize_check_targets.py` | Recheck against the authors' released code (`EXTENSIONS.md` section 14; logs in `results/check/`) |
 | `experiments/lda_torch.py`, `nmf_torch.py`, `hmm_torch.py`, `als_torch.py` | The recipe applied to topic models, NMF, hidden Markov models and ALS |
 | `results/` | Raw logs for every number above (`results/beyond/` for the follow-up experiments) |
 
