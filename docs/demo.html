@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lloyd vs e-means demo</title>
+<meta name="description" content="Lloyd&#x27;s k-means and e-means run side by side on the same 2-D points, with sliders.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site"><div class="wrap"><a class="name" href="index.html">e-means-repro</a><nav><a href="index.html">Overview</a><a href="demo.html" aria-current=page>Demo</a><a href="reproduction.html">Reproduction</a><a href="extensions.html">Follow-up experiments</a><a href="https://github.com/Barneyjm/e-means-repro">Code</a></nav></div></header>
+<main class="wrap doc">
+<header class="intro">
+  <p class="kicker">Interactive demo</p>
+  <h1>Lloyd and e-means, side by side</h1>
+  <p class="lede">The same points and the same starting centres, run through both algorithms. The clock is the number of
+  passes over the data, so both have seen the same number of points at every moment.</p>
+</header>
+
+<div class="compare">
+  <div>
+    <h3><i class="key lloyd"></i>Lloyd's k-means</h3>
+    <ul>
+      <li>Assign every point to its nearest centre, then move each centre to the mean of its points.</li>
+      <li>One update per pass over the data. The centres do not move until the pass is complete.</li>
+      <li>A centre that ends up with no points stays where it is.</li>
+    </ul>
+  </div>
+  <div>
+    <h3><i class="key emeans"></i>e-means</h3>
+    <ul>
+      <li>Take a batch of <var>B</var> points. Each cluster keeps a decayed count <var>N</var> and sum <var>S</var>, both moved a step <var>α</var> toward the batch's count and sum. The centre is <var>S</var>/<var>N</var>.</li>
+      <li><var>α</var> falls along a cosine from <var>α</var><sub>0</sub> to <var>α</var><sub>0</sub>/10 over the run.</li>
+      <li>Every 5 updates, a cluster whose <var>N</var> is under 10% of the average takes half of a busy cluster, picked in proportion to <var>N</var> (orange rings).</li>
+      <li>After the last pass, each centre becomes the exact mean of the points it won during that pass.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="controls" id="controls">
+  <label><span>Data</span>
+    <select id="kind">
+      <option value="uneven">Uneven blobs</option>
+      <option value="clumps">Tight clumps on a sparse background</option>
+      <option value="uniform">Uniform square</option>
+    </select>
+  </label>
+  <label><span>Points</span> <output id="nOut"></output><input type="range" id="n" min="1000" max="8000" step="500" value="3000"></label>
+  <label><span>Clusters <var>k</var></span> <output id="kOut"></output><input type="range" id="k" min="2" max="64" step="1" value="20"></label>
+  <label><span>e-means passes</span> <output id="teOut"></output><input type="range" id="te" min="1" max="10" step="1" value="3"></label>
+  <label><span>Lloyd passes</span> <output id="tlOut"></output><input type="range" id="tl" min="1" max="50" step="1" value="25"></label>
+  <label><span>Speed, passes per second</span> <output id="spOut"></output><input type="range" id="sp" min="0" max="1" step="0.01" value="0.3"></label>
+  <label class="check"><input type="checkbox" id="laws" checked> <span>Batch size and starting step from the paper's formulas</span></label>
+  <label><span>Batch size <var>B</var></span> <output id="bOut"></output><input type="range" id="b" min="2" max="11" step="1" value="7"></label>
+  <label><span>Starting step <var>α</var><sub>0</sub></span> <output id="aOut"></output><input type="range" id="a" min="0.01" max="1" step="0.01" value="0.4"></label>
+  <label class="check"><input type="checkbox" id="cosine" checked> <span>Cosine step schedule (off: constant <var>α</var><sub>0</sub>)</span></label>
+  <label class="check"><input type="checkbox" id="revive" checked> <span>Revival of near-empty clusters</span></label>
+  <div class="buttons">
+    <button type="button" id="play">Pause</button>
+    <button type="button" id="step">One e-means update</button>
+    <button type="button" id="restart">Restart</button>
+    <button type="button" id="reseed">New points and start</button>
+  </div>
+</div>
+
+<div class="panels">
+  <figure class="panel">
+    <figcaption><i class="key lloyd"></i>Lloyd's k-means</figcaption>
+    <canvas id="cvL" aria-label="Lloyd's k-means on the points"></canvas>
+    <p class="stats" id="stL"></p>
+  </figure>
+  <figure class="panel">
+    <figcaption><i class="key emeans"></i>e-means</figcaption>
+    <canvas id="cvE" aria-label="e-means on the points"></canvas>
+    <p class="stats" id="stE"></p>
+  </figure>
+</div>
+
+<figure class="chartfig">
+  <figcaption>Error (mean squared distance to the nearest centre, × 10<sup>4</sup>, log scale) against passes over the data. Below: when each algorithm updates its centres; e-means tick height is the step <var>α</var>.</figcaption>
+  <canvas id="cvC" aria-label="Error against passes for both algorithms"></canvas>
+  <p class="stats" id="stC"></p>
+</figure>
+
+<section>
+  <h2>What to look for</h2>
+  <ul>
+    <li>Lloyd's centres sit still for a whole pass and then jump. e-means' centres move after every batch, with large steps at first and small ones at the end.</li>
+    <li>After 3 passes, compare the two error curves at the same point on the x-axis. Then let Lloyd run on.</li>
+    <li>Turn revival off and use the tight clumps with a small <var>k</var> to see centres that get stranded between clumps.</li>
+  </ul>
+  <p>Measured with this page's code over 30 random starts per setting (3,000 points, formulas on): after 3 passes,
+  Lloyd's error is 13–50% above where it ends after 25 passes. e-means after 3 passes is within about 4% of Lloyd after 25, either
+  way. It is better on the clumps and the uneven blobs at <var>k</var> = 8 and 20 (by 3–11% on average), and 0–4% worse at
+  <var>k</var> = 48 and on the uniform square. Revival accounts for most of the gain on the clumps.</p>
+  <p>This is a 2-D toy. The paper's batch and step formulas were fitted on large high-dimensional sets, and the
+  authors' code uses an eighth of that batch size for 16 dimensions or fewer and switches revival off in 2-D. This page
+  keeps both on so they can be seen. The update rules are the same as in <code>emeans_sklearn.EMeans</code>; the code is
+  <a href="https://github.com/Barneyjm/e-means-repro/blob/main/site/demo-core.js">demo-core.js</a>.</p>
+</section>
+
+</main>
+<footer class="site"><div class="wrap">An independent reproduction. The method is the work of the paper's authors
+(<a href="https://arxiv.org/abs/2611.09501">arXiv 2611.09501</a>); this site is not affiliated with them. Code MIT,
+<a href="https://github.com/Barneyjm/e-means-repro">github.com/Barneyjm/e-means-repro</a>. Built from the repository's Markdown by <code>site/build.py</code>.</div></footer>
+<script src="demo-core.js"></script><script src="demo.js"></script>
+</body>
+</html>

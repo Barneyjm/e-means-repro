@@ -90,9 +90,9 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="
          '&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">')
 
 
-def page(title, desc, current, body, wide=False):
+def page(title, desc, current, body, wide=False, scripts=()):
     nav = "".join(f'<a href="{href}"{" aria-current=page" if href == current else ""}>{lab}</a>' for href, lab in
-                  [("index.html", "Overview"), ("reproduction.html", "Reproduction"), ("extensions.html", "Follow-up experiments"), (REPO, "Code")])
+                  [("index.html", "Overview"), ("demo.html", "Demo"), ("reproduction.html", "Reproduction"), ("extensions.html", "Follow-up experiments"), (REPO, "Code")])
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -111,6 +111,7 @@ def page(title, desc, current, body, wide=False):
 <footer class="site"><div class="wrap">An independent reproduction. The method is the work of the paper's authors
 (<a href="https://arxiv.org/abs/2611.09501">arXiv 2611.09501</a>); this site is not affiliated with them. Code MIT,
 <a href="{REPO}">{REPO.removeprefix("https://")}</a>. Built from the repository's Markdown by <code>site/build.py</code>.</div></footer>
+{"".join(f'<script src="{s}"></script>' for s in scripts)}
 </body>
 </html>
 """
@@ -124,6 +125,7 @@ INDEX = """
   decaying running average, a cosine step schedule and a rule that re-seeds near-empty clusters gets a better result in
   2–3 passes over the data than standard k-means gets in 25. I re-implemented it from the paper, measured it, wrote a
   scikit-learn estimator, and later compared it with the authors' released code.</p>
+  <p><a href="demo.html">See the two algorithms side by side</a> in an interactive demo.</p>
 </header>
 
 <section>
@@ -188,6 +190,7 @@ km.cluster_centers_, km.labels_, km.predict(X_new)</code></pre>
 <section>
   <h2>Read more</h2>
   <ul class="links">
+    <li><a href="demo.html">Demo</a>: Lloyd's k-means and e-means side by side on 2-D points, with sliders for the settings.</li>
     <li><a href="reproduction.html">Reproduction</a>: what the paper claims, what I measured, the algorithm, how to rerun it.</li>
     <li><a href="extensions.html">Follow-up experiments</a>: search indexes on more datasets, a dozen older ideas tried on top of the recipe, the recipe applied to product quantization, mixtures, topic models, NMF, hidden Markov models, ALS and PageRank, and the recheck against the authors' code.</li>
     <li><a href="{repo}/tree/main/results">Raw logs</a> for every number on this site.</li>
@@ -197,17 +200,17 @@ km.cluster_centers_, km.labels_, km.predict(X_new)</code></pre>
 
 CSS = """:root {
   --bg: #f6f5f1; --surface: #ffffff; --fg: #1c1e22; --muted: #5b616b; --rule: #dad8d1; --code-bg: #eeece6;
-  --accent: #1f5f8b; --plain: #1f5f8b; --penalty: #b4532a; --zero: #8a8f98;
+  --accent: #1f5f8b; --plain: #1f5f8b; --penalty: #b4532a; --zero: #8a8f98; --lloyd: #8a6a1f; --pt-l: 42%;
   --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #14161a; --surface: #1b1e23; --fg: #e5e3dd; --muted: #a0a6af; --rule: #30343b; --code-bg: #21252b;
-  --accent: #82b6dd; --plain: #82b6dd; --penalty: #e38b5d; --zero: #6d727a; color-scheme: dark; } }
+  --accent: #82b6dd; --plain: #82b6dd; --penalty: #e38b5d; --zero: #6d727a; --lloyd: #d6ad5c; --pt-l: 64%; color-scheme: dark; } }
 :root[data-theme="dark"] {
   --bg: #14161a; --surface: #1b1e23; --fg: #e5e3dd; --muted: #a0a6af; --rule: #30343b; --code-bg: #21252b;
-  --accent: #82b6dd; --plain: #82b6dd; --penalty: #e38b5d; --zero: #6d727a; color-scheme: dark; }
+  --accent: #82b6dd; --plain: #82b6dd; --penalty: #e38b5d; --zero: #6d727a; --lloyd: #d6ad5c; --pt-l: 64%; color-scheme: dark; }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 18px/1.6 var(--serif); }
@@ -270,7 +273,36 @@ td:not(:first-child) { white-space: nowrap; }
 .links li { margin-bottom: 0.4em; }
 footer.site { border-top: 1px solid var(--rule); font-family: var(--sans); font-size: 13px; color: var(--muted); }
 footer.site .wrap { padding-block: 20px 32px; }
+/* demo */
+.compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 32px; margin: 1.2em 0; }
+.compare h3 { margin: 0 0 0.3em; display: flex; align-items: center; gap: 8px; }
+.compare ul { padding-left: 1.1em; margin: 0; font-size: 16px; }
+.key { display: inline-block; width: 12px; height: 12px; border-radius: 50%; flex: none; }
+.key.lloyd { background: var(--lloyd); } .key.emeans { background: var(--plain); }
+.controls { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px 24px; padding: 16px 18px;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; font-family: var(--sans); font-size: 14px; margin: 1.5em 0; }
+.controls label { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.controls label.check { flex-direction: row; align-items: center; gap: 8px; }
+.controls output { font-variant-numeric: tabular-nums; color: var(--muted); }
+.controls label:not(.check) { display: grid; grid-template-columns: 1fr auto; }
+.controls label:not(.check) > input, .controls label:not(.check) > select { grid-column: 1 / -1; }
+.controls input[type=range] { width: 100%; accent-color: var(--accent); }
+.controls input:disabled { opacity: 0.45; }
+.controls select { font: inherit; padding: 4px 6px; background: var(--bg); color: var(--fg); border: 1px solid var(--rule); border-radius: 3px; }
+.buttons { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+.buttons button { font: 500 14px var(--sans); padding: 7px 14px; border-radius: 3px; border: 1px solid var(--rule); background: var(--bg); color: var(--fg); cursor: pointer; }
+.buttons button:first-child { background: var(--accent); border-color: var(--accent); color: var(--surface); min-width: 6em; }
+.panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.panel, .chartfig { margin: 0; min-width: 0; }
+.panel figcaption, .chartfig figcaption { font-family: var(--sans); font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.chartfig figcaption { font-weight: 400; font-size: 14px; color: var(--muted); display: block; max-width: 80ch; }
+.panel canvas { width: 100%; aspect-ratio: 1; display: block; border: 1px solid var(--rule); border-radius: 4px; }
+.chartfig { margin-top: 24px; }
+.chartfig canvas { width: 100%; height: 300px; display: block; border: 1px solid var(--rule); border-radius: 4px; }
+.stats { font-family: var(--sans); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; margin: 6px 0 0; min-height: 2.6em; }
 @media (max-width: 640px) {
+  .compare, .panels { grid-template-columns: 1fr; }
+  .chartfig canvas { height: 260px; }
   body { font-size: 17px; }
   .wrap { padding-inline: 16px; }
   h1 { font-size: 1.7rem; }
@@ -292,6 +324,11 @@ def main():
         "e-means: reproduction notes", "What the e-means paper claims and what an independent re-implementation measured.", "reproduction.html", render("README.md"), wide=True))
     open(os.path.join(OUT, "extensions.html"), "w").write(page(
         "e-means: follow-up experiments", "Follow-up experiments on the e-means recipe, and a recheck against the authors' code.", "extensions.html", render("EXTENSIONS.md"), wide=True))
+    open(os.path.join(OUT, "demo.html"), "w").write(page(
+        "Lloyd vs e-means demo", "Lloyd's k-means and e-means run side by side on the same 2-D points, with sliders.", "demo.html",
+        open(os.path.join(ROOT, "site", "demo.html"), encoding="utf-8").read(), wide=True, scripts=("demo-core.js", "demo.js")))
+    for f in ("demo-core.js", "demo.js"):
+        shutil.copy(os.path.join(ROOT, "site", f), os.path.join(OUT, f))
     print("wrote", ", ".join(sorted(os.listdir(OUT))))
 
 
