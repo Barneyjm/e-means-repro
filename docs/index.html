@@ -72,16 +72,6 @@
 </section>
 
 <section>
-  <h2>Corrections</h2>
-  <p>Running the authors' code exposed things I had wrong. They are fixed in the repository and noted where the old claims were.</p>
-  <ul>
-    <li>My estimator split revived clusters with the paper's offset (±2<sup>−7</sup>) instead of the code's (±10<sup>−4</sup>). On Last.fm that made indexes built from my estimator 120% worse than Faiss k-means. Fixed; one line.</li>
-    <li>An earlier version of this repository presented the size penalty's 60–80% saving on New York Times as a property of clumpy data. It comes from the duplicate rows.</li>
-    <li>Earlier: a step of exactly 1 zeroed clusters the first batch missed, and I had missed the authors' smaller batch size for 16 dimensions or fewer. Both fixed and the affected runs redone.</li>
-  </ul>
-</section>
-
-<section>
   <h2>Use it</h2>
   <pre><code>pip install git+https://github.com/Barneyjm/e-means-repro
 

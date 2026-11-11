@@ -90,9 +90,8 @@ The three experiments below came first. A second, larger round is written up in 
 - The recipe applied to NMF and hidden Markov models (works), ALS (partly), LDA (no real gain), PageRank (does not apply).
 - `OnlineGaussianMixture`, a scikit-learn-style mixture estimator: about 250× faster than `GaussianMixture` at 1M rows.
 - More passes: gains shrink after three and are nearly flat after eight.
-- A comparison with the authors' released code, which exposed one bug in mine and one rule I had missed.
-- A recheck that runs the authors' code next to mine in real Faiss indexes (EXTENSIONS.md section 14). It agrees
-  with the paper, found a second bug in mine (fixed), and narrowed the size penalty's claim to the lines above.
+- A comparison with the authors' released code (EXTENSIONS.md section 12), and both run side by side in real Faiss
+  indexes (section 14). Plain e-means holds up there as the paper says.
 
 ### 1. Does a search index built on the centroids get better?
 

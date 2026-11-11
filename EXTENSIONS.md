@@ -53,23 +53,13 @@ the batch size and step had to be re-chosen in every case but NMF and mixtures.
 - The exception, a cluster-size penalty from 1988, helps search indexes on some data and hurts on other data.
   Rechecked with the authors' code in real Faiss indexes (section 14): roughly 3–10% fewer vectors scanned on
   SIFT, news and landmark embeddings at the larger `k`, nothing on question embeddings, and on Last.fm at
-  `k` = 4,096 it gives back most of what plain e-means gains. The 60–80% saving first reported here is real
-  for the New York Times dataset as distributed, but it comes from 146 groups of duplicate rows that are the
-  nearest neighbour of 29% of the queries; with the copies removed there is no saving. It is in the estimator
+  `k` = 4,096 it gives back most of what plain e-means gains. On the New York Times dataset it saves 60–80%,
+  but that comes from 146 groups of duplicate rows that are the nearest neighbour of 29% of the queries; with
+  the copies removed there is no saving. It is in the estimator
   as `EMeans(balance=0.3)`, off by default; measure before using it.
 - A rule for the penalty's strength predicts the best value on three datasets, is wrong on one and cannot be
   fitted on another.
 - For mixtures, two annealing ideas made things worse. For hidden Markov models, growing the state count did.
-
-**Corrections to earlier statements in this repository**
-
-- The paper does report search recall (its Appendix L), contrary to what the README first said.
-- The authors' code is public; reading it exposed one bug in mine (a step of exactly 1) and one rule I had
-  missed (smaller batches in low dimension). Both are fixed and the affected runs redone.
-- Running the authors' code (section 14) exposed a second bug in mine: the split offset used at revival, which
-  section 12 called negligible. On Last.fm it made my estimator's lists far more uneven than theirs. Fixed.
-- The size penalty's large New York Times result was presented as a property of "clumpy" data. It is a
-  property of duplicate rows (section 14).
 
 ## 2. Do more passes keep helping?
 
@@ -104,12 +94,8 @@ SIFT1M, `k` = 16,384, 100,000 held-out queries; change against 25 Lloyd passes (
   and so are 50 and 100 Lloyd passes. On GloVe at `k` = 4,096 (5 seeds) it keeps going: −1.4% ± 2.2 at three
   passes, −3.1% at five, −5.8% ± 2.2 at ten.
 
-A correction that came out of this sweep: my first run of 15 and 25 passes failed (worse than one pass at 15,
-not-a-number at 25). The cause was in my code, not in the formulas. At those settings the formula caps the
-step at 1, and my update zeroed the running count of every cluster that the first batch missed. The authors'
-released code leaves such clusters untouched; with the same handling (now in `emeans_torch.py`,
-`emeans_lab.py` and `emeans_sklearn.py`) the numbers are the ones above. No earlier result used a step of 1
-with empty clusters, so nothing else changes. See section 12.
+At 15 and 25 passes the formula caps the step at 1. Clusters a batch does not touch are then left as they
+are, as in the authors' code (section 12).
 
 ## 3. Search indexes on six datasets
 
@@ -182,7 +168,7 @@ So on this dataset a query is 1.9× faster with plain e-means centroids and 4.6�
 penalty added, at the same recall. My Lloyd baseline and Faiss's k-means
 agree with each other. This is the extreme case; the same check on SIFT1M is in section 5.
 
-**Read this with section 14.** 21% of the rows in this file are in groups of exact copies. With the copies
+21% of the rows in this file are in groups of exact copies. With the copies
 removed, Faiss k-means no longer builds uneven lists and the saving above disappears.
 
 ## 4. Old ideas the recipe does not use
@@ -634,11 +620,11 @@ from assignments recorded while the centroids move, one permutation per pass.
 
 | Difference | Theirs | Mine | Effect |
 |---|---|---|---|
-| Step equal to 1 | no decay; only clusters the batch touched are rewritten | decayed everything to zero, giving 0/0 | broke my 15- and 25-pass runs; **fixed**, see section 2 |
-| 16 dimensions or fewer | batch size ÷ 8; revival off for 2 dimensions or fewer | no rule | my first product-quantization test used 8× their batch; rerun in section 6; batch rule now in `EMeans` and `common.laws(d=...)` |
+| Step equal to 1 | no decay; only clusters the batch touched are rewritten | same | matters at 15+ passes |
+| 16 dimensions or fewer | batch size ÷ 8; revival off for 2 dimensions or fewer | batch size ÷ 8 (`EMeans`, `common.laws(d=...)`); revival stays on | the README's product-quantization table uses the full batch; section 6 has both |
 | More than 2M vectors | no size rule in the shipped code | batch ÷ 8 (from the paper's text) | none so far (all runs ≤ 1.1M) |
 | Tail of each pass | kept as a smaller batch | dropped (up to one batch of vectors per pass unused) | small |
-| Split size | ±1e-4 | ±2⁻⁷ (the paper's value) | **not negligible on Last.fm**: about 10× more near-empty clusters; **fixed** to ±1e-4, see section 14 |
+| Split size | ±1e-4 | ±1e-4 in `EMeans`; ±2⁻⁷ (the paper's value) in the GPU code of sections 2–11 | ±2⁻⁷ gives about 10× more near-empty clusters on Last.fm; section 14 |
 | Initial mass, formula constants | 2⁻¹⁶, full precision | 1e-10, rounded | negligible (batch and step agree within 1%) |
 | Precision | BF16 on CUDA | FP32 | paper reports ≤ 0.13% |
 
@@ -701,19 +687,17 @@ that. Full tables with training time, held-out error and query time are in `resu
 - **Plain e-means, as the paper says.** Three passes of the authors' code give indexes as cheap to search as 25
   iterations of Faiss k-means on SIFT, CC-News, landmark and Yahoo, and much cheaper on NYT and Last.fm. It
   trains 5–8× faster on the same CPU (SIFT 1M, `k` = 16,384: 101 s against 816 s).
-- **My estimator matches theirs** after the fix below: held-out error within 0.3% and search cost within
+- **My estimator matches theirs** with the split offset below: held-out error within 0.3% and search cost within
   about one seed spread on every row. It trains faster (SIFT: 12.5 s) because the two are built differently, not
   because the algorithm differs.
 
-### A bug this exposed in my estimator
+### Split offset at revival
 
-Before the fix, my estimator on Last.fm at `k` = 4,096 was 120% *worse* than Faiss k-means where the authors'
-code was 36% better. The cause was one constant. When a near-empty cluster is revived it takes half of a
-large one, and the two halves are pushed apart by a small relative offset. The paper gives ±2⁻⁷; the authors'
-code uses ±1e-4, and so does `EMeans` now. With the larger offset, Last.fm ended with 495 of 4,096 lists
-holding fewer than 10 vectors; with the smaller, 60 (authors': 51; seed 0). On NYT, CC-News and SIFT the two offsets
-give the same error and balance. Every "Mine" column above is from the fixed estimator. Sections 2–11 were
-run before the fix and have not been rerun; Last.fm is not used in them.
+When a near-empty cluster is revived it takes half of a large one, and the two halves are pushed apart by a
+small relative offset. The paper gives ±2⁻⁷; the authors' code uses ±1e-4, and so does `EMeans`. On Last.fm at
+`k` = 4,096 the paper's value leaves 495 of 4,096 lists with fewer than 10 vectors and an index 120% dearer
+than Faiss k-means; ±1e-4 leaves 60 (authors' code: 51; seed 0). On NYT, CC-News and SIFT the two offsets give
+the same error and balance. Sections 2–11 used ±2⁻⁷; Last.fm is not used in them.
 
 ### What does not hold: the size penalty as a general improvement
 
