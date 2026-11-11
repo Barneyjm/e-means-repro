@@ -7,8 +7,9 @@ helps search indexes, product quantization, Gaussian mixtures, topic models, hid
 factorization. The longer follow-up write-up is [EXTENSIONS.md](EXTENSIONS.md).
 
 Everything here was written from the text of the paper. It is **not the authors' code**. Theirs is in the Faiss
-repository (`contrib/e_means`); the Faiss release installed here (1.16.0) does not ship it. I later read it (did not
-run it) and list the differences in [EXTENSIONS.md](EXTENSIONS.md#12-my-implementation-against-the-authors-code).
+repository (`contrib/e_means`); the Faiss release installed here (1.16.0) does not ship it. I later read it and list the differences in
+[EXTENSIONS.md](EXTENSIONS.md#12-my-implementation-against-the-authors-code), then ran it next to mine
+([section 14](EXTENSIONS.md#14-recheck-with-the-authors-code-and-what-it-changed)).
 
 ## What the paper claims
 
@@ -65,8 +66,8 @@ So in plain numpy, three passes of e-means are 6–9× faster than scikit-learn'
 vectors and end slightly better. scikit-learn's default k-means++ run to convergence is still a little better at
 100k, at 46× the time.
 
-**Small data is a different story.** On `load_digits` (1,797 × 64, k = 10) and 2-D blobs (10,000 points, k = 8),
-10 seeds each, there is nothing to gain: everything finishes in about 10 ms, and `EMeans` with random initialization
+On small data there is nothing to gain. On `load_digits` (1,797 × 64, k = 10) and 2-D blobs (10,000 points, k = 8),
+10 seeds each, everything finishes in about 10 ms, and `EMeans` with random initialization
 lands in a poor local minimum about as often as `KMeans` does (mean MSE 2.03 vs 1.90 on the blobs, 658 vs 658 on
 digits). The paper says its batch-size and step-size formulas are not tuned for tiny or low-dimensional data. Use
 this for large `n` and large `k`.
@@ -89,8 +90,8 @@ The three experiments below came first. A second, larger round is written up in 
 - `OnlineGaussianMixture`, a scikit-learn-style mixture estimator: about 250× faster than `GaussianMixture` at 1M rows.
 - More passes: gains shrink after three and are nearly flat after eight.
 - A comparison with the authors' released code, which exposed one bug in mine and one rule I had missed.
-- A recheck that runs the authors' code next to mine in real Faiss indexes (section 14). It confirmed the paper,
-  exposed a second bug in mine (fixed), and cut the size penalty's claim down to the lines above.
+- A recheck that runs the authors' code next to mine in real Faiss indexes (EXTENSIONS.md section 14). It agrees
+  with the paper, found a second bug in mine (fixed), and narrowed the size penalty's claim to the lines above.
 
 ### 1. Does a search index built on the centroids get better?
 
@@ -196,7 +197,7 @@ Three further checks:
   textbook rule without revival is far worse (−0.2 to −3.0 on sift64, −0.4 to −4.4 on synth). With revival added
   and its best batch size it comes within 0.04 of the cosine recipe on sift64 at 2–4× the time, and beats the
   default recipe on synth (+0.17 at 5× the time).
-- **scikit-learn as people run it** (`GaussianMixture`, CPU, k-means start, to convergence; one seed, different
+- **scikit-learn with its usual settings** (`GaussianMixture`, CPU, k-means start, to convergence; one seed, different
   hardware and precision, so the times are not a like-for-like speed comparison): sift64 K = 256 −80.871 after 65
   passes and 526 s; synth −89.292 (160 s); skewed −87.514 (163 s). Three online passes from a random start score
   −80.877, −88.951 and −87.313.
@@ -208,7 +209,6 @@ Three further checks:
 - The paper's own benchmark datasets other than SIFT (EXTENSIONS.md adds five more public sets for search).
 - The CPU numbers at 1M are one seed each.
 - An end-to-end index with compressed vectors (IVF-PQ), graph indexes, or real query logs.
-- The authors' released code: I read it and did not run it.
 - Mixtures with full covariance matrices, a downstream task that uses the mixture, or more than 3 seeds.
 - Ordinary EM from a k-means start on the GPU (the scikit-learn row above is the only such run).
 
@@ -221,7 +221,7 @@ km = EMeans(n_clusters=4096, n_epochs=3, random_state=0).fit(X)   # X: (n_sample
 km.cluster_centers_, km.labels_, km.inertia_
 km.predict(X_new); km.transform(X_new); km.score(X_new)
 
-EMeans(n_clusters=4096, balance=0.3)        # not in the paper: a size penalty that evens out the clusters (EXTENSIONS.md, section 5)
+EMeans(n_clusters=4096, balance=0.3)        # not in the paper: a size penalty; helps on some data, hurts on other (EXTENSIONS.md, sections 5 and 14)
 
 from online_gmm_sklearn import OnlineGaussianMixture               # same recipe for diagonal Gaussian mixtures (section 7)
 gm = OnlineGaussianMixture(n_components=256, n_epochs=3, random_state=0).fit(X)

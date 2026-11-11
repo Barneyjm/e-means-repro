@@ -11,7 +11,7 @@ Contents:
 2. [Do more passes keep helping?](#2-do-more-passes-keep-helping)
 3. [Search indexes on six datasets](#3-search-indexes-on-six-datasets)
 4. [Old ideas the recipe does not use](#4-old-ideas-the-recipe-does-not-use)
-5. [The one that mattered: a size penalty](#5-the-one-that-mattered-a-size-penalty)
+5. [A size penalty](#5-a-size-penalty)
 6. [Product quantization](#6-product-quantization)
 7. [Gaussian mixtures](#7-gaussian-mixtures)
 8. [Topic models (LDA) and NMF](#8-topic-models-lda-and-nmf)
@@ -32,7 +32,7 @@ ideas the recipe leaves out that would add to it?
 
 | Algorithm | Result | Verdict |
 |---|---|---|
-| k-means for search indexes (6 datasets) | 3 passes ≈ 25 Lloyd passes at small `k`, 4–9% less scanning at `k` = 16,384; 49% less on one dataset, which turned out to be full of duplicate rows (section 14). One case (text embeddings, `k` = 16,384) where it is 9% worse. | works, with one exception |
+| k-means for search indexes (6 datasets) | 3 passes ≈ 25 Lloyd passes at small `k`, 4–9% less scanning at `k` = 16,384; 49% less on New York Times embeddings, where 21% of the rows are exact copies (section 14). One case (text embeddings, `k` = 16,384) where it is 9% worse. | works, with one exception |
 | Product quantization | 3 passes beat 100 Lloyd passes once the authors' low-dimension batch rule is used | works |
 | Gaussian mixtures | CPU estimator: 250× faster than scikit-learn at 1M rows for the same score; needs k-means++ seeds on well-separated clusters | works |
 | NMF | 3 passes ≈ 34–79 full passes; within 0.1% of scikit-learn's `NMF` in 4% of the time | works |
@@ -153,7 +153,7 @@ What the plain recipe does (columns "e-means 3" and "e-means 5"):
   than Lloyd's, because its lists are less even (imbalance 1.40 against 1.31); with the faded size penalty it is
   level with Lloyd's (−1.4% ± 2.1), at 17.8 s of training against 139 s.
 - On the New York Times embeddings the difference is large: the index from three passes scans 49% fewer
-  vectors than the Lloyd index at `k` = 4,096. That dataset is very clumpy. Lloyd from a random start ends
+  vectors than the Lloyd index at `k` = 4,096. That file has many exact duplicate rows (section 14). Lloyd from a random start ends
   with more than half of its 4,096 clusters holding fewer than 10 vectors and a few holding over a thousand
   (imbalance 7.4, where 1.0 is perfectly even); a k-means++ start and 100 passes do not fix it. The revival
   step in e-means is what helps here (imbalance 2.1).
@@ -179,7 +179,7 @@ no subsampling), a real `IndexIVFFlat`, 40,000 held-out queries, 3 seeds, `k` = 
 | e-means, 3 passes + size penalty 0.1, held | 7,922 | −83% ± 3 | 57 µs | −82% ± 4 |
 
 So on this dataset a query is 1.9× faster with plain e-means centroids and 4.6–5.5× faster with the size
-penalty added, at the same recall, in the library people actually use. My Lloyd baseline and Faiss's k-means
+penalty added, at the same recall. My Lloyd baseline and Faiss's k-means
 agree with each other. This is the extreme case; the same check on SIFT1M is in section 5.
 
 **Read this with section 14.** 21% of the rows in this file are in groups of exact copies. With the copies
@@ -210,13 +210,13 @@ on the two search columns and costs 33% more time.
 | Codebook doubling before the main passes | Linde, Buzo, Gray 1980 | −1.2% | −1.2% | −0.12% | 1.45× | same as spending the time on a 4th pass |
 | One exact Lloyd pass at the end | Bottou & Bengio 1995 | −0.4% | −0.5% | −0.03% | 1.3× | worse than a 4th online pass |
 | Stricter revival (threshold 0.3 instead of 0.1 of the mean) | – | −0.5% ± 0.8 | −1.1% ± 0.4 | 0.00% | same | small gain |
-| **Size penalty when assigning ("conscience")** | DeSieno 1988; balanced k-means | **−4.1 to −5.3%** | **−4.1 to −5.3%** | ±0.04% | +4% | **the only clear win** |
+| **Size penalty when assigning ("conscience")** | DeSieno 1988; balanced k-means | **−4.1 to −5.3%** | **−4.1 to −5.3%** | ±0.04% | +4% | **largest gain** (but see section 14) |
 
-Apart from the last row, nothing here beats spending the same time on an extra pass. The recipe as published is hard to improve on its own
-terms: its step curve, its revival rule and its random start all held up, and the things the paper already
-ablated (constant step, re-seeding from the batch) came out the same way here. The exception is the last row.
+Apart from the last row, nothing here beats spending the same time on an extra pass. The paper's step curve,
+revival rule and random start all held up, and the things the paper already ablated (constant step, re-seeding
+from the batch) came out the same way here.
 
-## 5. The one that mattered: a size penalty
+## 5. A size penalty
 
 ### What it is
 
@@ -232,7 +232,7 @@ imbalance = `k · Σ (n_j/n)²` (1.0 when all clusters are the same size). Imbal
 inverted-file index pays for uneven lists: with one list probed per query, the expected number of vectors
 scanned is `(n/k) × imbalance`. So `λ` is an exchange rate between clustering error and list balance.
 
-**Prior art, so nobody is misled.** The penalty is DeSieno's "conscience" for competitive learning (1988). The
+**Prior art.** The penalty is DeSieno's "conscience" for competitive learning (1988). The
 same linear size penalty is used for search indexes as balanced k-means: Liu et al. 2018 (FCFC), SPANN 2021,
 Microsoft SPTAG, Lance, and MicroNN 2025 in mini-batch form. Published results are mixed: SPANN reports a
 gain, while Tavenard, Jégou & Amsaleg 2011 and an Elastic engineering post report that balancing hurt. What
@@ -261,10 +261,11 @@ e-means, which takes the same training time (vectors scanned for 95% recall@1):
 | GloVe, k = 16,384 (90% R@1) | +0.7% | +8.6% | 2 seeds |
 | New York Times, k = 1,024 / 4,096 | −42% / −60% | −66% / −62% | 3 seeds; plain e-means is itself 15–49% below Lloyd here |
 
-- The gain depends on the data: very large where plain k-means leaves many starved clusters (New York Times),
+- The gain depends on the data: very large on New York Times (a duplicate-rows effect, section 14),
   3–8% on image descriptors and raw images, nothing on the text embeddings at `k` = 4,096 and 10% at 16,384
   (where it only repairs what plain e-means lost against Lloyd), and a small loss on word vectors.
-- The faded version is the safer one: its worst case was +1 to +2% on GloVe. The held version is 1–2 points
+- The faded version lost less in this round: its worst case was +1 to +2% on GloVe (section 14 adds a worse
+  case, Last.fm). The held version is 1–2 points
   better on image descriptors and 4–9% worse on GloVe.
 - It stacks with extra passes. SIFT1M, `k` = 16,384: five passes with the held penalty scan 15% fewer
   vectors than 25 Lloyd passes, against 6% for five plain passes; two passes with the penalty beat ten without.
@@ -373,8 +374,7 @@ where the two effects cancel:
   penalty-free runs), yet any strength from 0.03 to 0.5 cuts scan cost by half or more.
 
 So the rule explains why 0.3 is right where the penalty helps, and it is not a reliable test of whether the
-penalty helps. That is the reason for recommending the faded version: it keeps most of the gain and did not
-lose anywhere.
+penalty helps.
 
 ### In the scikit-learn estimator
 
@@ -627,7 +627,7 @@ away, so forgetting, a step curve, timed repair and a final clean-up either do n
 ## 12. My implementation against the authors' code
 
 The authors' code is public (`contrib/e_means` in the Faiss repository). The Faiss release installed here
-(1.16.0) does not ship it, and I had written mine from the paper. I read theirs (did not run it) and compared.
+(1.16.0) does not ship it, and I had written mine from the paper. I read theirs and compared; section 14 runs it.
 The main recipe matches: cosine step to 10% indexed by batch, revival every 5 updates below 0.1 × mean,
 donors drawn in proportion to mass without replacement, mass halved, alternating-sign split, last-pass mean
 from assignments recorded while the centroids move, one permutation per pass.
@@ -662,7 +662,7 @@ the same headline numbers as their Table 5 for SIFT1M (−0.35% reported, −0.3
   wrong on one, and it needs pilot runs, so it is an explanation more than a tool.
 - Prior art for each idea comes from literature searches made the same night. Where I write that something
   was not found, that is the search coming up empty, not a claim of novelty.
-- I read the authors' code and did not run it.
+- Sections 2–13 compare my implementation only; section 14 is the only part that runs the authors' code.
 - The mixture, topic-model, hidden-Markov and factorization experiments each use one or two datasets.
 
 ## 14. Recheck with the authors' code, and what it changed
@@ -725,7 +725,7 @@ run before the fix and have not been rerun; Last.fm is not used in them.
   to 4.0–4.3, and the largest list holds 4,561 vectors without it and 8,138 (held) or 3,404 (faded) with it
   (seed 0). At `k` = 1,024 the held penalty is neutral with the authors' code and helps with mine.
 - **The New York Times result is about duplicate rows.** 53,047 of the 250,000 rows (21%) are in 20,985
-  groups of exact copies, the largest of 204. Faiss k-means handles the file badly: about 2,400 of its 4,096
+  groups of exact copies, the largest of 204. Faiss k-means does poorly on this file: about 2,400 of its 4,096
   lists end up with fewer than 10 vectors and the rest carry the load (imbalance 7.34). Remove the copies
   (217,938 rows left) and Faiss k-means is no longer uneven: imbalance 1.56, against 1.67 for the authors'
   e-means and 1.12 with the penalty.
@@ -747,7 +747,7 @@ in brackets is how many seeds did):
 So on the copy-free file Faiss k-means is the cheapest or tied, plain e-means is 40–55% dearer, and the penalty
 only brings e-means back toward Faiss k-means. With the penalty most seeds do not reach 85% at all.
 
-Why the copies matter so much. 146 groups have ten or more copies. They hold 1% of the rows, and one of them
+Why the copies matter: 146 groups have ten or more copies. They hold 1% of the rows, and one of them
 is the true nearest neighbour for 29% of the queries (queries that are not themselves copies of anything).
 Recall on those queries decides the whole comparison; on all other queries every index below is at 93–98%.
 Share of queries for which the index returns a row at the true nearest distance (seed 0):
@@ -768,12 +768,12 @@ and I found no second dataset that shows it.
 
 ### What to take from this
 
-- For building a Faiss IVF index, the authors' e-means with its defaults is the result that stands.
-- Faiss k-means degrades badly on a file with many exact copies; e-means' revival step repairs most of that,
+- For building a Faiss IVF index, the authors' e-means with its defaults is what I would use.
+- Faiss k-means does poorly on a file with many exact copies; e-means' revival step repairs most of that,
   and the size penalty the rest. Removing the copies first also repairs it.
 - The size penalty is worth a trial where lists come out uneven for reasons other than dense clumps, and it
   is worth about 10% at large `k` on SIFT-like data. It is not a default.
 
-To repeat: `experiments/prep_h5.py` (data), `centroid_sets.py` (centroids; set `EMEANS_AUTHORS` to the authors'
+To reproduce: `experiments/prep_h5.py` (data), `centroid_sets.py` (centroids; set `EMEANS_AUTHORS` to the authors'
 `e_means` directory), `faiss_ivf_bench.py` (indexes), `summarize_check.py` and `summarize_check_targets.py`
 (tables). Logs are in `results/check/`.
