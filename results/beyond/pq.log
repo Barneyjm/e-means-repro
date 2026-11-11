@@ -1,0 +1,48 @@
+{"train_set": "base", "n": 1000000, "m": "lloyd10", "seed": 0, "time": 2.73, "train": 10688.904, "test": 10779.268}
+{"train_set": "base", "n": 1000000, "m": "lloyd25", "seed": 0, "time": 7.12, "train": 10471.487, "test": 10560.838}
+{"train_set": "base", "n": 1000000, "m": "lloyd100", "seed": 0, "time": 30.28, "train": 10358.455, "test": 10452.281}
+{"train_set": "base", "n": 1000000, "m": "emeans1", "seed": 0, "time": 1.25, "train": 10553.322, "test": 10642.393, "B": 16384, "a0": 0.796, "updates": 61}
+{"train_set": "base", "n": 1000000, "m": "emeans2", "seed": 0, "time": 1.59, "train": 10438.228, "test": 10530.051, "B": 32768, "a0": 1.0, "updates": 60}
+{"train_set": "base", "n": 1000000, "m": "emeans3", "seed": 0, "time": 2.29, "train": 10392.707, "test": 10486.126, "B": 32768, "a0": 1.0, "updates": 90}
+{"train_set": "base", "n": 1000000, "m": "emeans5", "seed": 0, "time": 2.73, "train": 10404.129, "test": 10504.645, "B": 65536, "a0": 1.0, "updates": 75}
+{"train_set": "base", "n": 1000000, "m": "emeans10", "seed": 0, "time": 5.25, "train": 10360.854, "test": 10459.185, "B": 65536, "a0": 1.0, "updates": 150}
+{"train_set": "base", "n": 1000000, "m": "lloyd10", "seed": 1, "time": 2.7, "train": 10669.89, "test": 10758.505}
+{"train_set": "base", "n": 1000000, "m": "lloyd25", "seed": 1, "time": 7.01, "train": 10454.508, "test": 10548.374}
+{"train_set": "base", "n": 1000000, "m": "lloyd100", "seed": 1, "time": 29.61, "train": 10347.179, "test": 10449.526}
+{"train_set": "base", "n": 1000000, "m": "emeans1", "seed": 1, "time": 1.2, "train": 10532.616, "test": 10638.644, "B": 16384, "a0": 0.796, "updates": 61}
+{"train_set": "base", "n": 1000000, "m": "emeans2", "seed": 1, "time": 1.67, "train": 10420.798, "test": 10513.596, "B": 32768, "a0": 1.0, "updates": 60}
+{"train_set": "base", "n": 1000000, "m": "emeans3", "seed": 1, "time": 2.34, "train": 10380.575, "test": 10474.305, "B": 32768, "a0": 1.0, "updates": 90}
+{"train_set": "base", "n": 1000000, "m": "emeans5", "seed": 1, "time": 3.0, "train": 10391.497, "test": 10487.725, "B": 65536, "a0": 1.0, "updates": 75}
+{"train_set": "base", "n": 1000000, "m": "emeans10", "seed": 1, "time": 5.51, "train": 10350.051, "test": 10446.132, "B": 65536, "a0": 1.0, "updates": 150}
+{"train_set": "base", "n": 1000000, "m": "lloyd10", "seed": 2, "time": 2.69, "train": 10692.181, "test": 10766.592}
+{"train_set": "base", "n": 1000000, "m": "lloyd25", "seed": 2, "time": 7.08, "train": 10475.189, "test": 10556.98}
+{"train_set": "base", "n": 1000000, "m": "lloyd100", "seed": 2, "time": 32.86, "train": 10357.767, "test": 10446.401}
+{"train_set": "base", "n": 1000000, "m": "emeans1", "seed": 2, "time": 3.36, "train": 10557.004, "test": 10628.477, "B": 16384, "a0": 0.796, "updates": 61}
+{"train_set": "base", "n": 1000000, "m": "emeans2", "seed": 2, "time": 1.77, "train": 10434.965, "test": 10513.303, "B": 32768, "a0": 1.0, "updates": 60}
+{"train_set": "base", "n": 1000000, "m": "emeans3", "seed": 2, "time": 2.44, "train": 10390.722, "test": 10475.711, "B": 32768, "a0": 1.0, "updates": 90}
+{"train_set": "base", "n": 1000000, "m": "emeans5", "seed": 2, "time": 2.98, "train": 10413.67, "test": 10494.196, "B": 65536, "a0": 1.0, "updates": 75}
+{"train_set": "base", "n": 1000000, "m": "emeans10", "seed": 2, "time": 5.49, "train": 10362.432, "test": 10444.847, "B": 65536, "a0": 1.0, "updates": 150}
+{"train_set": "learn", "n": 100000, "m": "lloyd10", "seed": 0, "time": 0.71, "train": 10647.313, "test": 10665.657}
+{"train_set": "learn", "n": 100000, "m": "lloyd25", "seed": 0, "time": 1.71, "train": 10424.829, "test": 10443.844}
+{"train_set": "learn", "n": 100000, "m": "lloyd100", "seed": 0, "time": 6.71, "train": 10327.361, "test": 10348.655}
+{"train_set": "learn", "n": 100000, "m": "emeans1", "seed": 0, "time": 0.72, "train": 10741.264, "test": 10754.157, "B": 2048, "a0": 0.345, "updates": 48}
+{"train_set": "learn", "n": 100000, "m": "emeans2", "seed": 0, "time": 0.74, "train": 10478.684, "test": 10488.024, "B": 4096, "a0": 0.597, "updates": 48}
+{"train_set": "learn", "n": 100000, "m": "emeans3", "seed": 0, "time": 1.07, "train": 10402.872, "test": 10408.28, "B": 4096, "a0": 0.571, "updates": 72}
+{"train_set": "learn", "n": 100000, "m": "emeans5", "seed": 0, "time": 1.02, "train": 10347.196, "test": 10343.909, "B": 8192, "a0": 1.0, "updates": 60}
+{"train_set": "learn", "n": 100000, "m": "emeans10", "seed": 0, "time": 1.26, "train": 10352.618, "test": 10359.699, "B": 16384, "a0": 1.0, "updates": 60}
+{"train_set": "learn", "n": 100000, "m": "lloyd10", "seed": 1, "time": 0.7, "train": 10648.519, "test": 10660.516}
+{"train_set": "learn", "n": 100000, "m": "lloyd25", "seed": 1, "time": 1.7, "train": 10432.83, "test": 10436.025}
+{"train_set": "learn", "n": 100000, "m": "lloyd100", "seed": 1, "time": 6.71, "train": 10336.595, "test": 10336.341}
+{"train_set": "learn", "n": 100000, "m": "emeans1", "seed": 1, "time": 0.73, "train": 10741.173, "test": 10758.421, "B": 2048, "a0": 0.345, "updates": 48}
+{"train_set": "learn", "n": 100000, "m": "emeans2", "seed": 1, "time": 0.73, "train": 10481.895, "test": 10493.991, "B": 4096, "a0": 0.597, "updates": 48}
+{"train_set": "learn", "n": 100000, "m": "emeans3", "seed": 1, "time": 1.07, "train": 10402.981, "test": 10411.337, "B": 4096, "a0": 0.571, "updates": 72}
+{"train_set": "learn", "n": 100000, "m": "emeans5", "seed": 1, "time": 1.1, "train": 10351.669, "test": 10343.538, "B": 8192, "a0": 1.0, "updates": 60}
+{"train_set": "learn", "n": 100000, "m": "emeans10", "seed": 1, "time": 1.27, "train": 10360.358, "test": 10372.298, "B": 16384, "a0": 1.0, "updates": 60}
+{"train_set": "learn", "n": 100000, "m": "lloyd10", "seed": 2, "time": 0.7, "train": 10648.027, "test": 10656.778}
+{"train_set": "learn", "n": 100000, "m": "lloyd25", "seed": 2, "time": 1.7, "train": 10431.517, "test": 10442.126}
+{"train_set": "learn", "n": 100000, "m": "lloyd100", "seed": 2, "time": 6.73, "train": 10326.507, "test": 10327.551}
+{"train_set": "learn", "n": 100000, "m": "emeans1", "seed": 2, "time": 0.71, "train": 10729.14, "test": 10732.64, "B": 2048, "a0": 0.345, "updates": 48}
+{"train_set": "learn", "n": 100000, "m": "emeans2", "seed": 2, "time": 0.73, "train": 10491.67, "test": 10493.749, "B": 4096, "a0": 0.597, "updates": 48}
+{"train_set": "learn", "n": 100000, "m": "emeans3", "seed": 2, "time": 1.04, "train": 10413.056, "test": 10423.964, "B": 4096, "a0": 0.571, "updates": 72}
+{"train_set": "learn", "n": 100000, "m": "emeans5", "seed": 2, "time": 1.03, "train": 10354.046, "test": 10362.902, "B": 8192, "a0": 1.0, "updates": 60}
+{"train_set": "learn", "n": 100000, "m": "emeans10", "seed": 2, "time": 1.17, "train": 10363.596, "test": 10363.228, "B": 16384, "a0": 1.0, "updates": 60}
