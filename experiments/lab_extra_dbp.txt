@@ -1,0 +1,4 @@
+e3 | T=3
+ca0.3 | consc=0.3
+cc0.1 | consc=0.1, consc_end=1
+lloyd25 | lloyd=25

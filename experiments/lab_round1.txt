@@ -1,0 +1,47 @@
+# round 1: one idea at a time on top of 3-pass e-means; calibration rows first
+lloyd25 | lloyd=25
+e2 | T=2
+e3 | T=3
+e4 | T=4
+e5 | T=5
+# step curve
+floor0.01 | floor=0.01
+floor0.3 | floor=0.3
+linear | sched=linear
+exp | sched=exp
+const | sched=const
+# smaller batches with the same memory window (direction the mixture grid favoured)
+B/4,a/4 | Bx=0.25, ax=0.25
+B/2,a/2 | Bx=0.5, ax=0.5
+bgrow4 | bgrow=4
+bgrow16 | bgrow=16
+# revival
+tau0.3 | tau=0.3
+tau0.03 | tau=0.03
+every1 | every=1
+revive_point | revive=point
+revive_d2 | revive=d2
+donor_error | donor=error
+util0.1 | util_tau=0.1, donor=error
+util0.3 | util_tau=0.3, donor=error
+# conscience
+consc0.03 | consc=0.03
+consc0.1 | consc=0.1
+consc0.3 | consc=0.3
+consc0.1const | consc=0.1, consc_const=True
+# soft start, look-ahead
+soft4 | soft_m=4
+soft8 | soft_m=8, soft_frac=0.3
+nest0.5 | nest=0.5
+nest1 | nest=1.0
+# start
+pp+e2 | T=2, init=pp
+pp+e3 | T=3, init=pp
+ladder+e1 | T=1, ladder=3
+ladder+e2 | T=2, ladder=3
+ladder+e3 | T=3, ladder=3
+# online first, exact last
+e1+lloyd1 | T=1, polish=1
+e2+lloyd1 | T=2, polish=1
+e3+lloyd1 | T=3, polish=1
+e2+lloyd2 | T=2, polish=2

@@ -1,0 +1,21 @@
+# reference and the settings shift found earlier
+base | T=3
+B/4,a/4 | T=3, Bx=0.25, ax=0.25
+B/8,a/2 | T=3, Bx=0.125, ax=0.5
+# deterministic annealing
+beta0.7 | beta0=0.7
+beta0.5 | beta0=0.5
+beta0.3 | beta0=0.3
+beta0.5,all | beta0=0.5, anneal_frac=1.0
+# equal-prior start
+wtemp0 | wtemp0=0.0
+wtemp0.5 | wtemp0=0.5
+wtemp0,all | wtemp0=0.0, anneal_frac=1.0
+# stricter revival
+tau0.3 | tau=0.3
+tau0.03 | tau=0.03
+# combinations
+beta0.5,wtemp0 | beta0=0.5, wtemp0=0.0
+beta0.5,B/4 | beta0=0.5, Bx=0.25, ax=0.25
+wtemp0,B/4 | wtemp0=0.0, Bx=0.25, ax=0.25
+beta0.5,B/8a/2 | beta0=0.5, Bx=0.125, ax=0.5

@@ -1,0 +1,493 @@
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "reference", "unigram": 4.12514, "bigram": 3.43809, "truth": null}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 1, "time": 2.38, "bits": 4.11472, "train_bits": 4.80277}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 2, "time": 4.68, "bits": 4.10179, "train_bits": 4.11056}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 3, "time": 7.01, "bits": 4.0816, "train_bits": 4.0975}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 4, "time": 9.33, "bits": 4.04334, "train_bits": 4.07707}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 5, "time": 11.6, "bits": 3.97334, "train_bits": 4.03824}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 6, "time": 13.88, "bits": 3.88173, "train_bits": 3.96722}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 7, "time": 16.14, "bits": 3.78207, "train_bits": 3.87516}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 8, "time": 18.42, "bits": 3.68104, "train_bits": 3.77621}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 9, "time": 20.69, "bits": 3.59209, "train_bits": 3.67617}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 10, "time": 22.96, "bits": 3.52044, "train_bits": 3.58777}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 11, "time": 25.25, "bits": 3.46261, "train_bits": 3.51628}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 12, "time": 27.58, "bits": 3.41493, "train_bits": 3.45847}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 13, "time": 29.91, "bits": 3.37423, "train_bits": 3.41072}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 14, "time": 32.19, "bits": 3.33788, "train_bits": 3.36991}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 15, "time": 34.46, "bits": 3.30506, "train_bits": 3.33337}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 16, "time": 36.73, "bits": 3.27598, "train_bits": 3.30033}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 17, "time": 39.01, "bits": 3.25053, "train_bits": 3.27111}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 18, "time": 41.28, "bits": 3.22874, "train_bits": 3.24567}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 19, "time": 43.55, "bits": 3.21052, "train_bits": 3.22398}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 20, "time": 45.82, "bits": 3.19498, "train_bits": 3.2058}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 21, "time": 48.12, "bits": 3.18118, "train_bits": 3.19023}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 22, "time": 50.46, "bits": 3.16865, "train_bits": 3.17636}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 23, "time": 52.77, "bits": 3.15729, "train_bits": 3.16371}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 24, "time": 55.06, "bits": 3.14701, "train_bits": 3.15218}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 25, "time": 57.34, "bits": 3.13786, "train_bits": 3.14173}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 26, "time": 59.61, "bits": 3.12979, "train_bits": 3.13245}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 27, "time": 61.89, "bits": 3.12269, "train_bits": 3.12429}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 28, "time": 64.17, "bits": 3.11644, "train_bits": 3.11714}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 29, "time": 66.44, "bits": 3.11083, "train_bits": 3.11085}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 30, "time": 68.75, "bits": 3.10568, "train_bits": 3.10527}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 31, "time": 71.09, "bits": 3.10089, "train_bits": 3.10019}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 32, "time": 73.39, "bits": 3.09643, "train_bits": 3.09551}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 33, "time": 75.67, "bits": 3.09232, "train_bits": 3.09116}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 34, "time": 77.95, "bits": 3.08849, "train_bits": 3.08713}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 35, "time": 80.21, "bits": 3.08495, "train_bits": 3.08335}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 36, "time": 82.49, "bits": 3.08169, "train_bits": 3.07982}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 37, "time": 84.76, "bits": 3.07871, "train_bits": 3.07655}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 38, "time": 87.04, "bits": 3.07595, "train_bits": 3.07354}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 39, "time": 89.34, "bits": 3.07337, "train_bits": 3.07076}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 40, "time": 91.68, "bits": 3.07092, "train_bits": 3.06817}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 41, "time": 93.99, "bits": 3.06858, "train_bits": 3.06574}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 42, "time": 96.27, "bits": 3.06634, "train_bits": 3.06342}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 43, "time": 98.54, "bits": 3.0642, "train_bits": 3.06121}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 44, "time": 100.82, "bits": 3.06216, "train_bits": 3.05911}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 45, "time": 103.09, "bits": 3.06022, "train_bits": 3.05712}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 46, "time": 105.36, "bits": 3.05838, "train_bits": 3.05523}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 47, "time": 107.63, "bits": 3.05665, "train_bits": 3.05345}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 48, "time": 109.89, "bits": 3.05503, "train_bits": 3.05178}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 49, "time": 112.21, "bits": 3.05351, "train_bits": 3.05022}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 50, "time": 114.54, "bits": 3.05211, "train_bits": 3.04876}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 51, "time": 116.85, "bits": 3.05082, "train_bits": 3.04742}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 52, "time": 119.13, "bits": 3.04961, "train_bits": 3.04618}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 53, "time": 121.41, "bits": 3.04848, "train_bits": 3.04503}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 54, "time": 123.69, "bits": 3.04738, "train_bits": 3.04394}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 55, "time": 125.96, "bits": 3.04628, "train_bits": 3.04287}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 56, "time": 128.23, "bits": 3.04515, "train_bits": 3.04181}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 57, "time": 130.51, "bits": 3.044, "train_bits": 3.04073}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 58, "time": 132.84, "bits": 3.04287, "train_bits": 3.03963}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 59, "time": 135.18, "bits": 3.04178, "train_bits": 3.03855}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 60, "time": 137.47, "bits": 3.04078, "train_bits": 3.03753}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 61, "time": 139.75, "bits": 3.03987, "train_bits": 3.03658}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 62, "time": 142.03, "bits": 3.03905, "train_bits": 3.03572}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 63, "time": 144.3, "bits": 3.0383, "train_bits": 3.03493}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 64, "time": 146.57, "bits": 3.03759, "train_bits": 3.03421}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 65, "time": 148.84, "bits": 3.03691, "train_bits": 3.03353}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 66, "time": 151.11, "bits": 3.03626, "train_bits": 3.03287}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 67, "time": 153.43, "bits": 3.03562, "train_bits": 3.03224}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 68, "time": 155.76, "bits": 3.035, "train_bits": 3.03162}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 69, "time": 158.07, "bits": 3.0344, "train_bits": 3.03101}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 70, "time": 160.34, "bits": 3.03382, "train_bits": 3.03042}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 71, "time": 162.62, "bits": 3.03326, "train_bits": 3.02985}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 72, "time": 164.89, "bits": 3.03272, "train_bits": 3.0293}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 73, "time": 167.16, "bits": 3.03219, "train_bits": 3.02877}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 74, "time": 169.43, "bits": 3.03167, "train_bits": 3.02825}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 75, "time": 171.7, "bits": 3.03116, "train_bits": 3.02773}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 76, "time": 173.97, "bits": 3.03065, "train_bits": 3.02723}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 77, "time": 176.26, "bits": 3.03015, "train_bits": 3.02673}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 78, "time": 178.6, "bits": 3.02967, "train_bits": 3.02623}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 79, "time": 180.91, "bits": 3.02924, "train_bits": 3.02576}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 80, "time": 183.2, "bits": 3.02886, "train_bits": 3.02533}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 81, "time": 185.47, "bits": 3.02849, "train_bits": 3.02494}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 82, "time": 187.75, "bits": 3.02815, "train_bits": 3.02458}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 83, "time": 190.03, "bits": 3.02781, "train_bits": 3.02424}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 84, "time": 192.3, "bits": 3.02748, "train_bits": 3.02391}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 85, "time": 194.57, "bits": 3.02714, "train_bits": 3.02359}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 86, "time": 196.89, "bits": 3.02679, "train_bits": 3.02326}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 87, "time": 199.23, "bits": 3.02643, "train_bits": 3.02292}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 88, "time": 201.55, "bits": 3.02605, "train_bits": 3.02257}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 89, "time": 203.83, "bits": 3.02565, "train_bits": 3.0222}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 90, "time": 206.1, "bits": 3.02522, "train_bits": 3.02181}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 91, "time": 208.37, "bits": 3.02479, "train_bits": 3.0214}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 92, "time": 210.65, "bits": 3.02435, "train_bits": 3.02098}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 93, "time": 212.92, "bits": 3.02392, "train_bits": 3.02055}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 94, "time": 215.19, "bits": 3.0235, "train_bits": 3.02013}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 95, "time": 217.46, "bits": 3.02309, "train_bits": 3.01971}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 96, "time": 219.79, "bits": 3.0227, "train_bits": 3.01932}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 97, "time": 222.12, "bits": 3.02232, "train_bits": 3.01893}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 98, "time": 224.4, "bits": 3.02194, "train_bits": 3.01855}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 99, "time": 226.68, "bits": 3.02157, "train_bits": 3.01819}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 100, "time": 228.95, "bits": 3.0212, "train_bits": 3.01782}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 101, "time": 231.31, "bits": 3.0208, "train_bits": 3.01744}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 102, "time": 233.53, "bits": 3.02038, "train_bits": 3.01704}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 103, "time": 235.74, "bits": 3.01995, "train_bits": 3.0166}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 104, "time": 237.96, "bits": 3.01954, "train_bits": 3.01614}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 105, "time": 240.17, "bits": 3.01917, "train_bits": 3.01569}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 106, "time": 242.38, "bits": 3.01883, "train_bits": 3.01527}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 107, "time": 244.59, "bits": 3.0185, "train_bits": 3.01488}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 108, "time": 246.81, "bits": 3.01816, "train_bits": 3.01449}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 109, "time": 249.02, "bits": 3.01774, "train_bits": 3.0141}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 110, "time": 251.25, "bits": 3.01706, "train_bits": 3.01364}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 111, "time": 253.46, "bits": 3.01573, "train_bits": 3.01293}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 112, "time": 255.67, "bits": 3.01403, "train_bits": 3.01163}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 113, "time": 257.89, "bits": 3.01315, "train_bits": 3.01003}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 114, "time": 260.1, "bits": 3.01266, "train_bits": 3.00919}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 115, "time": 262.31, "bits": 3.01222, "train_bits": 3.0087}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 116, "time": 264.52, "bits": 3.01177, "train_bits": 3.00826}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 117, "time": 266.73, "bits": 3.01131, "train_bits": 3.00781}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 118, "time": 268.94, "bits": 3.01083, "train_bits": 3.00734}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 119, "time": 271.15, "bits": 3.01038, "train_bits": 3.00687}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 120, "time": 273.37, "bits": 3.00998, "train_bits": 3.00641}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 121, "time": 275.57, "bits": 3.00963, "train_bits": 3.00601}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 122, "time": 277.79, "bits": 3.00933, "train_bits": 3.00567}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 123, "time": 280.0, "bits": 3.00906, "train_bits": 3.00537}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 124, "time": 282.21, "bits": 3.00882, "train_bits": 3.0051}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 125, "time": 284.42, "bits": 3.00859, "train_bits": 3.00486}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 126, "time": 286.63, "bits": 3.00838, "train_bits": 3.00463}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 127, "time": 288.84, "bits": 3.00817, "train_bits": 3.00442}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 128, "time": 291.05, "bits": 3.00796, "train_bits": 3.00422}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 129, "time": 293.26, "bits": 3.00774, "train_bits": 3.00402}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 130, "time": 295.47, "bits": 3.00751, "train_bits": 3.00381}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 131, "time": 297.68, "bits": 3.00729, "train_bits": 3.0036}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 132, "time": 299.89, "bits": 3.00707, "train_bits": 3.0034}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 133, "time": 302.1, "bits": 3.00686, "train_bits": 3.00321}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 134, "time": 304.31, "bits": 3.00663, "train_bits": 3.00302}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 135, "time": 306.52, "bits": 3.00641, "train_bits": 3.00282}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 136, "time": 308.73, "bits": 3.00617, "train_bits": 3.00261}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 137, "time": 310.94, "bits": 3.00591, "train_bits": 3.0024}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 138, "time": 313.16, "bits": 3.00563, "train_bits": 3.00217}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 139, "time": 315.37, "bits": 3.00533, "train_bits": 3.00192}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 140, "time": 317.57, "bits": 3.00504, "train_bits": 3.00165}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 141, "time": 319.78, "bits": 3.00477, "train_bits": 3.0014}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 142, "time": 322.0, "bits": 3.00451, "train_bits": 3.00117}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 143, "time": 324.2, "bits": 3.00424, "train_bits": 3.00094}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 144, "time": 326.41, "bits": 3.00396, "train_bits": 3.00071}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 145, "time": 328.62, "bits": 3.00368, "train_bits": 3.00047}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 146, "time": 330.84, "bits": 3.0034, "train_bits": 3.00023}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 147, "time": 333.04, "bits": 3.00311, "train_bits": 2.99999}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 148, "time": 335.26, "bits": 3.00282, "train_bits": 2.99974}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 149, "time": 337.46, "bits": 3.00253, "train_bits": 2.99949}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 150, "time": 339.67, "bits": 3.00223, "train_bits": 2.99923}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 151, "time": 341.88, "bits": 3.00192, "train_bits": 2.99896}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 152, "time": 344.09, "bits": 3.00161, "train_bits": 2.99868}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 153, "time": 346.3, "bits": 3.00129, "train_bits": 2.9984}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 154, "time": 348.5, "bits": 3.00097, "train_bits": 2.99811}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 155, "time": 350.72, "bits": 3.00066, "train_bits": 2.99782}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 156, "time": 352.92, "bits": 3.00035, "train_bits": 2.99754}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 157, "time": 355.13, "bits": 3.00003, "train_bits": 2.99726}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 158, "time": 357.34, "bits": 2.99972, "train_bits": 2.99699}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 159, "time": 359.55, "bits": 2.99942, "train_bits": 2.99673}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 160, "time": 361.76, "bits": 2.99912, "train_bits": 2.99647}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 161, "time": 363.97, "bits": 2.99883, "train_bits": 2.99622}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 162, "time": 366.19, "bits": 2.99856, "train_bits": 2.99598}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 163, "time": 368.4, "bits": 2.99831, "train_bits": 2.99575}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 164, "time": 370.61, "bits": 2.99808, "train_bits": 2.99555}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 165, "time": 372.82, "bits": 2.99787, "train_bits": 2.99535}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 166, "time": 375.03, "bits": 2.99767, "train_bits": 2.99517}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 167, "time": 377.24, "bits": 2.99748, "train_bits": 2.99499}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 168, "time": 379.46, "bits": 2.99729, "train_bits": 2.99482}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 169, "time": 381.67, "bits": 2.9971, "train_bits": 2.99465}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 170, "time": 383.89, "bits": 2.99692, "train_bits": 2.99448}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 171, "time": 386.1, "bits": 2.99673, "train_bits": 2.9943}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 172, "time": 388.32, "bits": 2.99654, "train_bits": 2.99412}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 173, "time": 390.54, "bits": 2.99634, "train_bits": 2.99393}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 174, "time": 392.75, "bits": 2.99614, "train_bits": 2.99373}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 175, "time": 394.97, "bits": 2.99595, "train_bits": 2.99353}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 176, "time": 397.18, "bits": 2.99575, "train_bits": 2.99333}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 177, "time": 399.4, "bits": 2.99557, "train_bits": 2.99313}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 178, "time": 401.61, "bits": 2.9954, "train_bits": 2.99294}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 179, "time": 403.83, "bits": 2.99525, "train_bits": 2.99277}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 180, "time": 406.04, "bits": 2.99512, "train_bits": 2.99262}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 181, "time": 408.25, "bits": 2.995, "train_bits": 2.99248}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 182, "time": 410.47, "bits": 2.99489, "train_bits": 2.99236}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 183, "time": 412.68, "bits": 2.99478, "train_bits": 2.99224}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 184, "time": 414.9, "bits": 2.99468, "train_bits": 2.99213}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 185, "time": 417.12, "bits": 2.99458, "train_bits": 2.99202}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 186, "time": 419.33, "bits": 2.99448, "train_bits": 2.99192}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 187, "time": 421.54, "bits": 2.99438, "train_bits": 2.99182}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 188, "time": 423.76, "bits": 2.99428, "train_bits": 2.99172}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 189, "time": 425.97, "bits": 2.99419, "train_bits": 2.99162}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 190, "time": 428.19, "bits": 2.99409, "train_bits": 2.99153}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 191, "time": 430.4, "bits": 2.99399, "train_bits": 2.99143}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 192, "time": 432.62, "bits": 2.99388, "train_bits": 2.99134}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 193, "time": 434.83, "bits": 2.99378, "train_bits": 2.99124}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 194, "time": 437.05, "bits": 2.99368, "train_bits": 2.99114}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 195, "time": 439.26, "bits": 2.99357, "train_bits": 2.99104}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 196, "time": 441.48, "bits": 2.99348, "train_bits": 2.99095}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 197, "time": 443.69, "bits": 2.99338, "train_bits": 2.99086}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 198, "time": 445.9, "bits": 2.99329, "train_bits": 2.99077}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 199, "time": 448.12, "bits": 2.9932, "train_bits": 2.99068}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "bw", "it": 200, "time": 450.33, "bits": 2.99311, "train_bits": 2.99059}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 1, "time": 2.39, "bits": 4.11942, "train_bits": 4.74256}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 2, "time": 4.68, "bits": 4.11173, "train_bits": 4.115}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 3, "time": 6.98, "bits": 4.10155, "train_bits": 4.1072}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 4, "time": 9.27, "bits": 4.0861, "train_bits": 4.0969}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 5, "time": 11.56, "bits": 4.06009, "train_bits": 4.08126}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 6, "time": 13.83, "bits": 4.0135, "train_bits": 4.05497}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 7, "time": 16.12, "bits": 3.93203, "train_bits": 4.00796}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 8, "time": 18.41, "bits": 3.81283, "train_bits": 3.92603}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 9, "time": 20.7, "bits": 3.68735, "train_bits": 3.80663}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 10, "time": 22.98, "bits": 3.58669, "train_bits": 3.68151}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 11, "time": 25.27, "bits": 3.51071, "train_bits": 3.58179}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 12, "time": 27.57, "bits": 3.44985, "train_bits": 3.50673}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 13, "time": 29.86, "bits": 3.39743, "train_bits": 3.44641}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 14, "time": 32.15, "bits": 3.35145, "train_bits": 3.3942}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 15, "time": 34.42, "bits": 3.31256, "train_bits": 3.34826}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 16, "time": 36.73, "bits": 3.28057, "train_bits": 3.30931}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 17, "time": 39.02, "bits": 3.25413, "train_bits": 3.27722}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 18, "time": 41.32, "bits": 3.23106, "train_bits": 3.25069}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 19, "time": 43.61, "bits": 3.20929, "train_bits": 3.22752}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 20, "time": 45.97, "bits": 3.19004, "train_bits": 3.20562}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 21, "time": 48.31, "bits": 3.17414, "train_bits": 3.18619}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 22, "time": 50.61, "bits": 3.16052, "train_bits": 3.17009}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 23, "time": 52.9, "bits": 3.14853, "train_bits": 3.15628}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 24, "time": 55.18, "bits": 3.13804, "train_bits": 3.14412}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 25, "time": 57.47, "bits": 3.12902, "train_bits": 3.13342}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 26, "time": 59.75, "bits": 3.12134, "train_bits": 3.12419}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 27, "time": 62.05, "bits": 3.11472, "train_bits": 3.11635}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 28, "time": 64.33, "bits": 3.10887, "train_bits": 3.10964}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 29, "time": 66.62, "bits": 3.10358, "train_bits": 3.10377}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 30, "time": 68.89, "bits": 3.09873, "train_bits": 3.09849}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 31, "time": 71.17, "bits": 3.0943, "train_bits": 3.09367}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 32, "time": 73.46, "bits": 3.09032, "train_bits": 3.08929}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 33, "time": 75.75, "bits": 3.08679, "train_bits": 3.08537}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 34, "time": 78.04, "bits": 3.08363, "train_bits": 3.08192}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 35, "time": 80.33, "bits": 3.08075, "train_bits": 3.07884}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 36, "time": 82.6, "bits": 3.07807, "train_bits": 3.07604}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 37, "time": 84.89, "bits": 3.07554, "train_bits": 3.07344}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 38, "time": 87.18, "bits": 3.07314, "train_bits": 3.071}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 39, "time": 89.47, "bits": 3.07085, "train_bits": 3.06867}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 40, "time": 91.75, "bits": 3.06871, "train_bits": 3.06646}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 41, "time": 94.03, "bits": 3.06669, "train_bits": 3.06439}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 42, "time": 96.32, "bits": 3.0648, "train_bits": 3.06244}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 43, "time": 98.61, "bits": 3.063, "train_bits": 3.0606}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 44, "time": 100.9, "bits": 3.06132, "train_bits": 3.05886}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 45, "time": 103.2, "bits": 3.05971, "train_bits": 3.05722}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 46, "time": 105.49, "bits": 3.05817, "train_bits": 3.05565}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 47, "time": 107.78, "bits": 3.0567, "train_bits": 3.05416}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 48, "time": 110.05, "bits": 3.05528, "train_bits": 3.05272}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 49, "time": 112.34, "bits": 3.05391, "train_bits": 3.05134}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 50, "time": 114.63, "bits": 3.05257, "train_bits": 3.05001}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 51, "time": 116.91, "bits": 3.05126, "train_bits": 3.04872}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 52, "time": 119.2, "bits": 3.04999, "train_bits": 3.04746}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 53, "time": 121.5, "bits": 3.04874, "train_bits": 3.04623}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 54, "time": 123.79, "bits": 3.04751, "train_bits": 3.04502}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 55, "time": 126.09, "bits": 3.04627, "train_bits": 3.04383}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 56, "time": 128.39, "bits": 3.04502, "train_bits": 3.04263}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 57, "time": 130.67, "bits": 3.04373, "train_bits": 3.04142}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 58, "time": 132.96, "bits": 3.04242, "train_bits": 3.04018}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 59, "time": 135.24, "bits": 3.04108, "train_bits": 3.03891}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 60, "time": 137.52, "bits": 3.03976, "train_bits": 3.03763}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 61, "time": 139.8, "bits": 3.03848, "train_bits": 3.03636}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 62, "time": 142.09, "bits": 3.03723, "train_bits": 3.03512}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 63, "time": 144.37, "bits": 3.03603, "train_bits": 3.03392}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 64, "time": 146.65, "bits": 3.03487, "train_bits": 3.03276}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 65, "time": 148.94, "bits": 3.03375, "train_bits": 3.03163}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 66, "time": 151.22, "bits": 3.03266, "train_bits": 3.03054}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 67, "time": 153.52, "bits": 3.03164, "train_bits": 3.02948}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 68, "time": 155.8, "bits": 3.03068, "train_bits": 3.02848}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 69, "time": 158.08, "bits": 3.0298, "train_bits": 3.02755}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 70, "time": 160.37, "bits": 3.02901, "train_bits": 3.02669}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 71, "time": 162.67, "bits": 3.02828, "train_bits": 3.02591}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 72, "time": 164.97, "bits": 3.0276, "train_bits": 3.02519}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 73, "time": 167.26, "bits": 3.02698, "train_bits": 3.02453}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 74, "time": 169.56, "bits": 3.02638, "train_bits": 3.02391}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 75, "time": 171.87, "bits": 3.02581, "train_bits": 3.02333}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 76, "time": 174.17, "bits": 3.02526, "train_bits": 3.02276}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 77, "time": 176.48, "bits": 3.02473, "train_bits": 3.02221}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 78, "time": 178.77, "bits": 3.02421, "train_bits": 3.02167}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 79, "time": 181.11, "bits": 3.0237, "train_bits": 3.02113}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 80, "time": 183.46, "bits": 3.02319, "train_bits": 3.02059}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 81, "time": 185.75, "bits": 3.02267, "train_bits": 3.02006}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 82, "time": 188.04, "bits": 3.02215, "train_bits": 3.01951}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 83, "time": 190.32, "bits": 3.02161, "train_bits": 3.01896}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 84, "time": 192.61, "bits": 3.02105, "train_bits": 3.01838}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 85, "time": 194.89, "bits": 3.02048, "train_bits": 3.01779}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 86, "time": 197.18, "bits": 3.01989, "train_bits": 3.01716}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 87, "time": 199.48, "bits": 3.01927, "train_bits": 3.01651}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 88, "time": 201.83, "bits": 3.01864, "train_bits": 3.01583}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 89, "time": 204.17, "bits": 3.018, "train_bits": 3.01513}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 90, "time": 206.45, "bits": 3.01738, "train_bits": 3.01443}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 91, "time": 208.74, "bits": 3.01677, "train_bits": 3.01375}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 92, "time": 211.02, "bits": 3.0162, "train_bits": 3.01309}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 93, "time": 213.3, "bits": 3.01567, "train_bits": 3.01247}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 94, "time": 215.59, "bits": 3.01516, "train_bits": 3.0119}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 95, "time": 217.87, "bits": 3.01469, "train_bits": 3.01137}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 96, "time": 220.16, "bits": 3.01424, "train_bits": 3.01086}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 97, "time": 222.51, "bits": 3.01381, "train_bits": 3.01039}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 98, "time": 224.85, "bits": 3.01341, "train_bits": 3.00994}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 99, "time": 227.14, "bits": 3.01303, "train_bits": 3.00952}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "bw", "it": 100, "time": 229.43, "bits": 3.01266, "train_bits": 3.00911}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 1, "time": 2.37, "bits": 4.11545, "train_bits": 4.76107}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 2, "time": 4.62, "bits": 4.10546, "train_bits": 4.11096}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 3, "time": 6.88, "bits": 4.09098, "train_bits": 4.10089}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 4, "time": 9.14, "bits": 4.06746, "train_bits": 4.08633}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 5, "time": 11.4, "bits": 4.02637, "train_bits": 4.06265}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 6, "time": 13.65, "bits": 3.9531, "train_bits": 4.02125}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 7, "time": 15.9, "bits": 3.84561, "train_bits": 3.94711}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 8, "time": 18.16, "bits": 3.73975, "train_bits": 3.83818}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 9, "time": 20.42, "bits": 3.64488, "train_bits": 3.73189}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 10, "time": 22.68, "bits": 3.5631, "train_bits": 3.63794}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 11, "time": 24.94, "bits": 3.49584, "train_bits": 3.5576}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 12, "time": 27.19, "bits": 3.43895, "train_bits": 3.49152}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 13, "time": 29.45, "bits": 3.38991, "train_bits": 3.43533}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 14, "time": 31.7, "bits": 3.34802, "train_bits": 3.38658}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 15, "time": 33.96, "bits": 3.3126, "train_bits": 3.34471}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 16, "time": 36.22, "bits": 3.28251, "train_bits": 3.3092}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 17, "time": 38.48, "bits": 3.25683, "train_bits": 3.27906}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 18, "time": 40.73, "bits": 3.23518, "train_bits": 3.2534}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 19, "time": 42.99, "bits": 3.21702, "train_bits": 3.23183}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 20, "time": 45.24, "bits": 3.20139, "train_bits": 3.21376}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 21, "time": 47.49, "bits": 3.18746, "train_bits": 3.19822}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 22, "time": 49.74, "bits": 3.17476, "train_bits": 3.18436}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 23, "time": 52.0, "bits": 3.16316, "train_bits": 3.17173}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 24, "time": 54.24, "bits": 3.15254, "train_bits": 3.1602}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 25, "time": 56.49, "bits": 3.14273, "train_bits": 3.14966}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 26, "time": 58.74, "bits": 3.13358, "train_bits": 3.1399}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 27, "time": 60.99, "bits": 3.12518, "train_bits": 3.13077}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 28, "time": 63.28, "bits": 3.11759, "train_bits": 3.12234}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 29, "time": 65.57, "bits": 3.11066, "train_bits": 3.1147}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 30, "time": 67.86, "bits": 3.10405, "train_bits": 3.10772}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 31, "time": 70.15, "bits": 3.09769, "train_bits": 3.10106}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 32, "time": 72.44, "bits": 3.09203, "train_bits": 3.09468}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 33, "time": 74.73, "bits": 3.08716, "train_bits": 3.08896}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 34, "time": 77.02, "bits": 3.08275, "train_bits": 3.08397}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 35, "time": 79.31, "bits": 3.07856, "train_bits": 3.07943}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 36, "time": 81.61, "bits": 3.07453, "train_bits": 3.07511}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 37, "time": 83.9, "bits": 3.0706, "train_bits": 3.07094}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 38, "time": 86.19, "bits": 3.06666, "train_bits": 3.06691}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 39, "time": 88.49, "bits": 3.06265, "train_bits": 3.06289}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 40, "time": 90.79, "bits": 3.05874, "train_bits": 3.05885}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 41, "time": 93.07, "bits": 3.05516, "train_bits": 3.05498}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 42, "time": 95.36, "bits": 3.05198, "train_bits": 3.0515}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 43, "time": 97.66, "bits": 3.04923, "train_bits": 3.04843}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 44, "time": 99.95, "bits": 3.04687, "train_bits": 3.04578}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 45, "time": 102.25, "bits": 3.04482, "train_bits": 3.04348}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 46, "time": 104.53, "bits": 3.04304, "train_bits": 3.04148}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 47, "time": 106.82, "bits": 3.04146, "train_bits": 3.03973}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 48, "time": 109.12, "bits": 3.04004, "train_bits": 3.03817}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 49, "time": 111.41, "bits": 3.03873, "train_bits": 3.03676}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 50, "time": 113.7, "bits": 3.03752, "train_bits": 3.03546}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 51, "time": 115.98, "bits": 3.03639, "train_bits": 3.03425}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 52, "time": 118.23, "bits": 3.03534, "train_bits": 3.03312}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 53, "time": 120.48, "bits": 3.03435, "train_bits": 3.03207}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 54, "time": 122.76, "bits": 3.03343, "train_bits": 3.03108}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 55, "time": 125.03, "bits": 3.0326, "train_bits": 3.03016}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 56, "time": 127.3, "bits": 3.03183, "train_bits": 3.02932}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 57, "time": 129.57, "bits": 3.03112, "train_bits": 3.02855}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 58, "time": 131.85, "bits": 3.03044, "train_bits": 3.02783}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 59, "time": 134.13, "bits": 3.02978, "train_bits": 3.02716}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 60, "time": 136.39, "bits": 3.02911, "train_bits": 3.02651}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 61, "time": 138.67, "bits": 3.02841, "train_bits": 3.02585}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 62, "time": 140.94, "bits": 3.02767, "train_bits": 3.02517}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 63, "time": 143.2, "bits": 3.02688, "train_bits": 3.02443}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 64, "time": 145.45, "bits": 3.02606, "train_bits": 3.02364}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 65, "time": 147.7, "bits": 3.02524, "train_bits": 3.02281}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 66, "time": 149.95, "bits": 3.02448, "train_bits": 3.022}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 67, "time": 152.2, "bits": 3.02379, "train_bits": 3.02125}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 68, "time": 154.46, "bits": 3.02315, "train_bits": 3.02056}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 69, "time": 156.7, "bits": 3.02256, "train_bits": 3.01994}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 70, "time": 158.95, "bits": 3.022, "train_bits": 3.01937}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 71, "time": 161.2, "bits": 3.02147, "train_bits": 3.01884}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 72, "time": 163.45, "bits": 3.02094, "train_bits": 3.01833}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 73, "time": 165.7, "bits": 3.02038, "train_bits": 3.01782}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 74, "time": 167.95, "bits": 3.01979, "train_bits": 3.0173}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 75, "time": 170.2, "bits": 3.0192, "train_bits": 3.01675}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 76, "time": 172.45, "bits": 3.01865, "train_bits": 3.0162}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 77, "time": 174.69, "bits": 3.01819, "train_bits": 3.01571}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 78, "time": 176.95, "bits": 3.0178, "train_bits": 3.01529}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 79, "time": 179.19, "bits": 3.01746, "train_bits": 3.01494}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 80, "time": 181.45, "bits": 3.01716, "train_bits": 3.01464}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 81, "time": 183.7, "bits": 3.01688, "train_bits": 3.01438}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 82, "time": 185.95, "bits": 3.01661, "train_bits": 3.01414}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 83, "time": 188.2, "bits": 3.01634, "train_bits": 3.0139}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 84, "time": 190.45, "bits": 3.01609, "train_bits": 3.01368}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 85, "time": 192.7, "bits": 3.01583, "train_bits": 3.01346}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 86, "time": 194.95, "bits": 3.01558, "train_bits": 3.01324}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 87, "time": 197.2, "bits": 3.01532, "train_bits": 3.01301}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 88, "time": 199.45, "bits": 3.01506, "train_bits": 3.01279}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 89, "time": 201.69, "bits": 3.01479, "train_bits": 3.01256}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 90, "time": 203.94, "bits": 3.01452, "train_bits": 3.01233}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 91, "time": 206.19, "bits": 3.01424, "train_bits": 3.01208}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 92, "time": 208.44, "bits": 3.01394, "train_bits": 3.01183}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 93, "time": 210.69, "bits": 3.01364, "train_bits": 3.01156}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 94, "time": 212.94, "bits": 3.01335, "train_bits": 3.01129}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 95, "time": 215.19, "bits": 3.01308, "train_bits": 3.01102}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 96, "time": 217.44, "bits": 3.01282, "train_bits": 3.01078}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 97, "time": 219.68, "bits": 3.01258, "train_bits": 3.01055}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 98, "time": 221.93, "bits": 3.01235, "train_bits": 3.01033}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 99, "time": 224.18, "bits": 3.01213, "train_bits": 3.01012}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "bw", "it": 100, "time": 226.43, "bits": 3.01191, "train_bits": 3.00992}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "online", "T": 1, "time": 2.99, "bits": 3.4182, "B": 1024, "a0": 0.391, "updates": 76, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "online", "T": 2, "time": 4.84, "bits": 3.11125, "B": 2048, "a0": 0.677, "updates": 76, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "online", "T": 3, "time": 6.75, "bits": 3.09658, "B": 4096, "a0": 1.0, "updates": 57, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "online", "T": 5, "time": 11.17, "bits": 3.04748, "B": 4096, "a0": 1.0, "updates": 95, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "online", "T": 10, "time": 21.21, "bits": 3.05051, "B": 8192, "a0": 1.0, "updates": 90, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "ablate", "T": 3, "variant": "default", "time": 6.8, "bits": 3.09658, "B": 4096, "a0": 1.0, "updates": 57, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "ablate", "T": 3, "variant": "constant step", "time": 6.67, "bits": 3.05624, "B": 4096, "a0": 1.0, "updates": 57, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "ablate", "T": 3, "variant": "no revival", "time": 6.66, "bits": 3.09624, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "ablate", "T": 3, "variant": "no last-pass clean-up", "time": 6.66, "bits": 3.09464, "B": 4096, "a0": 1.0, "updates": 57, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "ablate", "T": 3, "variant": "tiny split (1 +- 2^-7)", "time": 6.7, "bits": 3.09857, "B": 4096, "a0": 1.0, "updates": 57, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "ablate", "T": 3, "variant": "B/4, step/4", "time": 8.59, "bits": 3.0777, "B": 1024, "a0": 0.25, "updates": 228, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "ablate", "T": 3, "variant": "n = symbols", "time": 18.75, "bits": 2.97645, "B": 256, "a0": 1.0, "updates": 915, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "ablate", "T": 3, "variant": "n = symbols, constant step", "time": 22.44, "bits": 2.97615, "B": 256, "a0": 1.0, "updates": 915, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "ablate", "T": 3, "variant": "n = symbols, no revival", "time": 18.62, "bits": 2.99108, "B": 256, "a0": 1.0, "updates": 915, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "ablate", "T": 3, "variant": "n = symbols, no last-pass clean-up", "time": 18.7, "bits": 2.97667, "B": 256, "a0": 1.0, "updates": 915, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "online_sym", "T": 1, "time": 18.01, "bits": 3.029, "B": 64, "a0": 0.391, "updates": 1220, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "online_sym", "T": 2, "time": 18.35, "bits": 2.98383, "B": 128, "a0": 0.677, "updates": 1220, "revived": 4}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "online_sym", "T": 3, "time": 18.78, "bits": 2.97645, "B": 256, "a0": 1.0, "updates": 915, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "online_sym", "T": 5, "time": 31.37, "bits": 2.97572, "B": 256, "a0": 1.0, "updates": 1525, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "online_sym", "T": 10, "time": 40.2, "bits": 2.98022, "B": 512, "a0": 1.0, "updates": 1520, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "online", "T": 1, "time": 2.83, "bits": 3.44723, "B": 1024, "a0": 0.391, "updates": 76, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "online", "T": 2, "time": 4.77, "bits": 3.1113, "B": 2048, "a0": 0.677, "updates": 76, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "online", "T": 3, "time": 6.69, "bits": 3.0902, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "online", "T": 5, "time": 11.13, "bits": 3.04619, "B": 4096, "a0": 1.0, "updates": 95, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "online", "T": 10, "time": 21.19, "bits": 3.04996, "B": 8192, "a0": 1.0, "updates": 90, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "ablate", "T": 3, "variant": "default", "time": 7.05, "bits": 3.0902, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "ablate", "T": 3, "variant": "constant step", "time": 6.93, "bits": 3.05377, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "ablate", "T": 3, "variant": "no revival", "time": 6.89, "bits": 3.0902, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "ablate", "T": 3, "variant": "no last-pass clean-up", "time": 7.06, "bits": 3.08843, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "ablate", "T": 3, "variant": "tiny split (1 +- 2^-7)", "time": 6.94, "bits": 3.0902, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "ablate", "T": 3, "variant": "B/4, step/4", "time": 9.68, "bits": 3.08846, "B": 1024, "a0": 0.25, "updates": 228, "revived": 4}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "ablate", "T": 3, "variant": "n = symbols", "time": 22.6, "bits": 2.98652, "B": 256, "a0": 1.0, "updates": 915, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "ablate", "T": 3, "variant": "n = symbols, constant step", "time": 20.76, "bits": 2.98393, "B": 256, "a0": 1.0, "updates": 915, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "ablate", "T": 3, "variant": "n = symbols, no revival", "time": 22.9, "bits": 2.98652, "B": 256, "a0": 1.0, "updates": 915, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "ablate", "T": 3, "variant": "n = symbols, no last-pass clean-up", "time": 22.78, "bits": 2.9864, "B": 256, "a0": 1.0, "updates": 915, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "online_sym", "T": 1, "time": 20.57, "bits": 3.02332, "B": 64, "a0": 0.391, "updates": 1220, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "online_sym", "T": 2, "time": 24.17, "bits": 2.99001, "B": 128, "a0": 0.677, "updates": 1220, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "online_sym", "T": 3, "time": 22.24, "bits": 2.98652, "B": 256, "a0": 1.0, "updates": 915, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "online_sym", "T": 5, "time": 30.98, "bits": 2.98228, "B": 256, "a0": 1.0, "updates": 1525, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 1, "m": "online_sym", "T": 10, "time": 40.33, "bits": 2.98262, "B": 512, "a0": 1.0, "updates": 1520, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "online", "T": 1, "time": 2.84, "bits": 3.4388, "B": 1024, "a0": 0.391, "updates": 76, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "online", "T": 2, "time": 4.75, "bits": 3.11836, "B": 2048, "a0": 0.677, "updates": 76, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "online", "T": 3, "time": 6.69, "bits": 3.1001, "B": 4096, "a0": 1.0, "updates": 57, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "online", "T": 5, "time": 11.14, "bits": 3.04168, "B": 4096, "a0": 1.0, "updates": 95, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "online", "T": 10, "time": 21.17, "bits": 3.04375, "B": 8192, "a0": 1.0, "updates": 90, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "ablate", "T": 3, "variant": "default", "time": 6.79, "bits": 3.1001, "B": 4096, "a0": 1.0, "updates": 57, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "ablate", "T": 3, "variant": "constant step", "time": 6.67, "bits": 3.05075, "B": 4096, "a0": 1.0, "updates": 57, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "ablate", "T": 3, "variant": "no revival", "time": 6.68, "bits": 3.09135, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "ablate", "T": 3, "variant": "no last-pass clean-up", "time": 6.65, "bits": 3.09737, "B": 4096, "a0": 1.0, "updates": 57, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "ablate", "T": 3, "variant": "tiny split (1 +- 2^-7)", "time": 6.68, "bits": 3.10077, "B": 4096, "a0": 1.0, "updates": 57, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "ablate", "T": 3, "variant": "B/4, step/4", "time": 8.46, "bits": 3.09443, "B": 1024, "a0": 0.25, "updates": 228, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "ablate", "T": 3, "variant": "n = symbols", "time": 20.18, "bits": 2.98434, "B": 256, "a0": 1.0, "updates": 915, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "ablate", "T": 3, "variant": "n = symbols, constant step", "time": 20.68, "bits": 2.98418, "B": 256, "a0": 1.0, "updates": 915, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "ablate", "T": 3, "variant": "n = symbols, no revival", "time": 20.68, "bits": 2.98967, "B": 256, "a0": 1.0, "updates": 915, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "ablate", "T": 3, "variant": "n = symbols, no last-pass clean-up", "time": 19.27, "bits": 2.98477, "B": 256, "a0": 1.0, "updates": 915, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "online_sym", "T": 1, "time": 17.77, "bits": 3.02818, "B": 64, "a0": 0.391, "updates": 1220, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "online_sym", "T": 2, "time": 18.2, "bits": 2.98213, "B": 128, "a0": 0.677, "updates": 1220, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "online_sym", "T": 3, "time": 18.54, "bits": 2.98434, "B": 256, "a0": 1.0, "updates": 915, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "online_sym", "T": 5, "time": 30.71, "bits": 2.98322, "B": 256, "a0": 1.0, "updates": 1525, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 2, "m": "online_sym", "T": 10, "time": 40.82, "bits": 2.98223, "B": 512, "a0": 1.0, "updates": 1520, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 1, "kappa": 0.5, "revive": false, "time": 6.74, "bits": 3.31713, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 1, "kappa": 0.5, "revive": true, "time": 6.77, "bits": 3.31713, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 1, "kappa": 0.6, "revive": false, "time": 6.88, "bits": 3.44115, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 1, "kappa": 0.6, "revive": true, "time": 6.63, "bits": 3.44115, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 1, "kappa": 0.9, "revive": false, "time": 6.62, "bits": 3.85575, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 1, "kappa": 0.9, "revive": true, "time": 6.62, "bits": 3.85575, "B": 4096, "a0": 1.0, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 4, "kappa": 0.5, "revive": false, "time": 8.46, "bits": 3.09866, "B": 1024, "a0": 1.0, "updates": 228, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 4, "kappa": 0.5, "revive": true, "time": 10.16, "bits": 3.09426, "B": 1024, "a0": 1.0, "updates": 228, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 4, "kappa": 0.6, "revive": false, "time": 8.4, "bits": 3.17138, "B": 1024, "a0": 1.0, "updates": 228, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 4, "kappa": 0.6, "revive": true, "time": 8.45, "bits": 3.17034, "B": 1024, "a0": 1.0, "updates": 228, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 4, "kappa": 0.9, "revive": false, "time": 8.39, "bits": 3.61461, "B": 1024, "a0": 1.0, "updates": 228, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 4, "kappa": 0.9, "revive": true, "time": 9.71, "bits": 3.61461, "B": 1024, "a0": 1.0, "updates": 228, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 16, "kappa": 0.5, "revive": false, "time": 18.93, "bits": 3.04313, "B": 256, "a0": 1.0, "updates": 915, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 16, "kappa": 0.5, "revive": true, "time": 20.67, "bits": 3.03802, "B": 256, "a0": 1.0, "updates": 915, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 16, "kappa": 0.6, "revive": false, "time": 18.71, "bits": 3.06762, "B": 256, "a0": 1.0, "updates": 915, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 16, "kappa": 0.6, "revive": true, "time": 20.97, "bits": 3.06611, "B": 256, "a0": 1.0, "updates": 915, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 16, "kappa": 0.9, "revive": false, "time": 18.48, "bits": 3.4332, "B": 256, "a0": 1.0, "updates": 915, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "textbook", "T": 3, "bdiv": 16, "kappa": 0.9, "revive": true, "time": 21.0, "bits": 3.4332, "B": 256, "a0": 1.0, "updates": 915, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "law", "T": 3, "B": 4096, "a0": 1.0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 1, "time": 6.73, "bits": 3.09658, "B": 4096, "a0": 1.0, "updates": 57, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 1, "time": 6.63, "bits": 3.22276, "B": 4096, "a0": 0.5, "updates": 57, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 1, "time": 6.62, "bits": 3.44217, "B": 4096, "a0": 0.25, "updates": 57, "revived": 0}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 4, "time": 8.44, "bits": 3.00784, "B": 1024, "a0": 1.0, "updates": 228, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 4, "time": 8.41, "bits": 3.03999, "B": 1024, "a0": 0.5, "updates": 228, "revived": 2}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 4, "time": 8.42, "bits": 3.0777, "B": 1024, "a0": 0.25, "updates": 228, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 4, "time": 8.41, "bits": 3.18319, "B": 1024, "a0": 0.125, "updates": 228, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 16, "time": 18.47, "bits": 2.97645, "B": 256, "a0": 1.0, "updates": 915, "revived": 1}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 16, "time": 18.42, "bits": 2.99017, "B": 256, "a0": 0.5, "updates": 915, "revived": 5}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 16, "time": 18.45, "bits": 2.99483, "B": 256, "a0": 0.25, "updates": 915, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 16, "time": 18.35, "bits": 3.0336, "B": 256, "a0": 0.125, "updates": 915, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 16, "time": 18.39, "bits": 3.07006, "B": 256, "a0": 0.06, "updates": 915, "revived": 3}
+{"ds": "text8", "K": 64, "n": 78125, "seed": 0, "m": "grid", "T": 3, "bdiv": 64, "time": 54.15, "bits": 2.98797, "B": 64, "a0": 0.25, "updates": 3660, "revived": 6}

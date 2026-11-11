@@ -1,0 +1,442 @@
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 1, "seed": 0, "time": 3.46, "test": 0.806963, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 2, "seed": 0, "time": 6.87, "test": 0.804418, "B": 2048, "a0": 0.493, "updates": 96, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 3, "seed": 0, "time": 7.3, "test": 0.804236, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 5, "seed": 0, "time": 9.23, "test": 0.804723, "B": 8192, "a0": 1.0, "updates": 60, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 10, "seed": 0, "time": 18.33, "test": 0.804338, "B": 8192, "a0": 1.0, "updates": 120, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 1, "seed": 1, "time": 3.55, "test": 0.806515, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 2, "seed": 1, "time": 6.86, "test": 0.803822, "B": 2048, "a0": 0.493, "updates": 96, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 3, "seed": 1, "time": 7.31, "test": 0.804243, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 5, "seed": 1, "time": 9.24, "test": 0.804382, "B": 8192, "a0": 1.0, "updates": 60, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 10, "seed": 1, "time": 18.29, "test": 0.803381, "B": 8192, "a0": 1.0, "updates": 120, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 1, "seed": 2, "time": 3.47, "test": 0.807459, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 2, "seed": 2, "time": 6.86, "test": 0.804926, "B": 2048, "a0": 0.493, "updates": 96, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 3, "seed": 2, "time": 7.36, "test": 0.803465, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 5, "seed": 2, "time": 9.19, "test": 0.803647, "B": 8192, "a0": 1.0, "updates": 60, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "main", "name": "recipe", "T": 10, "seed": 2, "time": 18.28, "test": 0.80324, "B": 8192, "a0": 1.0, "updates": 120, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 1, "seed": 0, "time": 2.31, "test": 0.901032}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 2, "seed": 0, "time": 3.35, "test": 0.846505}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 3, "seed": 0, "time": 4.4, "test": 0.826414}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 4, "seed": 0, "time": 5.44, "test": 0.817489}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 5, "seed": 0, "time": 6.48, "test": 0.81338}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 6, "seed": 0, "time": 7.53, "test": 0.810871}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 7, "seed": 0, "time": 8.57, "test": 0.809001}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 8, "seed": 0, "time": 9.61, "test": 0.807601}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 9, "seed": 0, "time": 10.66, "test": 0.806696}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 10, "seed": 0, "time": 11.71, "test": 0.806154, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 11, "seed": 0, "time": 12.74, "test": 0.805798}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 12, "seed": 0, "time": 13.81, "test": 0.805549}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 13, "seed": 0, "time": 14.84, "test": 0.805361}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 14, "seed": 0, "time": 15.89, "test": 0.805208}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 15, "seed": 0, "time": 16.96, "test": 0.805078}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 16, "seed": 0, "time": 17.99, "test": 0.804973}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 17, "seed": 0, "time": 19.03, "test": 0.80489}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 18, "seed": 0, "time": 20.08, "test": 0.804824}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 19, "seed": 0, "time": 21.11, "test": 0.804767}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 20, "seed": 0, "time": 22.15, "test": 0.804718, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 21, "seed": 0, "time": 23.19, "test": 0.804672}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 22, "seed": 0, "time": 24.23, "test": 0.804626}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 23, "seed": 0, "time": 25.24, "test": 0.804576}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 24, "seed": 0, "time": 26.23, "test": 0.804522}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 25, "seed": 0, "time": 27.28, "test": 0.804471}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 26, "seed": 0, "time": 28.37, "test": 0.804428}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 27, "seed": 0, "time": 29.46, "test": 0.804394}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 28, "seed": 0, "time": 30.55, "test": 0.804366}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 29, "seed": 0, "time": 31.72, "test": 0.804339}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 30, "seed": 0, "time": 33.01, "test": 0.804312, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 31, "seed": 0, "time": 34.31, "test": 0.804286}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 32, "seed": 0, "time": 35.54, "test": 0.804265}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 33, "seed": 0, "time": 36.73, "test": 0.804248}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 34, "seed": 0, "time": 37.85, "test": 0.804236}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 35, "seed": 0, "time": 38.99, "test": 0.804228}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 36, "seed": 0, "time": 40.23, "test": 0.80422}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 37, "seed": 0, "time": 41.48, "test": 0.804214}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 38, "seed": 0, "time": 42.74, "test": 0.804207}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 39, "seed": 0, "time": 43.83, "test": 0.804199}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 40, "seed": 0, "time": 44.93, "test": 0.804192, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 41, "seed": 0, "time": 46.02, "test": 0.804183}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 42, "seed": 0, "time": 47.25, "test": 0.804175}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 43, "seed": 0, "time": 48.49, "test": 0.804166}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 44, "seed": 0, "time": 49.68, "test": 0.804158}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 45, "seed": 0, "time": 50.8, "test": 0.80415}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 46, "seed": 0, "time": 51.92, "test": 0.804142}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 47, "seed": 0, "time": 53.15, "test": 0.804134}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 48, "seed": 0, "time": 54.42, "test": 0.804125}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 49, "seed": 0, "time": 55.71, "test": 0.804115}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 50, "seed": 0, "time": 56.93, "test": 0.804105, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 51, "seed": 0, "time": 58.11, "test": 0.804095}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 52, "seed": 0, "time": 59.2, "test": 0.804085}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 53, "seed": 0, "time": 60.3, "test": 0.804078}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 54, "seed": 0, "time": 61.48, "test": 0.804073}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 55, "seed": 0, "time": 62.65, "test": 0.804068}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 56, "seed": 0, "time": 63.8, "test": 0.804065}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 57, "seed": 0, "time": 64.92, "test": 0.804062}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 58, "seed": 0, "time": 66.11, "test": 0.80406}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 59, "seed": 0, "time": 67.33, "test": 0.804058}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 60, "seed": 0, "time": 68.59, "test": 0.804057, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 61, "seed": 0, "time": 69.83, "test": 0.804056}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 62, "seed": 0, "time": 71.01, "test": 0.804055}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 63, "seed": 0, "time": 72.13, "test": 0.804055}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 64, "seed": 0, "time": 73.26, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 65, "seed": 0, "time": 74.42, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 66, "seed": 0, "time": 75.4, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 67, "seed": 0, "time": 76.39, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 68, "seed": 0, "time": 77.37, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 69, "seed": 0, "time": 78.35, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 70, "seed": 0, "time": 79.33, "test": 0.804054, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 71, "seed": 0, "time": 80.31, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 72, "seed": 0, "time": 81.32, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 73, "seed": 0, "time": 82.3, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 74, "seed": 0, "time": 83.27, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 75, "seed": 0, "time": 84.23, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 76, "seed": 0, "time": 85.19, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 77, "seed": 0, "time": 86.16, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 78, "seed": 0, "time": 87.15, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 79, "seed": 0, "time": 88.12, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 80, "seed": 0, "time": 89.15, "test": 0.804054, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 81, "seed": 0, "time": 90.13, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 82, "seed": 0, "time": 91.11, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 83, "seed": 0, "time": 92.1, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 84, "seed": 0, "time": 93.07, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 85, "seed": 0, "time": 94.06, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 86, "seed": 0, "time": 95.04, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 87, "seed": 0, "time": 96.01, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 88, "seed": 0, "time": 96.98, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 89, "seed": 0, "time": 97.99, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 90, "seed": 0, "time": 98.96, "test": 0.804054, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 91, "seed": 0, "time": 99.92, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 92, "seed": 0, "time": 100.89, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 93, "seed": 0, "time": 101.88, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 94, "seed": 0, "time": 102.85, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 95, "seed": 0, "time": 103.84, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 96, "seed": 0, "time": 104.83, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 97, "seed": 0, "time": 105.82, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 98, "seed": 0, "time": 106.78, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 99, "seed": 0, "time": 107.78, "test": 0.804054}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 100, "seed": 0, "time": 108.75, "test": 0.804054, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 1, "seed": 1, "time": 2.14, "test": 0.902819}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 2, "seed": 1, "time": 3.12, "test": 0.849238}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 3, "seed": 1, "time": 4.08, "test": 0.827719}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 4, "seed": 1, "time": 5.05, "test": 0.817161}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 5, "seed": 1, "time": 6.05, "test": 0.81279}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 6, "seed": 1, "time": 7.05, "test": 0.810416}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 7, "seed": 1, "time": 8.02, "test": 0.809028}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 8, "seed": 1, "time": 9.01, "test": 0.80807}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 9, "seed": 1, "time": 10.0, "test": 0.807299}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 10, "seed": 1, "time": 10.97, "test": 0.806682, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 11, "seed": 1, "time": 11.96, "test": 0.806258}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 12, "seed": 1, "time": 12.94, "test": 0.805966}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 13, "seed": 1, "time": 13.91, "test": 0.805738}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 14, "seed": 1, "time": 14.87, "test": 0.805549}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 15, "seed": 1, "time": 15.85, "test": 0.805399}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 16, "seed": 1, "time": 16.82, "test": 0.805287}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 17, "seed": 1, "time": 17.79, "test": 0.805208}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 18, "seed": 1, "time": 18.77, "test": 0.805153}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 19, "seed": 1, "time": 19.75, "test": 0.805114}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 20, "seed": 1, "time": 20.71, "test": 0.805081, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 21, "seed": 1, "time": 21.7, "test": 0.805048}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 22, "seed": 1, "time": 22.68, "test": 0.805008}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 23, "seed": 1, "time": 23.65, "test": 0.804958}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 24, "seed": 1, "time": 24.64, "test": 0.804892}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 25, "seed": 1, "time": 25.61, "test": 0.804804}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 26, "seed": 1, "time": 26.59, "test": 0.804696}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 27, "seed": 1, "time": 27.57, "test": 0.804592}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 28, "seed": 1, "time": 28.54, "test": 0.80452}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 29, "seed": 1, "time": 29.51, "test": 0.804472}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 30, "seed": 1, "time": 30.5, "test": 0.804432, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 31, "seed": 1, "time": 31.47, "test": 0.804393}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 32, "seed": 1, "time": 32.45, "test": 0.804355}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 33, "seed": 1, "time": 33.44, "test": 0.804318}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 34, "seed": 1, "time": 34.41, "test": 0.804283}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 35, "seed": 1, "time": 35.38, "test": 0.804252}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 36, "seed": 1, "time": 36.37, "test": 0.804225}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 37, "seed": 1, "time": 37.36, "test": 0.804202}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 38, "seed": 1, "time": 38.33, "test": 0.80418}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 39, "seed": 1, "time": 39.31, "test": 0.804159}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 40, "seed": 1, "time": 40.31, "test": 0.804138, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 41, "seed": 1, "time": 41.29, "test": 0.804118}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 42, "seed": 1, "time": 42.26, "test": 0.804098}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 43, "seed": 1, "time": 43.25, "test": 0.80408}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 44, "seed": 1, "time": 44.22, "test": 0.804065}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 45, "seed": 1, "time": 45.2, "test": 0.804051}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 46, "seed": 1, "time": 46.18, "test": 0.804039}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 47, "seed": 1, "time": 47.16, "test": 0.804029}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 48, "seed": 1, "time": 48.13, "test": 0.80402}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 49, "seed": 1, "time": 49.11, "test": 0.804012}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 50, "seed": 1, "time": 50.08, "test": 0.804005, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 51, "seed": 1, "time": 51.06, "test": 0.803997}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 52, "seed": 1, "time": 52.04, "test": 0.80399}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 53, "seed": 1, "time": 53.05, "test": 0.803984}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 54, "seed": 1, "time": 54.03, "test": 0.803977}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 55, "seed": 1, "time": 55.03, "test": 0.80397}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 56, "seed": 1, "time": 56.1, "test": 0.803964}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 57, "seed": 1, "time": 57.26, "test": 0.803958}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 58, "seed": 1, "time": 58.43, "test": 0.803953}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 59, "seed": 1, "time": 59.57, "test": 0.803949}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 60, "seed": 1, "time": 60.69, "test": 0.803944, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 61, "seed": 1, "time": 61.81, "test": 0.803942}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 62, "seed": 1, "time": 62.93, "test": 0.803939}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 63, "seed": 1, "time": 64.06, "test": 0.803937}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 64, "seed": 1, "time": 65.19, "test": 0.803935}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 65, "seed": 1, "time": 66.32, "test": 0.803934}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 66, "seed": 1, "time": 67.44, "test": 0.803932}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 67, "seed": 1, "time": 68.57, "test": 0.803931}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 68, "seed": 1, "time": 69.69, "test": 0.80393}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 69, "seed": 1, "time": 70.81, "test": 0.803928}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 70, "seed": 1, "time": 71.95, "test": 0.803927, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 71, "seed": 1, "time": 73.07, "test": 0.803926}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 72, "seed": 1, "time": 74.27, "test": 0.803924}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 73, "seed": 1, "time": 75.42, "test": 0.803923}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 74, "seed": 1, "time": 76.55, "test": 0.803921}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 75, "seed": 1, "time": 77.67, "test": 0.803919}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 76, "seed": 1, "time": 78.82, "test": 0.803917}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 77, "seed": 1, "time": 79.96, "test": 0.803915}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 78, "seed": 1, "time": 81.11, "test": 0.803913}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 79, "seed": 1, "time": 82.28, "test": 0.803911}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 80, "seed": 1, "time": 83.43, "test": 0.803909, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 81, "seed": 1, "time": 84.56, "test": 0.803907}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 82, "seed": 1, "time": 85.71, "test": 0.803904}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 83, "seed": 1, "time": 86.86, "test": 0.803902}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 84, "seed": 1, "time": 88.0, "test": 0.8039}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 85, "seed": 1, "time": 89.17, "test": 0.803897}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 86, "seed": 1, "time": 90.32, "test": 0.803895}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 87, "seed": 1, "time": 91.47, "test": 0.803893}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 88, "seed": 1, "time": 92.64, "test": 0.80389}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 89, "seed": 1, "time": 93.79, "test": 0.803888}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 90, "seed": 1, "time": 94.95, "test": 0.803887, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 91, "seed": 1, "time": 96.1, "test": 0.803885}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 92, "seed": 1, "time": 97.25, "test": 0.803883}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 93, "seed": 1, "time": 98.4, "test": 0.803882}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 94, "seed": 1, "time": 99.56, "test": 0.803881}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 95, "seed": 1, "time": 100.71, "test": 0.80388}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 96, "seed": 1, "time": 101.87, "test": 0.80388}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 97, "seed": 1, "time": 103.03, "test": 0.803879}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 98, "seed": 1, "time": 104.19, "test": 0.803879}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 99, "seed": 1, "time": 105.35, "test": 0.803879}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 100, "seed": 1, "time": 106.51, "test": 0.803879, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 1, "seed": 2, "time": 2.31, "test": 0.902287}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 2, "seed": 2, "time": 3.38, "test": 0.844363}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 3, "seed": 2, "time": 4.42, "test": 0.823956}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 4, "seed": 2, "time": 5.48, "test": 0.815424}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 5, "seed": 2, "time": 6.52, "test": 0.811707}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 6, "seed": 2, "time": 7.57, "test": 0.80948}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 7, "seed": 2, "time": 8.62, "test": 0.808241}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 8, "seed": 2, "time": 9.68, "test": 0.807564}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 9, "seed": 2, "time": 10.72, "test": 0.807123}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 10, "seed": 2, "time": 11.77, "test": 0.806753, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 11, "seed": 2, "time": 12.84, "test": 0.806404}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 12, "seed": 2, "time": 13.89, "test": 0.806079}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 13, "seed": 2, "time": 14.94, "test": 0.805805}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 14, "seed": 2, "time": 16.01, "test": 0.805602}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 15, "seed": 2, "time": 17.06, "test": 0.805467}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 16, "seed": 2, "time": 18.11, "test": 0.805379}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 17, "seed": 2, "time": 19.16, "test": 0.805312}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 18, "seed": 2, "time": 20.21, "test": 0.805252}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 19, "seed": 2, "time": 21.27, "test": 0.805192}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 20, "seed": 2, "time": 22.33, "test": 0.805129, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 21, "seed": 2, "time": 23.37, "test": 0.805061}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 22, "seed": 2, "time": 24.48, "test": 0.804989}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 23, "seed": 2, "time": 25.56, "test": 0.804917}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 24, "seed": 2, "time": 26.61, "test": 0.804845}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 25, "seed": 2, "time": 27.66, "test": 0.804778}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 26, "seed": 2, "time": 28.62, "test": 0.804717}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 27, "seed": 2, "time": 29.62, "test": 0.804663}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 28, "seed": 2, "time": 30.59, "test": 0.804614}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 29, "seed": 2, "time": 31.51, "test": 0.804572}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 30, "seed": 2, "time": 32.57, "test": 0.804534, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 31, "seed": 2, "time": 33.64, "test": 0.804497}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 32, "seed": 2, "time": 34.68, "test": 0.804455}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 33, "seed": 2, "time": 35.73, "test": 0.804401}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 34, "seed": 2, "time": 36.77, "test": 0.804328}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 35, "seed": 2, "time": 37.81, "test": 0.804245}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 36, "seed": 2, "time": 38.85, "test": 0.80418}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 37, "seed": 2, "time": 39.88, "test": 0.804143}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 38, "seed": 2, "time": 40.91, "test": 0.804123}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 39, "seed": 2, "time": 41.95, "test": 0.804111}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 40, "seed": 2, "time": 43.0, "test": 0.804101, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 41, "seed": 2, "time": 44.05, "test": 0.804092}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 42, "seed": 2, "time": 45.08, "test": 0.804084}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 43, "seed": 2, "time": 46.12, "test": 0.804075}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 44, "seed": 2, "time": 47.17, "test": 0.804067}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 45, "seed": 2, "time": 48.22, "test": 0.804059}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 46, "seed": 2, "time": 49.3, "test": 0.80405}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 47, "seed": 2, "time": 50.34, "test": 0.804041}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 48, "seed": 2, "time": 51.39, "test": 0.804032}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 49, "seed": 2, "time": 52.43, "test": 0.804023}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 50, "seed": 2, "time": 53.48, "test": 0.804014, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 51, "seed": 2, "time": 54.53, "test": 0.804004}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 52, "seed": 2, "time": 55.57, "test": 0.803994}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 53, "seed": 2, "time": 56.61, "test": 0.803983}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 54, "seed": 2, "time": 57.68, "test": 0.803972}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 55, "seed": 2, "time": 58.72, "test": 0.803961}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 56, "seed": 2, "time": 59.76, "test": 0.803948}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 57, "seed": 2, "time": 60.82, "test": 0.803936}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 58, "seed": 2, "time": 61.85, "test": 0.803922}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 59, "seed": 2, "time": 62.91, "test": 0.803908}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 60, "seed": 2, "time": 63.96, "test": 0.803892, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 61, "seed": 2, "time": 65.0, "test": 0.803876}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 62, "seed": 2, "time": 66.04, "test": 0.803859}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 63, "seed": 2, "time": 67.1, "test": 0.803841}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 64, "seed": 2, "time": 68.14, "test": 0.803821}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 65, "seed": 2, "time": 69.18, "test": 0.8038}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 66, "seed": 2, "time": 70.27, "test": 0.803778}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 67, "seed": 2, "time": 71.3, "test": 0.803754}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 68, "seed": 2, "time": 72.37, "test": 0.803729}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 69, "seed": 2, "time": 73.46, "test": 0.803702}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 70, "seed": 2, "time": 74.53, "test": 0.803674, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 71, "seed": 2, "time": 75.59, "test": 0.803646}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 72, "seed": 2, "time": 76.64, "test": 0.803617}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 73, "seed": 2, "time": 77.68, "test": 0.803589}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 74, "seed": 2, "time": 78.74, "test": 0.803561}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 75, "seed": 2, "time": 79.82, "test": 0.803535}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 76, "seed": 2, "time": 80.87, "test": 0.80351}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 77, "seed": 2, "time": 81.93, "test": 0.803487}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 78, "seed": 2, "time": 82.96, "test": 0.803466}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 79, "seed": 2, "time": 84.02, "test": 0.803447}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 80, "seed": 2, "time": 85.13, "test": 0.803429, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 81, "seed": 2, "time": 86.2, "test": 0.803412}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 82, "seed": 2, "time": 87.24, "test": 0.803396}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 83, "seed": 2, "time": 88.3, "test": 0.803381}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 84, "seed": 2, "time": 89.36, "test": 0.803366}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 85, "seed": 2, "time": 90.39, "test": 0.803352}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 86, "seed": 2, "time": 91.44, "test": 0.803337}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 87, "seed": 2, "time": 92.48, "test": 0.803323}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 88, "seed": 2, "time": 93.53, "test": 0.803308}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 89, "seed": 2, "time": 94.57, "test": 0.803294}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 90, "seed": 2, "time": 95.61, "test": 0.803279, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 91, "seed": 2, "time": 96.66, "test": 0.803265}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 92, "seed": 2, "time": 97.71, "test": 0.80325}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 93, "seed": 2, "time": 98.76, "test": 0.803235}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 94, "seed": 2, "time": 99.8, "test": 0.80322}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 95, "seed": 2, "time": 100.84, "test": 0.803204}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 96, "seed": 2, "time": 101.85, "test": 0.803188}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 97, "seed": 2, "time": 102.9, "test": 0.803172}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 98, "seed": 2, "time": 103.82, "test": 0.803156}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 99, "seed": 2, "time": 104.99, "test": 0.80314}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "batch", "name": "hals", "T": 100, "seed": 2, "time": 106.06, "test": 0.803126, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "constant step (peak value)", "T": 3, "seed": 0, "time": 7.31, "test": 0.804053, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "no repair", "T": 3, "seed": 0, "time": 7.27, "test": 0.804236, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "no last-pass clean-up", "T": 3, "seed": 0, "time": 7.44, "test": 0.80437, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "B/4 and step/4", "T": 3, "seed": 0, "time": 16.29, "test": 0.804102, "B": 1024, "a0": 0.22, "updates": 291, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "B/4, same step", "T": 3, "seed": 0, "time": 16.29, "test": 0.803325, "B": 1024, "a0": 0.88, "updates": 291, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "step/4, same B", "T": 3, "seed": 0, "time": 7.29, "test": 0.80541, "B": 4096, "a0": 0.22, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "B x4, step 1", "T": 3, "seed": 0, "time": 4.93, "test": 0.806331, "B": 16384, "a0": 1.0, "updates": 18, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "constant step (peak value)", "T": 3, "seed": 1, "time": 7.39, "test": 0.804189, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "no repair", "T": 3, "seed": 1, "time": 7.44, "test": 0.804243, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "no last-pass clean-up", "T": 3, "seed": 1, "time": 7.52, "test": 0.804369, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "B/4 and step/4", "T": 3, "seed": 1, "time": 16.56, "test": 0.803063, "B": 1024, "a0": 0.22, "updates": 291, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "B/4, same step", "T": 3, "seed": 1, "time": 16.84, "test": 0.802664, "B": 1024, "a0": 0.88, "updates": 291, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "step/4, same B", "T": 3, "seed": 1, "time": 7.39, "test": 0.805778, "B": 4096, "a0": 0.22, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "B x4, step 1", "T": 3, "seed": 1, "time": 4.7, "test": 0.806557, "B": 16384, "a0": 1.0, "updates": 18, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "constant step (peak value)", "T": 3, "seed": 2, "time": 7.23, "test": 0.803327, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "no repair", "T": 3, "seed": 2, "time": 7.15, "test": 0.803465, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "no last-pass clean-up", "T": 3, "seed": 2, "time": 7.17, "test": 0.803602, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "B/4 and step/4", "T": 3, "seed": 2, "time": 16.4, "test": 0.803266, "B": 1024, "a0": 0.22, "updates": 291, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "B/4, same step", "T": 3, "seed": 2, "time": 16.38, "test": 0.803351, "B": 1024, "a0": 0.88, "updates": 291, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "step/4, same B", "T": 3, "seed": 2, "time": 7.18, "test": 0.804962, "B": 4096, "a0": 0.22, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "ablate", "name": "B x4, step 1", "T": 3, "seed": 2, "time": 4.89, "test": 0.806305, "B": 16384, "a0": 1.0, "updates": 18, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512)", "T": 1, "seed": 0, "time": 3.52, "test": 0.806061, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512) + repair + clean-up", "T": 1, "seed": 0, "time": 3.61, "test": 0.806963, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512)", "T": 3, "seed": 0, "time": 7.54, "test": 0.80437, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512) + repair + clean-up", "T": 3, "seed": 0, "time": 7.55, "test": 0.804236, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512)", "T": 1, "seed": 0, "time": 3.49, "test": 0.806061, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 1, "seed": 0, "time": 3.6, "test": 0.806963, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512)", "T": 3, "seed": 0, "time": 7.47, "test": 0.80437, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 3, "seed": 0, "time": 7.48, "test": 0.804236, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096)", "T": 1, "seed": 0, "time": 3.42, "test": 0.806061, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 1, "seed": 0, "time": 3.45, "test": 0.806963, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096)", "T": 3, "seed": 0, "time": 7.13, "test": 0.80437, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 3, "seed": 0, "time": 7.2, "test": 0.804236, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch)", "T": 1, "seed": 0, "time": 3.35, "test": 0.806061, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch) + repair + clean-up", "T": 1, "seed": 0, "time": 3.47, "test": 0.806963, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch)", "T": 3, "seed": 0, "time": 7.22, "test": 0.80437, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch) + repair + clean-up", "T": 3, "seed": 0, "time": 7.29, "test": 0.804236, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512)", "T": 1, "seed": 1, "time": 3.4, "test": 0.805258, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512) + repair + clean-up", "T": 1, "seed": 1, "time": 3.49, "test": 0.806515, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512)", "T": 3, "seed": 1, "time": 7.22, "test": 0.804369, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512) + repair + clean-up", "T": 3, "seed": 1, "time": 7.32, "test": 0.804243, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512)", "T": 1, "seed": 1, "time": 3.35, "test": 0.805258, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 1, "seed": 1, "time": 3.46, "test": 0.806515, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512)", "T": 3, "seed": 1, "time": 7.23, "test": 0.804369, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 3, "seed": 1, "time": 7.37, "test": 0.804243, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096)", "T": 1, "seed": 1, "time": 3.4, "test": 0.805258, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 1, "seed": 1, "time": 3.51, "test": 0.806515, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096)", "T": 3, "seed": 1, "time": 7.26, "test": 0.804369, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 3, "seed": 1, "time": 7.36, "test": 0.804243, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch)", "T": 1, "seed": 1, "time": 3.41, "test": 0.805258, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch) + repair + clean-up", "T": 1, "seed": 1, "time": 3.52, "test": 0.806515, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch)", "T": 3, "seed": 1, "time": 7.28, "test": 0.804369, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch) + repair + clean-up", "T": 3, "seed": 1, "time": 7.35, "test": 0.804243, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512)", "T": 1, "seed": 2, "time": 3.44, "test": 0.806769, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512) + repair + clean-up", "T": 1, "seed": 2, "time": 3.61, "test": 0.807459, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512)", "T": 3, "seed": 2, "time": 7.32, "test": 0.803602, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (B=512) + repair + clean-up", "T": 3, "seed": 2, "time": 7.46, "test": 0.803465, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512)", "T": 1, "seed": 2, "time": 3.4, "test": 0.806769, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 1, "seed": 2, "time": 3.54, "test": 0.807459, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512)", "T": 3, "seed": 2, "time": 7.44, "test": 0.803602, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 3, "seed": 2, "time": 7.36, "test": 0.803465, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096)", "T": 1, "seed": 2, "time": 3.41, "test": 0.806769, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 1, "seed": 2, "time": 3.5, "test": 0.807459, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096)", "T": 3, "seed": 2, "time": 7.49, "test": 0.803602, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 3, "seed": 2, "time": 7.37, "test": 0.803465, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch)", "T": 1, "seed": 2, "time": 3.47, "test": 0.806769, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch) + repair + clean-up", "T": 1, "seed": 2, "time": 3.48, "test": 0.807459, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch)", "T": 3, "seed": 2, "time": 7.31, "test": 0.803602, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "classic", "name": "running average (formula batch) + repair + clean-up", "T": 3, "seed": 2, "time": 7.42, "test": 0.803465, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "sklearn", "name": "NMF default (nndsvda start, coordinate descent)", "T": 0, "seed": 0, "time": 193.11, "test": 0.803142, "passes": 117, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "sklearn", "name": "MiniBatchNMF default", "T": 0, "seed": 0, "time": 18.27, "test": 0.819905, "passes": 11, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "sklearn", "name": "NMF random start", "T": 0, "seed": 0, "time": 264.11, "test": 0.804363, "passes": 170, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "sklearn", "name": "NMF random start, 25 iterations", "T": 0, "seed": 0, "time": 37.86, "test": 0.805252, "passes": 25, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "sklearn", "name": "MiniBatchNMF default", "T": 0, "seed": 1, "time": 20.22, "test": 0.818499, "passes": 12, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "sklearn", "name": "NMF random start", "T": 0, "seed": 1, "time": 235.13, "test": 0.803455, "passes": 147, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "sklearn", "name": "NMF random start, 25 iterations", "T": 0, "seed": 1, "time": 39.8, "test": 0.804838, "passes": 25, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "sklearn", "name": "MiniBatchNMF default", "T": 0, "seed": 2, "time": 18.78, "test": 0.819725, "passes": 11, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "sklearn", "name": "NMF random start", "T": 0, "seed": 2, "time": 332.93, "test": 0.802749, "passes": 200, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "sklearn", "name": "NMF random start, 25 iterations", "T": 0, "seed": 2, "time": 39.68, "test": 0.804485, "passes": 25, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512)", "T": 1, "seed": 0, "time": 10.32, "test": 0.810514, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512) + repair + clean-up", "T": 1, "seed": 0, "time": 10.26, "test": 0.810514, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512)", "T": 3, "seed": 0, "time": 30.41, "test": 0.808763, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512) + repair + clean-up", "T": 3, "seed": 0, "time": 30.65, "test": 0.807937, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512)", "T": 1, "seed": 0, "time": 10.08, "test": 0.807426, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 1, "seed": 0, "time": 10.24, "test": 0.805636, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512)", "T": 3, "seed": 0, "time": 30.48, "test": 0.8054, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 3, "seed": 0, "time": 30.51, "test": 0.804029, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096)", "T": 1, "seed": 0, "time": 2.39, "test": 0.811787, "B": 4096, "a0": 0.532, "updates": 24, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 1, "seed": 0, "time": 2.56, "test": 0.814784, "B": 4096, "a0": 0.532, "updates": 24, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096)", "T": 3, "seed": 0, "time": 7.91, "test": 0.806101, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 3, "seed": 0, "time": 9.01, "test": 0.805964, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch)", "T": 1, "seed": 0, "time": 3.48, "test": 0.811574, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch) + repair + clean-up", "T": 1, "seed": 0, "time": 3.58, "test": 0.811574, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch)", "T": 3, "seed": 0, "time": 7.27, "test": 0.809784, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch) + repair + clean-up", "T": 3, "seed": 0, "time": 7.29, "test": 0.808215, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512)", "T": 1, "seed": 1, "time": 10.2, "test": 0.810792, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512) + repair + clean-up", "T": 1, "seed": 1, "time": 10.28, "test": 0.810792, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512)", "T": 3, "seed": 1, "time": 31.59, "test": 0.808893, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512) + repair + clean-up", "T": 3, "seed": 1, "time": 30.73, "test": 0.808058, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512)", "T": 1, "seed": 1, "time": 10.3, "test": 0.806624, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 1, "seed": 1, "time": 10.22, "test": 0.805502, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512)", "T": 3, "seed": 1, "time": 30.23, "test": 0.804961, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 3, "seed": 1, "time": 30.46, "test": 0.803538, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096)", "T": 1, "seed": 1, "time": 2.4, "test": 0.813405, "B": 4096, "a0": 0.532, "updates": 24, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 1, "seed": 1, "time": 2.47, "test": 0.816282, "B": 4096, "a0": 0.532, "updates": 24, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096)", "T": 3, "seed": 1, "time": 7.16, "test": 0.806483, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 3, "seed": 1, "time": 7.59, "test": 0.806414, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch)", "T": 1, "seed": 1, "time": 3.59, "test": 0.811948, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch) + repair + clean-up", "T": 1, "seed": 1, "time": 3.55, "test": 0.811948, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch)", "T": 3, "seed": 1, "time": 7.28, "test": 0.809768, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch) + repair + clean-up", "T": 3, "seed": 1, "time": 7.43, "test": 0.808386, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512)", "T": 1, "seed": 2, "time": 10.26, "test": 0.808143, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512) + repair + clean-up", "T": 1, "seed": 2, "time": 10.8, "test": 0.808143, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512)", "T": 3, "seed": 2, "time": 31.15, "test": 0.80716, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (B=512) + repair + clean-up", "T": 3, "seed": 2, "time": 30.5, "test": 0.806753, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512)", "T": 1, "seed": 2, "time": 10.08, "test": 0.8081, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 1, "seed": 2, "time": 10.22, "test": 0.805915, "B": 512, "a0": 0.532, "updates": 195, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512)", "T": 3, "seed": 2, "time": 30.8, "test": 0.806528, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (1+t)^-0.5 (B=512) + repair + clean-up", "T": 3, "seed": 2, "time": 31.55, "test": 0.805185, "B": 512, "a0": 0.88, "updates": 585, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096)", "T": 1, "seed": 2, "time": 2.47, "test": 0.81165, "B": 4096, "a0": 0.532, "updates": 24, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 1, "seed": 2, "time": 2.49, "test": 0.813879, "B": 4096, "a0": 0.532, "updates": 24, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096)", "T": 3, "seed": 2, "time": 7.32, "test": 0.805871, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "power step (64+t)^-0.5 (B=4096) + repair + clean-up", "T": 3, "seed": 2, "time": 7.47, "test": 0.805841, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch)", "T": 1, "seed": 2, "time": 3.58, "test": 0.812166, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch) + repair + clean-up", "T": 1, "seed": 2, "time": 3.6, "test": 0.812166, "B": 2048, "a0": 0.532, "updates": 48, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch)", "T": 3, "seed": 2, "time": 7.5, "test": 0.808922, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}
+{"ds": "nyt8k-tfidf", "n": 100000, "K": 100, "group": "textbook", "name": "running average (formula batch) + repair + clean-up", "T": 3, "seed": 2, "time": 7.28, "test": 0.807345, "B": 4096, "a0": 0.88, "updates": 72, "revived": 0, "dead": 0, "zero": 0}

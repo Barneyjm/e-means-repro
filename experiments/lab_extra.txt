@@ -1,0 +1,10 @@
+lloyd25 | lloyd=25
+pp+lloyd25 | lloyd=25, init=pp
+e1 | T=1
+e2 | T=2
+e3 | T=3
+e5 | T=5
+ca0.3 | consc=0.3
+cc0.1 | consc=0.1, consc_end=1
+cc0.3 | consc=0.3, consc_end=1
+ca0.3,T5 | consc=0.3, T=5

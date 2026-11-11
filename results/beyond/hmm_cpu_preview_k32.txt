@@ -1,0 +1,24 @@
+n 11718 law 512 0.6003904510725092
+BW [4.1169, 3.9482, 3.5567, 3.4144, 3.3461, 3.3079, 3.2819, 3.2628, 3.2543, 3.2502, 3.247, 3.2442]
+B=  512 a0=1.0    bits 3.2673 [3.2609 3.2738] time 1.9s revived 1
+B=  512 a0=0.5    bits 3.3552 [3.3492 3.3611] time 1.7s revived 1
+B=  512 a0=0.25   bits 3.5384 [3.4984 3.5784] time 1.6s revived 0
+B=  512 a0=0.125  bits 3.7569 [3.7086 3.8051] time 1.6s revived 0
+B=  128 a0=1.0    bits 3.2206 [3.2236 3.2176] time 2.8s revived 1
+B=  128 a0=0.5    bits 3.2391 [3.2342 3.244 ] time 2.7s revived 1
+B=  128 a0=0.25   bits 3.2655 [3.2649 3.2661] time 2.8s revived 1
+B=  128 a0=0.125  bits 3.3212 [3.313  3.3295] time 2.8s revived 1
+B=  128 a0=0.06   bits 3.4728 [3.4456 3.5   ] time 2.7s revived 0
+B=  128 a0=0.03   bits 3.6310 [3.5807 3.6814] time 2.8s revived 0
+B=  128 a0=0.015  bits 3.7529 [3.7044 3.8014] time 2.8s revived 0
+B=   32 a0=1.0    bits 3.2044 [3.2084 3.2003] time 6.7s revived 2
+B=   32 a0=0.5    bits 3.2053 [3.2057 3.2048] time 6.7s revived 1
+B=   32 a0=0.25   bits 3.2183 [3.2223 3.2142] time 6.8s revived 1
+B=   32 a0=0.125  bits 3.2362 [3.2363 3.2361] time 7.4s revived 1
+B=   32 a0=0.06   bits 3.2650 [3.2626 3.2674] time 7.2s revived 1
+B=   32 a0=0.03   bits 3.3123 [3.3005 3.324 ] time 6.9s revived 1
+B=   32 a0=0.015  bits 3.4260 [3.4047 3.4473] time 7.5s revived 1
+B=    8 a0=0.125  bits 3.2039 [3.2029 3.2049] time 18.4s revived 1
+B=    8 a0=0.06   bits 3.2186 [3.2176 3.2196] time 22.6s revived 1
+B=    8 a0=0.03   bits 3.2356 [3.2323 3.2389] time 18.7s revived 1
+B=    8 a0=0.015  bits 3.2631 [3.2581 3.2682] time 18.9s revived 1

@@ -16,4 +16,4 @@ experiments = ["torch", "faiss-cpu"]
 test = ["pytest"]
 
 [tool.setuptools]
-py-modules = ["emeans_sklearn"]
+py-modules = ["emeans_sklearn", "online_gmm_sklearn"]

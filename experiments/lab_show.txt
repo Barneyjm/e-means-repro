@@ -1,0 +1,7 @@
+# the variants worth showing end to end
+lloyd25 | lloyd=25
+e3 | T=3
+e5 | T=5
+cc0.3 | consc=0.3, consc_end=1
+cc0.3,T5 | consc=0.3, consc_end=1, T=5
+ca0.3 | consc=0.3

@@ -17,10 +17,14 @@ from sklearn.utils.validation import check_is_fitted, validate_data
 __all__ = ["EMeans", "batch_law", "step_law"]
 
 
-def batch_law(n, k, T):
-    """Batch size from the paper's Table 2 (Eq. 7): nearest power of two, capped at n."""
+def batch_law(n, k, T, d=None):
+    """Batch size from the paper's Table 2 (Eq. 7): nearest power of two, capped at n.
+
+    One eighth of that above 2M samples (paper) and, when ``d`` is given, for 16 dimensions or fewer
+    (the rule in the authors' released code).
+    """
     B = 0.035 * k**0.13 * n**0.88 * T**0.81
-    if n > 2_000_000:
+    if n > 2_000_000 or (d is not None and d <= 16):
         B /= 8
     return int(min(max(2 ** round(math.log2(max(B, 1.0))), 1), n))
 
@@ -30,13 +34,18 @@ def step_law(n, k, T, B):
     return min(0.824 * k**-0.46 * B**0.90 * n**-0.45 * T**-0.11, 1.0)
 
 
-def _assign(X, C, pool=None, return_dist=False, chunk_bytes=2**25):
+def _assign(X, C, pool=None, return_dist=False, chunk_bytes=2**25, bias=None):
     """Nearest centre for each row of X; optionally the squared distance to it.
+
+    With ``bias`` (one value per centre) the choice minimises squared distance + bias; the distance returned
+    is still the plain squared distance to the chosen centre.
 
     argmin |x - c|^2 = argmax (x.c - |c|^2 / 2). The work is cut into chunks small enough to stay in cache;
     numpy releases the GIL in matmul, the subtraction and argmax, so a thread pool runs the chunks in parallel.
     """
     half_sq = 0.5 * np.einsum("ij,ij->i", C, C)
+    if bias is not None:
+        half_sq = half_sq + 0.5 * bias.astype(C.dtype, copy=False)
     Ct = np.ascontiguousarray(C.T)
     n = X.shape[0]
     rows = int(min(max(chunk_bytes // (C.dtype.itemsize * C.shape[0]), 64), 4096))
@@ -51,6 +60,8 @@ def _assign(X, C, pool=None, return_dist=False, chunk_bytes=2**25):
         labels[i:i + rows] = lab
         if return_dist:
             dist[i:i + rows] = np.einsum("ij,ij->i", xc, xc) - 2 * G[np.arange(len(lab)), lab]
+            if bias is not None:
+                dist[i:i + rows] -= bias[lab]
 
     starts = range(0, n, rows)
     if pool is None or len(starts) < 2:
@@ -79,12 +90,22 @@ class EMeans(ClassNamePrefixFeaturesOutMixin, TransformerMixin, ClusterMixin, Ba
     n_epochs : int, default=3
         Passes over the data. The paper reports 2-3 epochs match 25 Lloyd iterations.
     batch_size : int or "auto", default="auto"
-        "auto" uses the paper's batch scaling law.
+        "auto" uses the paper's batch scaling law (one eighth of it for 16 features or fewer, as in the
+        authors' code).
     step_size : float or "auto", default="auto"
         Peak EMA step (1 - decay). "auto" uses the paper's step scaling law.
     init : "random" or array of shape (n_clusters, n_features), default="random"
     revive : bool, default=True
         Rebuild near-empty clusters every 5 batches by splitting a large donor cluster.
+    balance : float, default=0.0
+        Strength of a cluster-size penalty during training (not in the paper). A sample goes to the centre
+        minimising ``squared distance + balance * D * (relative size - 1)``, where ``D`` is the running mean
+        squared distance and relative size is the cluster's running share times ``n_clusters``. This is
+        DeSieno's "conscience" (1988), the size penalty of balanced k-means. Around 0.3 gave more even
+        clusters and cheaper inverted-file search on image descriptors; see EXTENSIONS.md for where it did not help.
+    balance_end : float in [0, 1], default=0.0
+        The penalty follows the cosine curve from ``balance`` down to ``balance_end * balance``.
+        0 (default) fades it out, so training ends as plain k-means; 1 holds it to the end.
     compute_labels : bool, default=True
         Run one more assignment pass after training to set ``labels_`` and ``inertia_``.
     n_threads : int or None, default=None
@@ -105,13 +126,15 @@ class EMeans(ClassNamePrefixFeaturesOutMixin, TransformerMixin, ClusterMixin, Ba
     """
 
     def __init__(self, n_clusters=8, *, n_epochs=3, batch_size="auto", step_size="auto", init="random",
-                 revive=True, compute_labels=True, n_threads=None, random_state=None):
+                 revive=True, balance=0.0, balance_end=0.0, compute_labels=True, n_threads=None, random_state=None):
         self.n_clusters = n_clusters
         self.n_epochs = n_epochs
         self.batch_size = batch_size
         self.step_size = step_size
         self.init = init
         self.revive = revive
+        self.balance = balance
+        self.balance_end = balance_end
         self.compute_labels = compute_labels
         self.n_threads = n_threads
         self.random_state = random_state
@@ -132,10 +155,13 @@ class EMeans(ClassNamePrefixFeaturesOutMixin, TransformerMixin, ClusterMixin, Ba
         if n < k:
             raise ValueError(f"n_samples={n} should be >= n_clusters={k}.")
         rng = check_random_state(self.random_state)
-        B = batch_law(n, k, T) if isinstance(self.batch_size, str) else int(min(max(self.batch_size, 1), n))
+        B = batch_law(n, k, T, d) if isinstance(self.batch_size, str) else int(min(max(self.batch_size, 1), n))
         a0 = step_law(n, k, T, B) if isinstance(self.step_size, str) else float(self.step_size)
         if not 0 < a0 <= 1:
             raise ValueError("step_size must be in (0, 1].")
+        lam, lam_end = float(self.balance), float(self.balance_end)
+        if lam < 0 or not 0 <= lam_end <= 1:
+            raise ValueError("balance must be >= 0 and balance_end in [0, 1].")
         dt = X.dtype
 
         if isinstance(self.init, str):
@@ -157,6 +183,7 @@ class EMeans(ClassNamePrefixFeaturesOutMixin, TransformerMixin, ClusterMixin, Ba
         M = T * nb
         last = np.empty(n, dtype=np.intp)
         t = 0
+        err_sum, err_cnt = 0.0, 1e-10
         for epoch in range(T):
             perm = rng.permutation(n)
             for b in range(nb):
@@ -164,14 +191,28 @@ class EMeans(ClassNamePrefixFeaturesOutMixin, TransformerMixin, ClusterMixin, Ba
                 xb = X[ids]
                 alpha = a0 * (0.1 + 0.9 * 0.5 * (1 + math.cos(math.pi * t / M)))  # cosine-annealed step (Eq. 5)
                 t += 1
-                a = _assign(xb, C, pool)
+                if lam > 0:
+                    bias = None
+                    if t > 1:   # size penalty: lam * mean distortion * (relative size - 1), cosine-annealed
+                        fade = lam_end + (1 - lam_end) * 0.5 * (1 + math.cos(math.pi * (t - 1) / M))
+                        bias = (lam * fade * err_sum / err_cnt) * (N * (k / N.sum()) - 1)
+                    a, dist = _assign(xb, C, pool, return_dist=True, bias=bias)
+                    err_sum = (1 - alpha) * err_sum + alpha * float(dist.sum(dtype=np.float64))
+                    err_cnt = (1 - alpha) * err_cnt + alpha * len(ids)
+                else:
+                    a = _assign(xb, C, pool)
                 if epoch == T - 1:
                     last[ids] = a
                 nj, sj = _cluster_sums(xb, a, k)
-                N *= 1 - alpha
-                N += alpha * nj
-                S *= 1 - alpha
-                S += alpha * sj
+                if alpha >= 1.0:    # step capped at 1: replace only the clusters this batch touched (no 0/0)
+                    hit = nj > 0
+                    N[hit] = nj[hit]
+                    S[hit] = sj[hit]
+                else:
+                    N *= 1 - alpha
+                    N += alpha * nj
+                    S *= 1 - alpha
+                    S += alpha * sj
                 if self.revive and t % 5 == 0:
                     self._revive(N, S, up, down, rng)
                 C = S / N[:, None]

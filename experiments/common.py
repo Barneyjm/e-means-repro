@@ -1,7 +1,8 @@
 """Shared helpers: data loading, device pick, exact scoring, and the paper's scaling laws."""
-import math, numpy as np, torch
+import math, os, numpy as np, torch
 
-dev = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+# EMEANS_DEVICE=cpu forces the CPU (two processes on one Apple GPU at the same time can crash each other)
+dev = torch.device(os.environ.get("EMEANS_DEVICE") or ("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu"))
 
 def sync():
     if dev.type == "mps": torch.mps.synchronize()
@@ -23,10 +24,11 @@ def split_pattern(d, delta):
     s = np.where(np.arange(d) % 2 == 0, 1.0, -1.0)
     return 1 + delta * s, 1 - delta * s
 
-def laws(n, k, T):
-    """Batch size and peak step from the paper's Table 2 (Eq. 6 and 7), used as published."""
+def laws(n, k, T, d=None):
+    """Batch size and peak step from the paper's Table 2 (Eq. 6 and 7), used as published. Pass d to also apply the
+    rule in the authors' released code: one eighth of the batch size when the data has 16 dimensions or fewer."""
     B = 0.035 * k**0.13 * n**0.88 * T**0.81
-    if n > 2_000_000: B /= 8
+    if n > 2_000_000 or (d is not None and d <= 16): B /= 8
     B = int(min(2 ** round(math.log2(B)), n))
     a0 = min(0.824 * k**-0.46 * B**0.90 * n**-0.45 * T**-0.11, 1.0)
     return B, a0

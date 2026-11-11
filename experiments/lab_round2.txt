@@ -1,0 +1,47 @@
+# round 2: the balance axis (conscience = size penalty when assigning), reference e3
+lloyd25 | lloyd=25
+e3 | T=3
+e5 | T=5
+e10 | T=10
+# annealed away (ends as plain k-means): strength
+ca0.1 | consc=0.1
+ca0.3 | consc=0.3
+ca0.6 | consc=0.6
+ca1 | consc=1.0
+ca2 | consc=2.0
+ca4 | consc=4.0
+# held to the end (ends as balanced k-means): strength
+cc0.03 | consc=0.03, consc_end=1
+cc0.1 | consc=0.1, consc_end=1
+cc0.2 | consc=0.2, consc_end=1
+cc0.3 | consc=0.3, consc_end=1
+cc0.5 | consc=0.5, consc_end=1
+cc1 | consc=1.0, consc_end=1
+cc2 | consc=2.0, consc_end=1
+# in between, and the log form
+c1end0.1 | consc=1.0, consc_end=0.1
+c1end0.3 | consc=1.0, consc_end=0.3
+c0.3end0.3 | consc=0.3, consc_end=0.3
+clog0.3 | consc=0.3, consc_form=log
+clog1 | consc=1.0, consc_form=log
+clog0.3c | consc=0.3, consc_form=log, consc_end=1
+# does it replace revival, or stack with a stricter one / smaller batches / other pass counts
+ca0.3,norevive | consc=0.3, tau=0
+cc0.3,norevive | consc=0.3, consc_end=1, tau=0
+tau0.2 | tau=0.2
+tau0.5 | tau=0.5
+ca0.3,tau0.3 | consc=0.3, tau=0.3
+cc0.3,tau0.3 | consc=0.3, consc_end=1, tau=0.3
+ca0.3,B/4 | consc=0.3, Bx=0.25, ax=0.25
+e1 | T=1
+ca0.3,T1 | consc=0.3, T=1
+cc0.3,T1 | consc=0.3, consc_end=1, T=1
+e2 | T=2
+ca0.3,T2 | consc=0.3, T=2
+cc0.3,T2 | consc=0.3, consc_end=1, T=2
+ca0.3,T5 | consc=0.3, T=5
+cc0.3,T5 | consc=0.3, consc_end=1, T=5
+# full-pass baseline with the same penalty (balanced Lloyd)
+lloyd25,c0.1 | lloyd=25, consc=0.1
+lloyd25,c0.3 | lloyd=25, consc=0.3
+lloyd25,c1 | lloyd=25, consc=1.0

@@ -58,13 +58,16 @@ def emeans(Xd, Xnp, k, T, seed, half=False, tau=0.1, B=None, a0=None):
             alpha = a0 * (0.1 + 0.9 * 0.5 * (1 + math.cos(math.pi * t / M))); t += 1
             a = A(Xp[ids] if half else xb, C)
             if ep == T - 1: last_a[ids] = a
-            N.mul_(1 - alpha).add_(torch.bincount(a, minlength=k), alpha=alpha)
-            Sm.mul_(1 - alpha).add_(torch.zeros(k, d, device=dev).index_add_(0, a, xb), alpha=alpha)
+            cnt = torch.bincount(a, minlength=k); sums = torch.zeros(k, d, device=dev).index_add_(0, a, xb)
+            if alpha >= 1.0:                                 # step capped at 1: replace only the clusters this batch touched
+                nzb = cnt > 0; N[nzb] = cnt[nzb].float(); Sm[nzb] = sums[nzb]   # (as the authors' code does; 0/0 otherwise)
+            else: N.mul_(1 - alpha).add_(cnt, alpha=alpha); Sm.mul_(1 - alpha).add_(sums, alpha=alpha)
             if t % 5 == 0:
                 deadm = N < tau * N.mean()
                 if bool(deadm.any()):
                     Nc = N.cpu().numpy().astype(np.float64); dm = deadm.cpu().numpy()
                     dead = np.where(dm)[0]; alive = np.where(~dm)[0]
+                    if len(dead) > len(alive): dead = dead[np.argsort(Nc[dead])[:len(alive)]]   # can happen when the step is 1
                     donors = rng.choice(alive, size=len(dead), replace=False, p=Nc[alive] / Nc[alive].sum())
                     dead, donors = torch.from_numpy(dead).to(dev), torch.from_numpy(donors).to(dev)
                     cd = Sm[donors] / N[donors, None]; half_n = N[donors] / 2

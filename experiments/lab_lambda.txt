@@ -1,0 +1,10 @@
+# strength of the held size penalty, for the strength rule; reference e3
+lloyd25 | lloyd=25
+e3 | T=3
+cc0.03 | consc=0.03, consc_end=1
+cc0.1 | consc=0.1, consc_end=1
+cc0.2 | consc=0.2, consc_end=1
+cc0.3 | consc=0.3, consc_end=1
+cc0.5 | consc=0.5, consc_end=1
+cc1 | consc=1.0, consc_end=1
+ca0.3 | consc=0.3

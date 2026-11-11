@@ -30,3 +30,20 @@ def test_reproducible_and_pipeline():
     np.testing.assert_array_equal(a.predict(X), a.labels_)
     assert a.transform(X).shape == (5000, 10)
     assert make_pipeline(StandardScaler(), EMeans(10, random_state=0)).fit_predict(X).shape == (5000,)
+
+
+def test_balance_evens_out_cluster_sizes():
+    rng = np.random.default_rng(0)
+    X = rng.standard_normal((20000, 16)).astype(np.float32) * rng.uniform(0.5, 2.0, 16).astype(np.float32)
+    def imbalance(m): c = np.bincount(m.labels_, minlength=256); return 256 * (c.astype(float) ** 2).sum() / len(X) ** 2
+    plain = EMeans(256, random_state=0).fit(X)
+    faded = EMeans(256, balance=0.3, random_state=0).fit(X)
+    held = EMeans(256, balance=0.3, balance_end=1.0, random_state=0).fit(X)
+    assert imbalance(held) < imbalance(faded) < imbalance(plain)
+    assert held.inertia_ < 1.02 * plain.inertia_
+
+
+def test_step_of_one_stays_finite():
+    X, _ = make_blobs(n_samples=4000, centers=20, n_features=8, random_state=2)
+    m = EMeans(200, step_size=1.0, batch_size=400, random_state=0).fit(X.astype(np.float32))
+    assert np.isfinite(m.cluster_centers_).all()

@@ -1,0 +1,11 @@
+# plain e-means runs that vary clustering error and list balance without any size penalty:
+# enough to estimate how scan cost responds to each (fit_lambda_rule.py), before deciding on a penalty
+e1 | T=1
+e2 | T=2
+e3 | T=3
+e5 | T=5
+tau0.3 | tau=0.3
+tau0.03 | tau=0.03
+tau0.5 | tau=0.5
+const | sched=const
+B/4,a/4 | Bx=0.25, ax=0.25

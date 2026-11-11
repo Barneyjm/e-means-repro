@@ -3,10 +3,12 @@
 An independent check of the paper **"e-means: outperforming k-means (in one-tenth the epochs)"**
 (Bessa, Mazaré, Szilvasy, Touvron, Picard, Douze, Jégou; [arXiv 2611.09501](https://arxiv.org/abs/2611.09501), Nov 2026),
 plus a version of the algorithm that drops into scikit-learn, and follow-up experiments on whether the same recipe
-helps search indexes, product quantization and Gaussian mixtures.
+helps search indexes, product quantization, Gaussian mixtures, topic models, hidden Markov models and recommender
+factorization. The longer follow-up write-up is [EXTENSIONS.md](EXTENSIONS.md).
 
-Everything here was written from the text of the paper. It is **not the authors' code**. The paper says theirs lives in
-Faiss; the Faiss release used here (1.16.0) does not include it.
+Everything here was written from the text of the paper. It is **not the authors' code**. Theirs is in the Faiss
+repository (`contrib/e_means`); the Faiss release installed here (1.16.0) does not ship it. I later read it (did not
+run it) and list the differences in [EXTENSIONS.md](EXTENSIONS.md#12-my-implementation-against-the-authors-code).
 
 ## What the paper claims
 
@@ -71,8 +73,20 @@ this for large `n` and large `k`.
 
 ## Beyond the paper: does the recipe carry over?
 
-The paper only reports clustering error. These are my own follow-up experiments, not claims from the paper. Raw logs
+The paper's main results are clustering error. Its Appendix L also reports search recall for IVF indexes on eleven other
+datasets (e-means reaches the recall of a converged k-means sooner); it does not report scan cost or list balance.
+These are my own follow-up experiments, not claims from the paper. Raw logs
 and full tables are in `results/beyond/`. All runs: Apple M2 Max GPU, random initialization, SIFT1M unless stated.
+
+The three experiments below came first. A second, larger round is written up in [EXTENSIONS.md](EXTENSIONS.md):
+
+- Search indexes on six datasets, checked in a real Faiss index against Faiss's own k-means.
+- A dozen old ideas tried on top of the recipe. One helped: a cluster-size penalty (`EMeans(balance=0.3)`), worth
+  3–11% of search cost on image descriptors and 60–80% on one clumpy dataset, nothing on word vectors.
+- The recipe applied to NMF and hidden Markov models (works), ALS (partly), LDA (no real gain), PageRank (does not apply).
+- `OnlineGaussianMixture`, a scikit-learn-style mixture estimator: about 250× faster than `GaussianMixture` at 1M rows.
+- More passes: gains shrink after three and are nearly flat after eight.
+- A comparison with the authors' released code, which exposed one bug in mine and one rule I had missed.
 
 ### 1. Does a search index built on the centroids get better?
 
@@ -122,7 +136,9 @@ Error is the held-out reconstruction error summed over the 16 codebooks; 3 seeds
 
 Three passes beat Lloyd 25 here too (seed spread is under 0.1%), and ten passes equal Lloyd 100 on the 1M set.
 The result is not monotonic in the number of passes (5 is worse than 3 on 1M), because the formula changes the
-batch size with the pass count. Timings at this size are dominated by per-call overhead.
+batch size with the pass count. Timings at this size are dominated by per-call overhead. The authors' code uses
+one eighth of this batch size in low dimension; with that rule three passes beat Lloyd 100 and every extra pass
+helps ([EXTENSIONS.md](EXTENSIONS.md#6-product-quantization)).
 
 ### 3. The same recipe for Gaussian mixtures (EM)
 
@@ -185,10 +201,10 @@ Three further checks:
 
 - Billion-vector runs, and the approximate (IVF) assignment the paper uses there.
 - The paper's GPU comparison against Flash-KMeans, or any k-means++ baseline at 1M.
-- Datasets other than SIFT.
+- The paper's own benchmark datasets other than SIFT (EXTENSIONS.md adds five more public sets for search).
 - The CPU numbers at 1M are one seed each.
-- Search-index quality on anything but SIFT1M (no modern text or image embeddings), and no end-to-end index with
-  compressed vectors.
+- An end-to-end index with compressed vectors (IVF-PQ), graph indexes, or real query logs.
+- The authors' released code: I read it and did not run it.
 - Mixtures with full covariance matrices, a downstream task that uses the mixture, or more than 3 seeds.
 - Ordinary EM from a k-means start on the GPU (the scikit-learn row above is the only such run).
 
@@ -200,12 +216,19 @@ from emeans_sklearn import EMeans
 km = EMeans(n_clusters=4096, n_epochs=3, random_state=0).fit(X)   # X: (n_samples, n_features) float32 or float64
 km.cluster_centers_, km.labels_, km.inertia_
 km.predict(X_new); km.transform(X_new); km.score(X_new)
+
+EMeans(n_clusters=4096, balance=0.3)        # not in the paper: a size penalty that evens out the clusters (EXTENSIONS.md, section 5)
+
+from online_gmm_sklearn import OnlineGaussianMixture               # same recipe for diagonal Gaussian mixtures (section 7)
+gm = OnlineGaussianMixture(n_components=256, n_epochs=3, random_state=0).fit(X)
+gm.predict_proba(X_new); gm.score(X_new)
 ```
 
 `pip install -e .` installs it (numpy, scipy, scikit-learn ≥ 1.6). It follows the scikit-learn estimator
 contract: it works in `Pipeline`, `clone`, `GridSearchCV` and passes scikit-learn's `check_estimator` suite
-(50 checks pass, 1 skipped; `pytest test_emeans_sklearn.py`). Batch size and step size default to the paper's
-scaling laws and can be overridden. Dense input only.
+(`pytest`: 54 passed, 1 skipped for `EMeans`; 89 passed, 2 skipped for `OnlineGaussianMixture`). Batch size and step
+size default to the paper's scaling laws (one eighth of the batch for 16 features or fewer, as in the authors' code)
+and can be overridden. Dense input only.
 
 How it is built from standard parts:
 
@@ -254,18 +277,43 @@ python experiments/gmm_grid.py $D grid.log sift64 256 100000 0,1 grid          #
 python experiments/gmm_sklearn_ref.py $D sk.log sift64 256 0                   # about 18 minutes
 ```
 
+The experiments in EXTENSIONS.md (`B`, `Q`, `G` = base vectors, held-out queries, exact neighbours as `.npy`/`.fvecs`):
+
+```sh
+python experiments/exact_nn.py $B $Q $G                                          # exact neighbours for any dataset
+python experiments/ivf_sweep.py $B $Q $G sweep.log 16384 0,1,2 lloyd25,emeans1,emeans3,emeans10   # passes
+python experiments/run_lab.py $B $Q $G lab.log 4096 0,1,2 experiments/lab_round1.txt   # the old-ideas tournament
+python experiments/run_lab.py $B $Q $G lab.log 4096 0,1,2 experiments/lab_pilot.txt    # penalty-free pilots ...
+python experiments/run_lab.py $B $Q $G lab.log 4096 0,1,2 experiments/lab_lambda.txt   # ... and the strength grid
+python experiments/fit_lambda_rule.py lab.log; python experiments/summarize_search.py lab.log
+LAB_SAVE=cent python experiments/run_lab.py $B $Q $G show.log 4096 0 experiments/lab_show.txt   # save centroids
+python experiments/faiss_kmeans.py $B cent/name_k4096 4096 0 25 ivf && python experiments/faiss_ivf_bench.py $B $Q $G faiss.log cent/*.npy
+python experiments/bench_balance_cpu.py $B $Q cpu.log cent 4096 0                 # scikit-learn KMeans vs EMeans(balance=...)
+python experiments/gmm_lab.py data/sift gmmlab.log synth 256 0,1,2 experiments/gmm_lab_round1.txt
+python experiments/bench_gmm_sklearn.py                                           # usage in the file: OnlineGaussianMixture vs scikit-learn
+```
+
+The topic-model, hidden-Markov, factorization and PageRank scripts (`lda_*.py`, `nmf_*.py`, `hmm_*.py`, `als_*.py`,
+`pagerank_sweeps.py`) each print their usage.
+
 Faiss and PyTorch each ship their own OpenMP runtime and cannot share a process, which is why the Faiss baseline and
-its scoring are two commands.
+its scoring are two commands. Two processes on one Apple GPU at the same time can also crash each other
+(`EMEANS_DEVICE=cpu` forces the CPU).
 
 | File | What it is |
 |---|---|
-| `emeans_sklearn.py` | The scikit-learn estimator |
+| `emeans_sklearn.py` | The scikit-learn k-means estimator (`EMeans`) |
+| `online_gmm_sklearn.py` | The scikit-learn-style mixture estimator (`OnlineGaussianMixture`) |
+| `EXTENSIONS.md` | Write-up of the follow-up experiments |
 | `experiments/emeans_torch.py` | GPU version used for the first table |
 | `experiments/emeans_v1.py` | First, unoptimized version (kept so the validation run can be repeated) |
 | `experiments/bench_kernels.py` | Distance-kernel timings behind the optimized version |
 | `experiments/ivf_recall.py`, `faiss_ivf_check.py` | Search-index evaluation and its check against a real Faiss index |
 | `experiments/gmm_torch.py` | Full-pass EM and the online version for diagonal Gaussian mixtures |
 | `experiments/pq_codebooks.py` | Product-quantization test |
+| `experiments/emeans_lab.py`, `run_lab.py` | e-means with nine old ideas as switches, and its runner (search cost, MSE) |
+| `experiments/faiss_ivf_bench.py`, `faiss_kmeans.py` | Real Faiss index and Faiss k-means for outside checks |
+| `experiments/lda_torch.py`, `nmf_torch.py`, `hmm_torch.py`, `als_torch.py` | The recipe applied to topic models, NMF, hidden Markov models and ALS |
 | `results/` | Raw logs for every number above (`results/beyond/` for the follow-up experiments) |
 
 ## Notes
