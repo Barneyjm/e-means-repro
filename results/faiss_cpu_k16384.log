@@ -1,0 +1,2 @@
+faiss-cpu 1.16.0 lloyd25 (seed 0, k=16384, SIFT1M, no subsampling): 12 threads, 811.3 s
+{'train': 38255.68509529206, 'test': 41704.138010160495, 'dead_lt10': 171}

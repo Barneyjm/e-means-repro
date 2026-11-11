@@ -1,0 +1,82 @@
+{"method": "EMeans 2 epochs", "time": 0.29, "train_mse": 49765.5728, "cfg": "sift100k_k1024", "seed": 0, "test_mse": 49621.5371, "n_iter": 2}
+{"method": "EMeans 3 epochs", "time": 0.4, "train_mse": 49482.3962, "cfg": "sift100k_k1024", "seed": 0, "test_mse": 49350.4433, "n_iter": 3}
+{"method": "MiniBatchKMeans defaults", "time": 1.36, "train_mse": 50896.7629, "cfg": "sift100k_k1024", "seed": 0, "test_mse": 50870.448, "n_iter": 4}
+{"method": "KMeans random init, 25 iters", "time": 0.84, "train_mse": 49511.4547, "cfg": "sift100k_k1024", "seed": 0, "test_mse": 49403.2832, "n_iter": 25}
+{"method": "KMeans defaults (k-means++)", "time": 18.15, "train_mse": 49416.6118, "cfg": "sift100k_k1024", "seed": 0, "test_mse": 49310.5888, "n_iter": 81}
+{"method": "EMeans 2 epochs", "time": 0.3, "train_mse": 49734.3998, "cfg": "sift100k_k1024", "seed": 1, "test_mse": 49599.9557, "n_iter": 2}
+{"method": "EMeans 3 epochs", "time": 0.4, "train_mse": 49446.1253, "cfg": "sift100k_k1024", "seed": 1, "test_mse": 49348.4029, "n_iter": 3}
+{"method": "MiniBatchKMeans defaults", "time": 1.46, "train_mse": 50979.7376, "cfg": "sift100k_k1024", "seed": 1, "test_mse": 50889.2736, "n_iter": 4}
+{"method": "KMeans random init, 25 iters", "time": 0.79, "train_mse": 49553.2442, "cfg": "sift100k_k1024", "seed": 1, "test_mse": 49464.5376, "n_iter": 25}
+{"method": "KMeans defaults (k-means++)", "time": 19.26, "train_mse": 49375.4163, "cfg": "sift100k_k1024", "seed": 1, "test_mse": 49211.856, "n_iter": 100}
+{"method": "EMeans 2 epochs", "time": 0.29, "train_mse": 49731.5393, "cfg": "sift100k_k1024", "seed": 2, "test_mse": 49623.5067, "n_iter": 2}
+{"method": "EMeans 3 epochs", "time": 0.4, "train_mse": 49422.4948, "cfg": "sift100k_k1024", "seed": 2, "test_mse": 49241.5309, "n_iter": 3}
+{"method": "MiniBatchKMeans defaults", "time": 1.42, "train_mse": 50956.0371, "cfg": "sift100k_k1024", "seed": 2, "test_mse": 50856.496, "n_iter": 4}
+{"method": "KMeans random init, 25 iters", "time": 0.79, "train_mse": 49510.5741, "cfg": "sift100k_k1024", "seed": 2, "test_mse": 49357.8112, "n_iter": 25}
+{"method": "KMeans defaults (k-means++)", "time": 18.22, "train_mse": 49414.0621, "cfg": "sift100k_k1024", "seed": 2, "test_mse": 49355.056, "n_iter": 62}
+{"method": "EMeans 2 epochs", "time": 3.45, "train_mse": 44493.1109, "cfg": "sift1M_k4096", "seed": 0, "test_mse": 45474.3075, "n_iter": 2}
+{"method": "EMeans 3 epochs", "time": 4.17, "train_mse": 44375.4367, "cfg": "sift1M_k4096", "seed": 0, "test_mse": 45471.9618, "n_iter": 3}
+{"method": "MiniBatchKMeans defaults", "time": 42.04, "train_mse": 45334.5444, "cfg": "sift1M_k4096", "seed": 0, "test_mse": 46081.6576, "n_iter": 3}
+{"method": "KMeans random init, 25 iters", "time": 26.09, "train_mse": 44389.4825, "cfg": "sift1M_k4096", "seed": 0, "test_mse": 45626.24, "n_iter": 25}
+{"method": "EMeans 2 epochs", "time": 9.69, "train_mse": 38414.1746, "cfg": "sift1M_k16384", "seed": 0, "test_mse": 41660.5214, "n_iter": 2}
+{"method": "EMeans 3 epochs", "time": 12.49, "train_mse": 38147.8118, "cfg": "sift1M_k16384", "seed": 0, "test_mse": 41580.7272, "n_iter": 3}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 654.1922, "cfg": "digits_1797x64_k10", "seed": 0, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 654.945, "cfg": "digits_1797x64_k10", "seed": 0, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 651.8026, "cfg": "digits_1797x64_k10", "seed": 0, "n_iter": 19}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 648.7015, "cfg": "digits_1797x64_k10", "seed": 1, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 651.9306, "cfg": "digits_1797x64_k10", "seed": 1, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 665.0188, "cfg": "digits_1797x64_k10", "seed": 1, "n_iter": 10}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 652.0356, "cfg": "digits_1797x64_k10", "seed": 2, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 651.8007, "cfg": "digits_1797x64_k10", "seed": 2, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.0, "train_mse": 648.4273, "cfg": "digits_1797x64_k10", "seed": 2, "n_iter": 9}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 659.5101, "cfg": "digits_1797x64_k10", "seed": 3, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 659.3676, "cfg": "digits_1797x64_k10", "seed": 3, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 648.5366, "cfg": "digits_1797x64_k10", "seed": 3, "n_iter": 36}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 650.2728, "cfg": "digits_1797x64_k10", "seed": 4, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 649.8542, "cfg": "digits_1797x64_k10", "seed": 4, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 649.8405, "cfg": "digits_1797x64_k10", "seed": 4, "n_iter": 28}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 654.4401, "cfg": "digits_1797x64_k10", "seed": 5, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 648.422, "cfg": "digits_1797x64_k10", "seed": 5, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.0, "train_mse": 649.8726, "cfg": "digits_1797x64_k10", "seed": 5, "n_iter": 16}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 648.6928, "cfg": "digits_1797x64_k10", "seed": 6, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 650.8569, "cfg": "digits_1797x64_k10", "seed": 6, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 678.1462, "cfg": "digits_1797x64_k10", "seed": 6, "n_iter": 33}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 664.2599, "cfg": "digits_1797x64_k10", "seed": 7, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 648.3877, "cfg": "digits_1797x64_k10", "seed": 7, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.0, "train_mse": 648.4404, "cfg": "digits_1797x64_k10", "seed": 7, "n_iter": 12}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 687.2456, "cfg": "digits_1797x64_k10", "seed": 8, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 678.593, "cfg": "digits_1797x64_k10", "seed": 8, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 668.0183, "cfg": "digits_1797x64_k10", "seed": 8, "n_iter": 19}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 663.0999, "cfg": "digits_1797x64_k10", "seed": 9, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 648.9756, "cfg": "digits_1797x64_k10", "seed": 9, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 671.5732, "cfg": "digits_1797x64_k10", "seed": 9, "n_iter": 12}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 1.7741, "cfg": "blobs_10000x2_k8", "seed": 0, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 1.7741, "cfg": "blobs_10000x2_k8", "seed": 0, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 1.7741, "cfg": "blobs_10000x2_k8", "seed": 0, "n_iter": 8}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 2.2092, "cfg": "blobs_10000x2_k8", "seed": 1, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 2.2088, "cfg": "blobs_10000x2_k8", "seed": 1, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.0, "train_mse": 1.7741, "cfg": "blobs_10000x2_k8", "seed": 1, "n_iter": 5}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 1.7742, "cfg": "blobs_10000x2_k8", "seed": 2, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 1.7741, "cfg": "blobs_10000x2_k8", "seed": 2, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 2.2146, "cfg": "blobs_10000x2_k8", "seed": 2, "n_iter": 8}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 1.7742, "cfg": "blobs_10000x2_k8", "seed": 3, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 1.7741, "cfg": "blobs_10000x2_k8", "seed": 3, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 1.7741, "cfg": "blobs_10000x2_k8", "seed": 3, "n_iter": 6}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 2.2121, "cfg": "blobs_10000x2_k8", "seed": 4, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 2.212, "cfg": "blobs_10000x2_k8", "seed": 4, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 1.7742, "cfg": "blobs_10000x2_k8", "seed": 4, "n_iter": 6}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 1.7741, "cfg": "blobs_10000x2_k8", "seed": 5, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 1.7741, "cfg": "blobs_10000x2_k8", "seed": 5, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.0, "train_mse": 2.211, "cfg": "blobs_10000x2_k8", "seed": 5, "n_iter": 6}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 1.7742, "cfg": "blobs_10000x2_k8", "seed": 6, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 1.7741, "cfg": "blobs_10000x2_k8", "seed": 6, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.0, "train_mse": 1.7743, "cfg": "blobs_10000x2_k8", "seed": 6, "n_iter": 5}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 2.2054, "cfg": "blobs_10000x2_k8", "seed": 7, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 2.2086, "cfg": "blobs_10000x2_k8", "seed": 7, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 1.7742, "cfg": "blobs_10000x2_k8", "seed": 7, "n_iter": 11}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 2.113, "cfg": "blobs_10000x2_k8", "seed": 8, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 1.7741, "cfg": "blobs_10000x2_k8", "seed": 8, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 2.2033, "cfg": "blobs_10000x2_k8", "seed": 8, "n_iter": 6}
+{"method": "EMeans 3 epochs", "time": 0.01, "train_mse": 2.6477, "cfg": "blobs_10000x2_k8", "seed": 9, "n_iter": 3}
+{"method": "EMeans 10 epochs", "time": 0.01, "train_mse": 2.6417, "cfg": "blobs_10000x2_k8", "seed": 9, "n_iter": 10}
+{"method": "KMeans defaults (k-means++)", "time": 0.01, "train_mse": 1.7742, "cfg": "blobs_10000x2_k8", "seed": 9, "n_iter": 10}
+{"method": "KMeans random init, 25 iters", "time": 112.66, "train_mse": 38254.0472, "cfg": "sift1M_k16384", "seed": 0, "test_mse": 41658.1344, "n_iter": 25}
