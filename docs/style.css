@@ -1,0 +1,83 @@
+:root {
+  --bg: #f6f5f1; --surface: #ffffff; --fg: #1c1e22; --muted: #5b616b; --rule: #dad8d1; --code-bg: #eeece6;
+  --accent: #1f5f8b; --plain: #1f5f8b; --penalty: #b4532a; --zero: #8a8f98;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #14161a; --surface: #1b1e23; --fg: #e5e3dd; --muted: #a0a6af; --rule: #30343b; --code-bg: #21252b;
+  --accent: #82b6dd; --plain: #82b6dd; --penalty: #e38b5d; --zero: #6d727a; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #14161a; --surface: #1b1e23; --fg: #e5e3dd; --muted: #a0a6af; --rule: #30343b; --code-bg: #21252b;
+  --accent: #82b6dd; --plain: #82b6dd; --penalty: #e38b5d; --zero: #6d727a; color-scheme: dark; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 18px/1.6 var(--serif); }
+a { color: var(--accent); text-underline-offset: 2px; }
+.wrap { max-width: 860px; margin: 0 auto; padding-inline: 20px; }
+.wrap.doc { max-width: 1040px; }
+header.site { border-bottom: 1px solid var(--rule); font-family: var(--sans); font-size: 15px; }
+header.site .wrap { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; padding-block: 14px; }
+header.site .name { font-family: var(--mono); font-weight: 500; color: var(--fg); text-decoration: none; }
+header.site nav { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+header.site nav a { color: var(--muted); text-decoration: none; }
+header.site nav a:hover, header.site nav a[aria-current] { color: var(--fg); }
+header.site nav a[aria-current] { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+main { padding-block: 40px 64px; }
+main :is(p, ul, ol, h1, h2, h3, h4, blockquote) { max-width: 72ch; }
+h1, h2, h3, h4 { font-family: var(--sans); line-height: 1.25; text-wrap: balance; font-weight: 600; }
+h1 { font-size: 2.1rem; margin: 0.2em 0 0.4em; letter-spacing: -0.01em; }
+h2 { font-size: 1.4rem; margin: 2.2em 0 0.6em; padding-top: 0.8em; border-top: 1px solid var(--rule); }
+h3 { font-size: 1.12rem; margin: 1.8em 0 0.5em; }
+h4 { font-size: 1rem; }
+.kicker { font-family: var(--sans); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.lede { font-size: 1.15rem; }
+.caption { font-family: var(--sans); font-size: 14px; color: var(--muted); }
+code, pre { font-family: var(--mono); font-size: 0.84em; }
+code { background: var(--code-bg); padding: 0.1em 0.3em; border-radius: 3px; }
+pre { background: var(--code-bg); padding: 14px 16px; border-radius: 4px; overflow-x: auto; line-height: 1.5; }
+pre code { background: none; padding: 0; font-size: 0.95em; }
+var { font-style: italic; }
+.table-wrap { overflow-x: auto; margin: 1em 0 1.4em; border-top: 1px solid var(--rule); }
+table { border-collapse: collapse; font-family: var(--sans); font-size: 14px; font-variant-numeric: tabular-nums; min-width: 100%; }
+th, td { text-align: left; padding: 7px 12px 7px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-weight: 600; color: var(--muted); font-size: 13px; }
+td:not(:first-child) { white-space: nowrap; }
+.doc td:not(:first-child) { white-space: normal; min-width: 5.5em; }
+.doc td:first-child { min-width: 11em; }
+.figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 1em 0; }
+.figures > div { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 14px 16px; min-width: 0; }
+.figures dt { font-family: var(--sans); font-size: 13px; color: var(--muted); }
+.figures dd { margin: 4px 0; font-family: var(--sans); font-size: 1.8rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.figures p { margin: 0; font-family: var(--sans); font-size: 14px; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 22px; font-family: var(--sans); font-size: 14px; margin: 1.2em 0 0.4em; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.legend .dot { position: static; transform: none; display: inline-block; }
+.dotplot { font-family: var(--sans); font-size: 14px; font-variant-numeric: tabular-nums; margin-bottom: 0.8em; }
+.dotplot .row { display: grid; grid-template-columns: 15rem 1fr; gap: 12px; align-items: center; min-height: 30px; }
+.dotplot .lab { min-width: 0; }
+.dotplot .k { color: var(--muted); white-space: nowrap; }
+.dotplot .vals { display: block; font-size: 12px; color: var(--muted); }
+.dotplot .vals .plain { color: var(--plain); } .dotplot .vals .penalty { color: var(--penalty); }
+.dotplot .track { position: relative; height: 26px; }
+.dotplot .zero { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--zero); }
+.dotplot .bar { position: absolute; top: 50%; height: 2px; margin-top: -1px; opacity: 0.55; }
+.dotplot .bar.plain { background: var(--plain); } .dotplot .bar.penalty { background: var(--penalty); }
+.dot { position: absolute; top: 50%; width: 11px; height: 11px; transform: translate(-50%, -50%); border-radius: 50%; }
+.dot.plain { background: var(--plain); }
+.dot.penalty { background: var(--bg); border: 2.5px solid var(--penalty); }
+.dotplot .axis { min-height: 22px; }
+.dotplot .ticks { height: 22px; border-top: 1px solid var(--rule); }
+.dotplot .ticks span { position: absolute; top: 3px; transform: translateX(-50%); font-size: 12px; color: var(--muted); }
+.links li { margin-bottom: 0.4em; }
+footer.site { border-top: 1px solid var(--rule); font-family: var(--sans); font-size: 13px; color: var(--muted); }
+footer.site .wrap { padding-block: 20px 32px; }
+@media (max-width: 640px) {
+  body { font-size: 17px; }
+  .wrap { padding-inline: 16px; }
+  h1 { font-size: 1.7rem; }
+  .dotplot .row { grid-template-columns: 1fr; gap: 0; margin-bottom: 8px; }
+  .figures { grid-template-columns: 1fr; }
+  .dotplot .axis .lab { display: none; }
+}

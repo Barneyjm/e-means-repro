@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>e-means: reproduction notes</title>
+<meta name="description" content="What the e-means paper claims and what an independent re-implementation measured.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site"><div class="wrap"><a class="name" href="index.html">e-means-repro</a><nav><a href="index.html">Overview</a><a href="reproduction.html" aria-current=page>Reproduction</a><a href="extensions.html">Follow-up experiments</a><a href="https://github.com/Barneyjm/e-means-repro">Code</a></nav></div></header>
+<main class="wrap doc">
+<h1 id="e-means-repro">e-means-repro</h1>
+<p>An independent check of the paper <strong>"e-means: outperforming k-means (in one-tenth the epochs)"</strong>
+(Bessa, Mazaré, Szilvasy, Touvron, Picard, Douze, Jégou; <a href="https://arxiv.org/abs/2611.09501">arXiv 2611.09501</a>, Nov 2026),
+plus a version of the algorithm that drops into scikit-learn, and follow-up experiments on whether the same recipe
+helps search indexes, product quantization, Gaussian mixtures, topic models, hidden Markov models and recommender
+factorization. The longer follow-up write-up is <a href="extensions.html">EXTENSIONS.md</a>. Both are also on the project site,
+https://barneyjm.github.io/e-means-repro/.</p>
+<p>Everything here was written from the text of the paper. It is <strong>not the authors' code</strong>. Theirs is in the Faiss
+repository (<code>contrib/e_means</code>); the Faiss release installed here (1.16.0) does not ship it. I later read it and list the differences in
+<a href="extensions.html#12-my-implementation-against-the-authors-code">EXTENSIONS.md</a>, then ran it next to mine
+(<a href="extensions.html#14-recheck-with-the-authors-code-and-what-it-changed">section 14</a>).</p>
+<h2 id="what-the-paper-claims">What the paper claims</h2>
+<p>k-means groups vectors into <code>k</code> clusters. The standard method (Lloyd's algorithm) passes over the whole dataset about
+25 times. The paper says a mini-batch variant with a decaying running average, a cosine step schedule and a rule that
+re-seeds near-empty clusters reaches a <em>better</em> result in 2–3 passes.</p>
+<h2 id="what-i-measured">What I measured</h2>
+<p>SIFT1M (1,000,000 vectors, 128 dimensions), <code>k</code> = 16,384, random initialization everywhere.
+"MSE" is the mean squared distance from a vector to its nearest centre; lower is better.
+"Test" uses the 10,000 SIFT query vectors, which the clustering never sees.</p>
+<h3 id="gpu-pytorch-on-an-apple-m2-max-3-seeds">GPU (PyTorch on an Apple M2 Max), 3 seeds</h3>
+<p>Same distance kernel for both methods. Time is training only.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Passes</th>
+<th>Time</th>
+<th>Speedup</th>
+<th>Test MSE vs Lloyd</th>
+<th>Train MSE vs Lloyd</th>
+<th>Clusters with &lt; 10 points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lloyd</td>
+<td>25</td>
+<td>18.46 s</td>
+<td>–</td>
+<td>41,711</td>
+<td>38,260</td>
+<td>182</td>
+</tr>
+<tr>
+<td>e-means</td>
+<td>1</td>
+<td>0.83 s</td>
+<td>22×</td>
+<td>+0.80%</td>
+<td>+3.51%</td>
+<td>257</td>
+</tr>
+<tr>
+<td>e-means</td>
+<td>2</td>
+<td>1.62 s</td>
+<td>11.4×</td>
+<td>−0.09%</td>
+<td>+0.39%</td>
+<td>53</td>
+</tr>
+<tr>
+<td>e-means</td>
+<td>3</td>
+<td>2.33 s</td>
+<td>7.9×</td>
+<td>−0.37%</td>
+<td>−0.26%</td>
+<td>40</td>
+</tr>
+<tr>
+<td>e-means</td>
+<td>5</td>
+<td>3.86 s</td>
+<td>4.8×</td>
+<td>−0.44%</td>
+<td>−1.03%</td>
+<td>21</td>
+</tr>
+</tbody>
+</table></div>
+<p>The paper reports −0.35% at 3 passes for this dataset and <code>k</code> (its Table 5, against Flash-KMeans at 25 iterations).
+I measured −0.37% against my own Lloyd baseline. The paper says 1.4–2.6 passes are enough to match 25 Lloyd
+iterations; here it took 2 passes on test error and 3 on training error.</p>
+<p>Faiss's own CPU k-means, run as an outside reference for the baseline (25 iterations, no subsampling, seed 0),
+gave test 41,704 and train 38,256, which is within 0.02% of the Lloyd row above.</p>
+<p>With re-seeding of near-empty clusters switched off (100,000 vectors, <code>k</code> = 1,024), 182 clusters stayed empty and the
+error was about 2% worse, which matches the direction and rough size of the paper's ablation.</p>
+<h3 id="cpu-numpy--scipy--scikit-learn-only-seed-0">CPU (numpy + scipy + scikit-learn only), seed 0</h3>
+<p><code>emeans_sklearn.EMeans</code> against scikit-learn 1.9.1 on the same machine (12 cores).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Method</th>
+<th>Time</th>
+<th>Test MSE</th>
+<th>Train MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1M, k = 16,384</td>
+<td><code>KMeans(init="random", max_iter=25)</code></td>
+<td>112.7 s</td>
+<td>41,658</td>
+<td>38,254</td>
+</tr>
+<tr>
+<td></td>
+<td><code>EMeans(n_epochs=2)</code></td>
+<td>9.7 s</td>
+<td>41,661 (+0.01%)</td>
+<td>38,414 (+0.42%)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>EMeans(n_epochs=3)</code></td>
+<td>12.5 s</td>
+<td>41,581 (−0.19%)</td>
+<td>38,148 (−0.28%)</td>
+</tr>
+<tr>
+<td>1M, k = 4,096</td>
+<td><code>KMeans(init="random", max_iter=25)</code></td>
+<td>26.1 s</td>
+<td>45,626</td>
+<td>44,389</td>
+</tr>
+<tr>
+<td></td>
+<td><code>MiniBatchKMeans()</code></td>
+<td>42.0 s</td>
+<td>46,082 (+1.00%)</td>
+<td>45,335 (+2.13%)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>EMeans(n_epochs=3)</code></td>
+<td>4.2 s</td>
+<td>45,472 (−0.34%)</td>
+<td>44,375 (−0.03%)</td>
+</tr>
+<tr>
+<td>100k, k = 1,024 (3 seeds)</td>
+<td><code>KMeans(init="random", max_iter=25)</code></td>
+<td>0.81 s</td>
+<td>49,409</td>
+<td>49,525</td>
+</tr>
+<tr>
+<td></td>
+<td><code>KMeans()</code> (k-means++, to convergence)</td>
+<td>18.5 s</td>
+<td>49,293 (−0.24%)</td>
+<td>49,402 (−0.25%)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>MiniBatchKMeans()</code></td>
+<td>1.41 s</td>
+<td>50,872 (+2.96%)</td>
+<td>50,944 (+2.87%)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>EMeans(n_epochs=3)</code></td>
+<td>0.40 s</td>
+<td>49,313 (−0.19%)</td>
+<td>49,450 (−0.15%)</td>
+</tr>
+</tbody>
+</table></div>
+<p>So in plain numpy, three passes of e-means are 6–9× faster than scikit-learn's 25-iteration <code>KMeans</code> at a million
+vectors and end slightly better. scikit-learn's default k-means++ run to convergence is still a little better at
+100k, at 46× the time.</p>
+<p>On small data there is nothing to gain. On <code>load_digits</code> (1,797 × 64, k = 10) and 2-D blobs (10,000 points, k = 8),
+10 seeds each, everything finishes in about 10 ms, and <code>EMeans</code> with random initialization
+lands in a poor local minimum about as often as <code>KMeans</code> does (mean MSE 2.03 vs 1.90 on the blobs, 658 vs 658 on
+digits). The paper says its batch-size and step-size formulas are not tuned for tiny or low-dimensional data. Use
+this for large <code>n</code> and large <code>k</code>.</p>
+<h2 id="beyond-the-paper-does-the-recipe-carry-over">Beyond the paper: does the recipe carry over?</h2>
+<p>The paper's main results are clustering error. Its Appendix L also reports search recall for IVF indexes on eleven other
+datasets (e-means reaches the recall of a converged k-means sooner); it does not report scan cost or list balance.
+These are my own follow-up experiments, not claims from the paper. Raw logs
+and full tables are in <code>results/beyond/</code>. All runs: Apple M2 Max GPU, random initialization, SIFT1M unless stated.</p>
+<p>The three experiments below came first. A second, larger round is written up in <a href="extensions.html">EXTENSIONS.md</a>:</p>
+<ul>
+<li>Search indexes on six datasets, checked in a real Faiss index against Faiss's own k-means.</li>
+<li>A dozen old ideas tried on top of the recipe. One helped on some data: a cluster-size penalty
+  (<code>EMeans(balance=0.3)</code>), worth roughly 3–10% of search cost on SIFT, news and landmark embeddings, nothing on
+  question embeddings, and a loss on Last.fm. Its one large result (60–80% on the New York Times dataset) comes
+  from duplicate rows in that file.</li>
+<li>The recipe applied to NMF and hidden Markov models (works), ALS (partly), LDA (no real gain), PageRank (does not apply).</li>
+<li><code>OnlineGaussianMixture</code>, a scikit-learn-style mixture estimator: about 250× faster than <code>GaussianMixture</code> at 1M rows.</li>
+<li>More passes: gains shrink after three and are nearly flat after eight.</li>
+<li>A comparison with the authors' released code, which exposed one bug in mine and one rule I had missed.</li>
+<li>A recheck that runs the authors' code next to mine in real Faiss indexes (EXTENSIONS.md section 14). It agrees
+  with the paper, found a second bug in mine (fixed), and narrowed the size penalty's claim to the lines above.</li>
+</ul>
+<h3 id="1-does-a-search-index-built-on-the-centroids-get-better">1. Does a search index built on the centroids get better?</h3>
+<p>The usual reason to run k-means at this scale is a vector-search index (IVF): each database vector is filed under its
+nearest centroid, and a query scans only the nearest few lists. What matters is how many vectors you must scan to
+reach a given recall. I filed the 1M base vectors under each set of centroids and searched with 100,000 held-out
+vectors (the SIFT learn set, with exact neighbours recomputed). 5 seeds; change is against Lloyd 25, paired by seed.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>k</th>
+<th>Method</th>
+<th>Train time</th>
+<th>Test MSE</th>
+<th>Vectors scanned for 95% recall@1</th>
+<th>for 95% recall@10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1,024</td>
+<td>Lloyd 25</td>
+<td>1.41 s</td>
+<td>50,765</td>
+<td>14,870</td>
+<td>19,682</td>
+</tr>
+<tr>
+<td></td>
+<td>Lloyd 10</td>
+<td>0.57 s</td>
+<td>+0.42%</td>
+<td>+3.6% ± 0.8</td>
+<td>+3.7% ± 0.4</td>
+</tr>
+<tr>
+<td></td>
+<td>e-means 1 pass</td>
+<td>0.14 s</td>
+<td>+0.49%</td>
+<td>+4.9% ± 1.3</td>
+<td>+4.2% ± 0.8</td>
+</tr>
+<tr>
+<td></td>
+<td>e-means 3 passes</td>
+<td>0.30 s</td>
+<td>−0.09%</td>
+<td>−0.1% ± 1.2</td>
+<td>−0.2% ± 0.3</td>
+</tr>
+<tr>
+<td></td>
+<td>e-means 5 passes</td>
+<td>0.56 s</td>
+<td>−0.12%</td>
+<td>−0.9% ± 0.5</td>
+<td>−1.1% ± 0.6</td>
+</tr>
+<tr>
+<td>4,096</td>
+<td>Lloyd 25</td>
+<td>4.86 s</td>
+<td>45,535</td>
+<td>7,691</td>
+<td>11,049</td>
+</tr>
+<tr>
+<td></td>
+<td>Lloyd 10</td>
+<td>1.95 s</td>
+<td>+0.35%</td>
+<td>+2.5% ± 1.2</td>
+<td>+3.4% ± 0.3</td>
+</tr>
+<tr>
+<td></td>
+<td>e-means 1 pass</td>
+<td>0.29 s</td>
+<td>+0.62%</td>
+<td>+6.7% ± 1.2</td>
+<td>+5.9% ± 0.6</td>
+</tr>
+<tr>
+<td></td>
+<td>e-means 3 passes</td>
+<td>0.68 s</td>
+<td>−0.06%</td>
+<td>+0.4% ± 0.9</td>
+<td>+0.6% ± 0.5</td>
+</tr>
+<tr>
+<td></td>
+<td>e-means 5 passes</td>
+<td>1.13 s</td>
+<td>−0.19%</td>
+<td>−1.3% ± 1.3</td>
+<td>−1.2% ± 0.4</td>
+</tr>
+<tr>
+<td>16,384</td>
+<td>Lloyd 25</td>
+<td>18.47 s</td>
+<td>41,694</td>
+<td>3,945</td>
+<td>6,144</td>
+</tr>
+<tr>
+<td></td>
+<td>Lloyd 10</td>
+<td>7.40 s</td>
+<td>+0.11%</td>
+<td>+3.0% ± 0.7</td>
+<td>+2.5% ± 0.2</td>
+</tr>
+<tr>
+<td></td>
+<td>e-means 1 pass</td>
+<td>0.82 s</td>
+<td>+0.82%</td>
+<td>+11.7% ± 2.0</td>
+<td>+10.7% ± 0.4</td>
+</tr>
+<tr>
+<td></td>
+<td>e-means 3 passes</td>
+<td>2.33 s</td>
+<td>−0.32%</td>
+<td>−3.6% ± 1.3</td>
+<td>−3.0% ± 0.4</td>
+</tr>
+<tr>
+<td></td>
+<td>e-means 5 passes</td>
+<td>3.86 s</td>
+<td>−0.35%</td>
+<td>−6.0% ± 0.6</td>
+<td>−5.3% ± 0.5</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Three passes give an index as good as 25 Lloyd iterations at <code>k</code> = 1,024 and 4,096, and one that scans 3–4% fewer
+  vectors at <code>k</code> = 16,384 (6% fewer at five passes), for 5–8× less training time.</li>
+<li>One pass is not enough: the index scans 5–12% more.</li>
+<li>A clustering-error gap of a few tenths of a percent turns into a scan-cost gap about ten times larger.</li>
+<li>Lloyd with 10 iterations (the Faiss default for index training) scans about 3% more than Lloyd 25 and takes
+  longer than three e-means passes.</li>
+<li>Check on the method: for one set of centroids a real <code>faiss.IndexIVFFlat</code> returned the same recall and the same
+  number of distance computations as my calculation, at every setting tried (<code>experiments/faiss_ivf_check.py</code>).</li>
+</ul>
+<h3 id="2-product-quantization-codebooks-small-k-low-dimension">2. Product-quantization codebooks (small <code>k</code>, low dimension)</h3>
+<p>16 sub-vectors of 8 dimensions, 256 codes each. This is outside the range the paper's formulas were fitted on.
+Error is the held-out reconstruction error summed over the 16 codebooks; 3 seeds.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Trained on</th>
+<th>Lloyd 10</th>
+<th>Lloyd 25</th>
+<th>Lloyd 100</th>
+<th>e-means 1</th>
+<th>e-means 2</th>
+<th>e-means 3</th>
+<th>e-means 5</th>
+<th>e-means 10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1M vectors</td>
+<td>+2.02%</td>
+<td>10,555</td>
+<td>−1.00%</td>
+<td>+0.77%</td>
+<td>−0.34%</td>
+<td>−0.73%</td>
+<td>−0.57%</td>
+<td>−1.00%</td>
+</tr>
+<tr>
+<td>time</td>
+<td>2.7 s</td>
+<td>7.1 s</td>
+<td>30.9 s</td>
+<td>1.9 s</td>
+<td>1.7 s</td>
+<td>2.4 s</td>
+<td>2.9 s</td>
+<td>5.4 s</td>
+</tr>
+<tr>
+<td>100k vectors</td>
+<td>+2.11%</td>
+<td>10,441</td>
+<td>−0.99%</td>
+<td>+2.95%</td>
+<td>+0.49%</td>
+<td>−0.25%</td>
+<td>−0.87%</td>
+<td>−0.72%</td>
+</tr>
+<tr>
+<td>time</td>
+<td>0.70 s</td>
+<td>1.70 s</td>
+<td>6.72 s</td>
+<td>0.72 s</td>
+<td>0.73 s</td>
+<td>1.06 s</td>
+<td>1.05 s</td>
+<td>1.23 s</td>
+</tr>
+</tbody>
+</table></div>
+<p>Three passes beat Lloyd 25 here too (seed spread is under 0.1%), and ten passes equal Lloyd 100 on the 1M set.
+The result is not monotonic in the number of passes (5 is worse than 3 on 1M), because the formula changes the
+batch size with the pass count. Timings at this size are dominated by per-call overhead. The authors' code uses
+one eighth of this batch size in low dimension; with that rule three passes beat Lloyd 100 and every extra pass
+helps (<a href="extensions.html#6-product-quantization">EXTENSIONS.md</a>).</p>
+<h3 id="3-the-same-recipe-for-gaussian-mixtures-em">3. The same recipe for Gaussian mixtures (EM)</h3>
+<p>k-means is the hard-assignment special case of fitting a Gaussian mixture. I applied the same five ingredients to
+EM for diagonal-covariance mixtures (<code>experiments/gmm_torch.py</code>): per-batch updates of decayed totals (weight, sum,
+sum of squares), the cosine step curve, revival of starved components every 5 batches, a final clean-up from the
+plain totals of the last pass, and the paper's batch-size and step-size formulas unchanged.</p>
+<p>Score: mean log-likelihood per held-out vector (higher is better). 1M training vectors, 64 dimensions, 3 seeds.
+<code>sift64</code> is SIFT reduced to 64 whitened PCA dimensions. <code>synth</code> and <code>skewed</code> are drawn from known 256-component
+mixtures (near-equal and very unequal component weights), so the best possible score is known.
+My full-pass EM matches scikit-learn's <code>GaussianMixture</code> to 5 decimals from the same start.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Best possible</th>
+<th>EM 25 passes</th>
+<th>EM 100</th>
+<th>EM 200</th>
+<th>Online 1 pass</th>
+<th>Online 3</th>
+<th>Online 10</th>
+<th>EM passes needed to match online 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sift64, K = 256</td>
+<td>–</td>
+<td>−80.971</td>
+<td>−80.838</td>
+<td>−80.820</td>
+<td>−81.227</td>
+<td>−80.877</td>
+<td>−80.838</td>
+<td>50–57</td>
+</tr>
+<tr>
+<td>time</td>
+<td></td>
+<td>1.95 s</td>
+<td>7.80 s</td>
+<td>15.6 s</td>
+<td>0.13 s</td>
+<td>0.31 s</td>
+<td>0.96 s</td>
+<td></td>
+</tr>
+<tr>
+<td>sift64, K = 1,024</td>
+<td>–</td>
+<td>−78.270</td>
+<td>−78.130</td>
+<td>−78.110</td>
+<td>−78.699</td>
+<td>−78.196</td>
+<td>−78.181</td>
+<td>38–44</td>
+</tr>
+<tr>
+<td>time</td>
+<td></td>
+<td>8.06 s</td>
+<td>32.1 s</td>
+<td>64.2 s</td>
+<td>0.45 s</td>
+<td>1.11 s</td>
+<td>3.17 s</td>
+<td></td>
+</tr>
+<tr>
+<td>synth, K = 256</td>
+<td>−87.780</td>
+<td>−89.240</td>
+<td>−89.183</td>
+<td>−89.147</td>
+<td>−89.659</td>
+<td>−88.951</td>
+<td>−88.869</td>
+<td>not reached in 200</td>
+</tr>
+<tr>
+<td>skewed, K = 256</td>
+<td>−86.758</td>
+<td>−87.454</td>
+<td>−87.431</td>
+<td>−87.429</td>
+<td>−88.118</td>
+<td>−87.313</td>
+<td>−87.255</td>
+<td>not reached in 200</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>On SIFT, three online passes equal 40–57 passes of ordinary EM, about 12× less time for the same quality.
+  With many more passes ordinary EM ends slightly ahead (by 0.04–0.07 at 100 passes).</li>
+<li>On both synthetic sets the online version ends at a <em>better</em> solution than ordinary EM reaches in 200 passes,
+  because revival moves components out of crowded regions. Neither gets close to the true model.</li>
+<li>One pass is not enough, as with k-means.</li>
+</ul>
+<p>Which ingredients matter (3 passes; change in held-out log-likelihood when one thing is altered):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Change</th>
+<th>sift64 K=256</th>
+<th>sift64 K=1,024</th>
+<th>synth</th>
+<th>skewed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Constant step instead of cosine</td>
+<td>−0.065</td>
+<td>−0.399</td>
+<td>+0.135</td>
+<td>−0.204</td>
+</tr>
+<tr>
+<td>No revival</td>
+<td>−0.101</td>
+<td>−0.518</td>
+<td>−0.460</td>
+<td>−0.198</td>
+</tr>
+<tr>
+<td>Paper's tiny split (±2⁻⁷) instead of ±0.5 standard deviations</td>
+<td>+0.005</td>
+<td>+0.004</td>
+<td>−0.252</td>
+<td>−0.152</td>
+</tr>
+<tr>
+<td>No last-pass clean-up</td>
+<td>−0.004</td>
+<td>−0.003</td>
+<td>−0.030</td>
+<td>−0.509</td>
+</tr>
+<tr>
+<td>Revival threshold 1% instead of 10%</td>
+<td>−0.001</td>
+<td>−0.005</td>
+<td>−0.149</td>
+<td>−0.073</td>
+</tr>
+<tr>
+<td>Textbook step rule <code>(t+2)^−κ</code>, best κ, no revival</td>
+<td>−0.218</td>
+<td>−0.409</td>
+<td>−0.377</td>
+<td>−0.164</td>
+</tr>
+</tbody>
+</table></div>
+<p>Revival is the ingredient that matters everywhere. The cosine curve helps in three of four cases. The last-pass
+clean-up matters only when component weights are very unequal.</p>
+<p>Three further checks:</p>
+<ul>
+<li><strong>The paper's formulas, fitted for k-means, are close to the best settings but not on them.</strong> A grid on 100k
+  vectors (<code>results/beyond/gmm_grid_100k.md</code>) shows a ridge where batch size and step size shrink together.
+  A 4× smaller batch with a 4× smaller step, tested on 1M, was better at 2–10 passes for K = 1,024 (+0.02) and
+  on synth at 3 passes (+0.09), mixed for sift64 K = 256 (+0.03 to −0.02), and 10–80% slower. I did not fit a new
+  formula.</li>
+<li><strong>The textbook online-EM step rule is not the main problem; the missing revival is.</strong> Given small batches the
+  textbook rule without revival is far worse (−0.2 to −3.0 on sift64, −0.4 to −4.4 on synth). With revival added
+  and its best batch size it comes within 0.04 of the cosine recipe on sift64 at 2–4× the time, and beats the
+  default recipe on synth (+0.17 at 5× the time).</li>
+<li><strong>scikit-learn with its usual settings</strong> (<code>GaussianMixture</code>, CPU, k-means start, to convergence; one seed, different
+  hardware and precision, so the times are not a like-for-like speed comparison): sift64 K = 256 −80.871 after 65
+  passes and 526 s; synth −89.292 (160 s); skewed −87.514 (163 s). Three online passes from a random start score
+  −80.877, −88.951 and −87.313.</li>
+</ul>
+<h2 id="what-i-did-not-test">What I did not test</h2>
+<ul>
+<li>Billion-vector runs, and the approximate (IVF) assignment the paper uses there.</li>
+<li>The paper's GPU comparison against Flash-KMeans, or any k-means++ baseline at 1M.</li>
+<li>The paper's own benchmark datasets other than SIFT (EXTENSIONS.md adds five more public sets for search).</li>
+<li>The CPU numbers at 1M are one seed each.</li>
+<li>An end-to-end index with compressed vectors (IVF-PQ), graph indexes, or real query logs.</li>
+<li>Mixtures with full covariance matrices, a downstream task that uses the mixture, or more than 3 seeds.</li>
+<li>Ordinary EM from a k-means start on the GPU (the scikit-learn row above is the only such run).</li>
+</ul>
+<h2 id="use-it">Use it</h2>
+<pre><code class="language-python">from emeans_sklearn import EMeans
+
+km = EMeans(n_clusters=4096, n_epochs=3, random_state=0).fit(X)   # X: (n_samples, n_features) float32 or float64
+km.cluster_centers_, km.labels_, km.inertia_
+km.predict(X_new); km.transform(X_new); km.score(X_new)
+
+EMeans(n_clusters=4096, balance=0.3)        # not in the paper: a size penalty; helps on some data, hurts on other (EXTENSIONS.md, sections 5 and 14)
+
+from online_gmm_sklearn import OnlineGaussianMixture               # same recipe for diagonal Gaussian mixtures (section 7)
+gm = OnlineGaussianMixture(n_components=256, n_epochs=3, random_state=0).fit(X)
+gm.predict_proba(X_new); gm.score(X_new)
+</code></pre>
+<p><code>pip install -e .</code> installs it (numpy, scipy, scikit-learn ≥ 1.6). It follows the scikit-learn estimator
+contract: it works in <code>Pipeline</code>, <code>clone</code>, <code>GridSearchCV</code> and passes scikit-learn's <code>check_estimator</code> suite
+(<code>pytest</code>: 54 passed, 1 skipped for <code>EMeans</code>; 89 passed, 2 skipped for <code>OnlineGaussianMixture</code>). Batch size and step
+size default to the paper's scaling laws (one eighth of the batch for 16 features or fewer, as in the authors' code)
+and can be overridden. Dense input only.</p>
+<p>How it is built from standard parts:</p>
+<ul>
+<li><strong>Assignment</strong> (nearest centre): BLAS matrix multiply in cache-sized chunks, run across a thread pool. numpy
+  releases the GIL in the multiply, subtract and argmax, so this scales across cores without compiled code.</li>
+<li><strong>Per-cluster sums</strong>: a <code>scipy.sparse</code> one-hot matrix times the batch.</li>
+<li><strong>Everything else</strong> (running averages, cosine schedule, re-seeding, final averaging) is a few lines of numpy.</li>
+</ul>
+<h2 id="the-algorithm-in-brief">The algorithm in brief</h2>
+<p>For each cluster keep a decayed count <code>N</code> and a decayed sum <code>S</code>; the centre is <code>S / N</code>. For each mini-batch:</p>
+<ol>
+<li>Assign each vector in the batch to its nearest centre.</li>
+<li><code>N ← (1 − α)·N + α·(batch count)</code>, <code>S ← (1 − α)·S + α·(batch sum)</code>.</li>
+<li><code>α</code> follows a cosine from <code>α0</code> down to <code>0.1·α0</code> over the whole run.</li>
+<li>Every 5 batches, any cluster whose <code>N</code> is below 10% of the average takes half of a large cluster, picked with
+   probability proportional to <code>N</code>. The two halves are nudged apart by ±1e-4 (the authors' code; the paper says ±2⁻⁷).</li>
+<li>At the end, each centre is replaced by the plain average of the vectors it won during the last pass.</li>
+</ol>
+<p>Batch size and <code>α0</code> come from the paper's Table 2:
+<code>B = 0.035·k^0.13·n^0.88·T^0.81</code> (÷8 above 2M vectors, rounded to a power of two) and
+<code>α0 = 0.824·k^−0.46·B^0.90·n^−0.45·T^−0.11</code>.</p>
+<h2 id="reproduce">Reproduce</h2>
+<pre><code class="language-sh">pip install -e &quot;.[experiments,test]&quot;
+sh experiments/get_data.sh                                        # SIFT1M into data/sift (about 160 MB)
+python experiments/run.py data/sift results/my_gpu.log 16384 0,1,2     # GPU table
+python experiments/bench_sklearn.py data/sift results/my_cpu.log all   # CPU table
+python experiments/summarize.py results/my_cpu.log
+python experiments/faiss_baseline.py data/sift faiss_centroids.npy 16384   # about 13 minutes on 12 cores
+python experiments/score_centroids.py data/sift faiss_centroids.npy
+</code></pre>
+<p>The follow-up experiments (<code>D=data/sift</code>):</p>
+<pre><code class="language-sh">python experiments/exact_neighbours.py $D learn_gt10.npy                       # exact neighbours of the 100k learn vectors
+python experiments/ivf_recall.py $D ivf.log 16384 0,1,2,3,4 learn_gt10.npy      # search-index table (also 1024, 4096)
+python experiments/summarize_ivf.py ivf.log
+python experiments/pq_codebooks.py $D pq.log base 0,1,2                        # product quantization
+python experiments/run_gmm.py $D gmm.log sift64 256 0,1,2 all                  # mixtures: sift64 | synth | skewed
+python experiments/summarize_gmm.py gmm.log
+python experiments/gmm_grid.py $D grid.log sift64 256 100000 0,1 grid          # settings grid; also: classic, rule
+python experiments/gmm_sklearn_ref.py $D sk.log sift64 256 0                   # about 18 minutes
+</code></pre>
+<p>The experiments in EXTENSIONS.md (<code>B</code>, <code>Q</code>, <code>G</code> = base vectors, held-out queries, exact neighbours as <code>.npy</code>/<code>.fvecs</code>):</p>
+<pre><code class="language-sh">python experiments/exact_nn.py $B $Q $G                                          # exact neighbours for any dataset
+python experiments/ivf_sweep.py $B $Q $G sweep.log 16384 0,1,2 lloyd25,emeans1,emeans3,emeans10   # passes
+python experiments/run_lab.py $B $Q $G lab.log 4096 0,1,2 experiments/lab_round1.txt   # the old-ideas tournament
+python experiments/run_lab.py $B $Q $G lab.log 4096 0,1,2 experiments/lab_pilot.txt    # penalty-free pilots ...
+python experiments/run_lab.py $B $Q $G lab.log 4096 0,1,2 experiments/lab_lambda.txt   # ... and the strength grid
+python experiments/fit_lambda_rule.py lab.log; python experiments/summarize_search.py lab.log
+LAB_SAVE=cent python experiments/run_lab.py $B $Q $G show.log 4096 0 experiments/lab_show.txt   # save centroids
+python experiments/faiss_kmeans.py $B cent/name_k4096 4096 0 25 ivf &amp;&amp; python experiments/faiss_ivf_bench.py $B $Q $G faiss.log cent/*.npy
+python experiments/bench_balance_cpu.py $B $Q cpu.log cent 4096 0                 # scikit-learn KMeans vs EMeans(balance=...)
+python experiments/gmm_lab.py data/sift gmmlab.log synth 256 0,1,2 experiments/gmm_lab_round1.txt
+python experiments/bench_gmm_sklearn.py                                           # usage in the file: OnlineGaussianMixture vs scikit-learn
+</code></pre>
+<p>The topic-model, hidden-Markov, factorization and PageRank scripts (<code>lda_*.py</code>, <code>nmf_*.py</code>, <code>hmm_*.py</code>, <code>als_*.py</code>,
+<code>pagerank_sweeps.py</code>) each print their usage.</p>
+<p>Faiss and PyTorch each ship their own OpenMP runtime and cannot share a process, which is why the Faiss baseline and
+its scoring are two commands. Two processes on one Apple GPU at the same time can also crash each other
+(<code>EMEANS_DEVICE=cpu</code> forces the CPU).</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>emeans_sklearn.py</code></td>
+<td>The scikit-learn k-means estimator (<code>EMeans</code>)</td>
+</tr>
+<tr>
+<td><code>online_gmm_sklearn.py</code></td>
+<td>The scikit-learn-style mixture estimator (<code>OnlineGaussianMixture</code>)</td>
+</tr>
+<tr>
+<td><code>EXTENSIONS.md</code></td>
+<td>Write-up of the follow-up experiments</td>
+</tr>
+<tr>
+<td><code>experiments/emeans_torch.py</code></td>
+<td>GPU version used for the first table</td>
+</tr>
+<tr>
+<td><code>experiments/emeans_v1.py</code></td>
+<td>First, unoptimized version (kept so the validation run can be repeated)</td>
+</tr>
+<tr>
+<td><code>experiments/bench_kernels.py</code></td>
+<td>Distance-kernel timings behind the optimized version</td>
+</tr>
+<tr>
+<td><code>experiments/ivf_recall.py</code>, <code>faiss_ivf_check.py</code></td>
+<td>Search-index evaluation and its check against a real Faiss index</td>
+</tr>
+<tr>
+<td><code>experiments/gmm_torch.py</code></td>
+<td>Full-pass EM and the online version for diagonal Gaussian mixtures</td>
+</tr>
+<tr>
+<td><code>experiments/pq_codebooks.py</code></td>
+<td>Product-quantization test</td>
+</tr>
+<tr>
+<td><code>experiments/emeans_lab.py</code>, <code>run_lab.py</code></td>
+<td>e-means with nine old ideas as switches, and its runner (search cost, MSE)</td>
+</tr>
+<tr>
+<td><code>experiments/faiss_ivf_bench.py</code>, <code>faiss_kmeans.py</code></td>
+<td>Real Faiss index and Faiss k-means for outside checks</td>
+</tr>
+<tr>
+<td><code>experiments/centroid_sets.py</code>, <code>prep_h5.py</code>, <code>summarize_check.py</code>, <code>summarize_check_targets.py</code></td>
+<td>Recheck against the authors' released code (<code>EXTENSIONS.md</code> section 14; logs in <code>results/check/</code>)</td>
+</tr>
+<tr>
+<td><code>experiments/lda_torch.py</code>, <code>nmf_torch.py</code>, <code>hmm_torch.py</code>, <code>als_torch.py</code></td>
+<td>The recipe applied to topic models, NMF, hidden Markov models and ALS</td>
+</tr>
+<tr>
+<td><code>results/</code></td>
+<td>Raw logs for every number above (<code>results/beyond/</code> for the follow-up experiments)</td>
+</tr>
+<tr>
+<td><code>site/build.py</code>, <code>docs/</code></td>
+<td>The GitHub Pages site, generated from this README, EXTENSIONS.md and <code>results/check/</code> (<code>pip install -e ".[site]"</code>, then <code>python site/build.py</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Hardware: Apple M2 Max, 64 GB, 12 cores; PyTorch 2.15 (MPS), faiss-cpu 1.16.0, numpy 2.5, scipy 1.18.</li>
+<li>The paper's MSE values are on a different scale from mine, so only relative gaps are compared.</li>
+<li>A fused <code>addmm</code> distance kernel made the GPU code 3.8× faster than the broadcast form, with identical
+  assignments. Half precision was another 13% faster but gave worse test error at 3 and 5 passes, so it is off.</li>
+<li><code>results/v1_k16384.log</code> times include scoring passes; use <code>results/optimized_k16384.log</code> for timings.</li>
+</ul>
+<h2 id="credits-and-license">Credits and license</h2>
+<p>The method is the paper authors'. The paper is CC BY 4.0. SIFT1M is from the
+<a href="http://corpus-texmex.irisa.fr/">TEXMEX corpus</a> (Jégou, Douze, Schmid) and is not redistributed here.
+Code in this repository: MIT.</p>
+</main>
+<footer class="site"><div class="wrap">An independent reproduction. The method is the work of the paper's authors
+(<a href="https://arxiv.org/abs/2611.09501">arXiv 2611.09501</a>); this site is not affiliated with them. Code MIT,
+<a href="https://github.com/Barneyjm/e-means-repro">github.com/Barneyjm/e-means-repro</a>. Built from the repository's Markdown by <code>site/build.py</code>.</div></footer>
+</body>
+</html>

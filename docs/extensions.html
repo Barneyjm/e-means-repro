@@ -1,0 +1,2474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>e-means: follow-up experiments</title>
+<meta name="description" content="Follow-up experiments on the e-means recipe, and a recheck against the authors&#x27; code.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site"><div class="wrap"><a class="name" href="index.html">e-means-repro</a><nav><a href="index.html">Overview</a><a href="reproduction.html">Reproduction</a><a href="extensions.html" aria-current=page>Follow-up experiments</a><a href="https://github.com/Barneyjm/e-means-repro">Code</a></nav></div></header>
+<main class="wrap doc">
+<h1 id="beyond-the-paper">Beyond the paper</h1>
+<p>Follow-up experiments on top of the reproduction in the README. None of this is from the e-means paper; the
+ideas tested are old ones from the vector-quantization, neural-codebook and statistics literature, and prior
+art is named where I found it. Everything ran on one Apple M2 Max (GPU through PyTorch, 12 CPU cores) on
+2026-11-10/11. Raw logs and full tables are in <code>results/beyond/</code>; scripts are in <code>experiments/</code>.</p>
+<p>Contents:</p>
+<ol>
+<li><a href="#1-summary">Summary</a></li>
+<li><a href="#2-do-more-passes-keep-helping">Do more passes keep helping?</a></li>
+<li><a href="#3-search-indexes-on-six-datasets">Search indexes on six datasets</a></li>
+<li><a href="#4-old-ideas-the-recipe-does-not-use">Old ideas the recipe does not use</a></li>
+<li><a href="#5-a-size-penalty">A size penalty</a></li>
+<li><a href="#6-product-quantization">Product quantization</a></li>
+<li><a href="#7-gaussian-mixtures">Gaussian mixtures</a></li>
+<li><a href="#8-topic-models-lda-and-nmf">Topic models (LDA) and NMF</a></li>
+<li><a href="#9-hidden-markov-models">Hidden Markov models</a></li>
+<li><a href="#10-recommender-factorization-als">Recommender factorization (ALS)</a></li>
+<li><a href="#11-pagerank">PageRank</a></li>
+<li><a href="#12-my-implementation-against-the-authors-code">My implementation against the authors' code</a></li>
+<li><a href="#13-caveats">Caveats</a></li>
+<li><a href="#14-recheck-with-the-authors-code-and-what-it-changed">Recheck with the authors' code, and what it changed</a></li>
+</ol>
+<h2 id="1-summary">1. Summary</h2>
+<p>Two questions. Does the recipe (update per batch, forgetting running totals, a big-then-small step curve, timed
+repair, a final clean-up, settings from formulas) carry over to other classic algorithms? And are there old
+ideas the recipe leaves out that would add to it?</p>
+<p><strong>Where the recipe carried over</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Result</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>k-means for search indexes (6 datasets)</td>
+<td>3 passes ≈ 25 Lloyd passes at small <code>k</code>, 4–9% less scanning at <code>k</code> = 16,384; 49% less on New York Times embeddings, where 21% of the rows are exact copies (section 14). One case (text embeddings, <code>k</code> = 16,384) where it is 9% worse.</td>
+<td>works, with one exception</td>
+</tr>
+<tr>
+<td>Product quantization</td>
+<td>3 passes beat 100 Lloyd passes once the authors' low-dimension batch rule is used</td>
+<td>works</td>
+</tr>
+<tr>
+<td>Gaussian mixtures</td>
+<td>CPU estimator: 250× faster than scikit-learn at 1M rows for the same score; needs k-means++ seeds on well-separated clusters</td>
+<td>works</td>
+</tr>
+<tr>
+<td>NMF</td>
+<td>3 passes ≈ 34–79 full passes; within 0.1% of scikit-learn's <code>NMF</code> in 4% of the time</td>
+<td>works</td>
+</tr>
+<tr>
+<td>Hidden Markov models</td>
+<td>1 pass ≈ 40–80 Baum-Welch passes, but only when the formulas are fed the number of symbols; the step curve, revival and clean-up add nothing</td>
+<td>works after re-mapping</td>
+</tr>
+<tr>
+<td>Recommender ALS</td>
+<td>nothing with the formulas; with a hand-picked batch and step, 5× less time to the same error, and the gain is partly regularization</td>
+<td>partly</td>
+</tr>
+<tr>
+<td>Topic models (LDA)</td>
+<td>the published step is 4–8× too large; tuned, it ties the 2010 online rule</td>
+<td>no real gain</td>
+</tr>
+<tr>
+<td>PageRank</td>
+<td>only "use fresh values" applies, which is Gauss-Seidel</td>
+<td>does not apply</td>
+</tr>
+</tbody>
+</table></div>
+<p>The pattern: the recipe pays where the full-pass method needs many passes and gets stuck (k-means, mixtures,
+hidden Markov models, NMF). It pays little where the full-pass method already converges in ten passes (LDA,
+ALS) or where there is no noise to average (PageRank). The fitted formulas are specific to k-means: outside it,
+the batch size and step had to be re-chosen in every case but NMF and mixtures.</p>
+<p><strong>Old ideas added to the recipe</strong></p>
+<ul>
+<li>A dozen ideas tested on k-means. All but one did nothing, hurt, or gave no more than the same time spent on
+  an extra pass (section 4). The paper's own choices held up.</li>
+<li>The exception, a cluster-size penalty from 1988, helps search indexes on some data and hurts on other data.
+  Rechecked with the authors' code in real Faiss indexes (section 14): roughly 3–10% fewer vectors scanned on
+  SIFT, news and landmark embeddings at the larger <code>k</code>, nothing on question embeddings, and on Last.fm at
+  <code>k</code> = 4,096 it gives back most of what plain e-means gains. The 60–80% saving first reported here is real
+  for the New York Times dataset as distributed, but it comes from 146 groups of duplicate rows that are the
+  nearest neighbour of 29% of the queries; with the copies removed there is no saving. It is in the estimator
+  as <code>EMeans(balance=0.3)</code>, off by default; measure before using it.</li>
+<li>A rule for the penalty's strength predicts the best value on three datasets, is wrong on one and cannot be
+  fitted on another.</li>
+<li>For mixtures, two annealing ideas made things worse. For hidden Markov models, growing the state count did.</li>
+</ul>
+<p><strong>Corrections to earlier statements in this repository</strong></p>
+<ul>
+<li>The paper does report search recall (its Appendix L), contrary to what the README first said.</li>
+<li>The authors' code is public; reading it exposed one bug in mine (a step of exactly 1) and one rule I had
+  missed (smaller batches in low dimension). Both are fixed and the affected runs redone.</li>
+<li>Running the authors' code (section 14) exposed a second bug in mine: the split offset used at revival, which
+  section 12 called negligible. On Last.fm it made my estimator's lists far more uneven than theirs. Fixed.</li>
+<li>The size penalty's large New York Times result was presented as a property of "clumpy" data. It is a
+  property of duplicate rows (section 14).</li>
+</ul>
+<h2 id="2-do-more-passes-keep-helping">2. Do more passes keep helping?</h2>
+<p>Not in a straight line. Each doubling of the passes buys less: big steps up to three passes, about two more
+points from three to five, and about two more from five to twenty-five.
+SIFT1M, <code>k</code> = 16,384, 100,000 held-out queries; change against 25 Lloyd passes (3 seeds; 2 for 15 and 25):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Passes</th>
+<th>Train time</th>
+<th>Vectors scanned for 95% recall@1</th>
+<th>for 95% recall@10</th>
+<th>Test MSE</th>
+<th>Train MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lloyd 25</td>
+<td>18.9 s</td>
+<td>3,948</td>
+<td>6,158</td>
+<td>42,515</td>
+<td>38,260</td>
+</tr>
+<tr>
+<td>Lloyd 50 / 100 (1 seed)</td>
+<td>37 s / 74 s</td>
+<td>0.0% / +0.2%</td>
+<td>−0.3% / −0.2%</td>
+<td>−0.02%</td>
+<td>−0.09%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0.9 s</td>
+<td>+11.6% ± 0.7</td>
+<td>+10.8% ± 0.4</td>
+<td>+0.90%</td>
+<td>+3.51%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1.7 s</td>
+<td>−0.4% ± 0.2</td>
+<td>−1.1% ± 0.1</td>
+<td>−0.09%</td>
+<td>+0.39%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2.4 s</td>
+<td>−3.8% ± 0.1</td>
+<td>−3.2% ± 0.2</td>
+<td>−0.20%</td>
+<td>−0.26%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3.2 s</td>
+<td>−4.2% ± 0.6</td>
+<td>−4.5% ± 0.3</td>
+<td>−0.43%</td>
+<td>−0.73%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>4.0 s</td>
+<td>−6.0% ± 0.4</td>
+<td>−5.3% ± 0.3</td>
+<td>−0.42%</td>
+<td>−1.03%</td>
+</tr>
+<tr>
+<td>6</td>
+<td>4.4 s</td>
+<td>−5.1% ± 0.3</td>
+<td>−4.8% ± 0.4</td>
+<td>−0.22%</td>
+<td>−0.96%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>5.8 s</td>
+<td>−6.3% ± 0.7</td>
+<td>−6.1% ± 0.2</td>
+<td>−0.32%</td>
+<td>−1.30%</td>
+</tr>
+<tr>
+<td>10</td>
+<td>7.3 s</td>
+<td>−6.3% ± 0.6</td>
+<td>−6.8% ± 0.5</td>
+<td>−0.32%</td>
+<td>−1.51%</td>
+</tr>
+<tr>
+<td>15</td>
+<td>9.3 s</td>
+<td>−7.5% ± 0.8</td>
+<td>−6.7% ± 0.2</td>
+<td>−0.43%</td>
+<td>−1.45%</td>
+</tr>
+<tr>
+<td>25</td>
+<td>15.7 s</td>
+<td>−8.2% ± 0.5</td>
+<td>−8.6% ± 0.1</td>
+<td>−0.45%</td>
+<td>−1.89%</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Held-out error stops improving at four passes (about −0.4%). Training error keeps falling, and search cost
+  follows the training error, because the database vectors of an index <em>are</em> the training vectors.</li>
+<li>The curve is bumpy because the published formula doubles the batch size at 3, 6 and 15 passes; the first
+  pass count on a larger batch (6, 15) is no better than the one before it.</li>
+<li>More Lloyd passes do nothing: 50 and 100 passes are within 0.2% of 25. Lloyd has converged to a worse
+  solution, and e-means is past it from three passes on.</li>
+<li>Twenty-five e-means passes cost less time than 25 Lloyd passes (15.7 s against 18.9 s) and give an index
+  that scans 8% less.</li>
+<li>At <code>k</code> = 4,096 (one seed) the curve flattens sooner: every count from 5 to 25 passes is 1–3% below Lloyd 25,
+  and so are 50 and 100 Lloyd passes. On GloVe at <code>k</code> = 4,096 (5 seeds) it keeps going: −1.4% ± 2.2 at three
+  passes, −3.1% at five, −5.8% ± 2.2 at ten.</li>
+</ul>
+<p>A correction that came out of this sweep: my first run of 15 and 25 passes failed (worse than one pass at 15,
+not-a-number at 25). The cause was in my code, not in the formulas. At those settings the formula caps the
+step at 1, and my update zeroed the running count of every cluster that the first batch missed. The authors'
+released code leaves such clusters untouched; with the same handling (now in <code>emeans_torch.py</code>,
+<code>emeans_lab.py</code> and <code>emeans_sklearn.py</code>) the numbers are the ones above. No earlier result used a step of 1
+with empty clusters, so nothing else changes. See section 12.</p>
+<h2 id="3-search-indexes-on-six-datasets">3. Search indexes on six datasets</h2>
+<p>The README measured search-index quality on SIFT1M only. Here are five more public datasets, including modern
+text embeddings. Method as before: every database vector is filed under its nearest centroid, a query scans
+the nearest lists, and the measure is how many vectors must be scanned to reach a recall target. Queries are
+held-out vectors with exact neighbours recomputed (10,000–100,000 per dataset). Change is against centroids
+from 25 Lloyd passes, paired by seed. The last three columns add the size penalty of section 5.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Dim.</th>
+<th>Vectors</th>
+<th>k</th>
+<th>Seeds</th>
+<th>Recall target</th>
+<th>Lloyd 25: vectors scanned</th>
+<th>e-means 3</th>
+<th>e-means 5</th>
+<th>3 passes + penalty 0.3, faded</th>
+<th>+ penalty 0.1, held</th>
+<th>+ penalty 0.3, held</th>
+<th>List imbalance: Lloyd / e-means 3 / faded</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dbpedia</td>
+<td>1536</td>
+<td>950,000</td>
+<td>4,096</td>
+<td>2</td>
+<td>95 % R@1</td>
+<td>18,070</td>
+<td>−0.8% ± 0.0</td>
+<td>−1.6%</td>
+<td>−0.3% ± 0.3</td>
+<td>−1.8% ± 0.4</td>
+<td>+0.1% ± 0.0</td>
+<td>1.22 / 1.28 / 1.07</td>
+</tr>
+<tr>
+<td>dbpedia</td>
+<td>1536</td>
+<td>950,000</td>
+<td>16,384</td>
+<td>3</td>
+<td>95 % R@1</td>
+<td>9,059</td>
+<td>+8.9% ± 2.8</td>
+<td></td>
+<td>−1.4% ± 2.1</td>
+<td>−2.4% ± 1.9</td>
+<td></td>
+<td>1.31 / 1.40 / 1.08</td>
+</tr>
+<tr>
+<td>deep1m</td>
+<td>96</td>
+<td>1,000,000</td>
+<td>4,096</td>
+<td>3</td>
+<td>95 % R@1</td>
+<td>6,335</td>
+<td>+2.0% ± 0.8</td>
+<td>−1.4% ± 0.5</td>
+<td>−4.5% ± 1.2</td>
+<td>−5.1% ± 1.0</td>
+<td>−6.1% ± 1.0</td>
+<td>1.12 / 1.14 / 1.04</td>
+</tr>
+<tr>
+<td>deep1m</td>
+<td>96</td>
+<td>1,000,000</td>
+<td>16,384</td>
+<td>2</td>
+<td>95 % R@1</td>
+<td>3,258</td>
+<td>−5.3% ± 1.1</td>
+<td>−8.0% ± 0.4</td>
+<td>−11.1% ± 0.7</td>
+<td>−11.3% ± 0.1</td>
+<td>−11.5% ± 0.3</td>
+<td>1.23 / 1.19 / 1.06</td>
+</tr>
+<tr>
+<td>fmnist</td>
+<td>784</td>
+<td>60,000</td>
+<td>256</td>
+<td>3</td>
+<td>95 % R@1</td>
+<td>926</td>
+<td>−2.2% ± 1.7</td>
+<td>−2.5% ± 2.5</td>
+<td>−5.1% ± 2.1</td>
+<td>−4.7% ± 2.5</td>
+<td>−5.6% ± 0.8</td>
+<td>1.16 / 1.16 / 1.07</td>
+</tr>
+<tr>
+<td>fmnist</td>
+<td>784</td>
+<td>60,000</td>
+<td>1,024</td>
+<td>3</td>
+<td>95 % R@1</td>
+<td>403</td>
+<td>−2.9% ± 1.1</td>
+<td>−5.2% ± 3.5</td>
+<td>−9.0% ± 0.8</td>
+<td>−7.1% ± 1.9</td>
+<td>−8.4% ± 1.8</td>
+<td>1.27 / 1.20 / 1.07</td>
+</tr>
+<tr>
+<td>glove</td>
+<td>100</td>
+<td>1,083,514</td>
+<td>4,096</td>
+<td>3</td>
+<td>95 % R@1</td>
+<td>48,848</td>
+<td>−1.4% ± 2.4</td>
+<td>−2.5% ± 2.1</td>
+<td>−0.6% ± 1.1</td>
+<td>+1.2% ± 1.4</td>
+<td>+2.0% ± 1.6</td>
+<td>1.15 / 1.15 / 1.04</td>
+</tr>
+<tr>
+<td>glove</td>
+<td>100</td>
+<td>1,083,514</td>
+<td>16,384</td>
+<td>2</td>
+<td>90 % R@1</td>
+<td>11,019</td>
+<td>−8.5% ± 0.1</td>
+<td></td>
+<td>−7.9% ± 0.2</td>
+<td>−6.3% ± 0.2</td>
+<td>−0.7% ± 0.6</td>
+<td>1.33 / 1.26 / 1.05</td>
+</tr>
+<tr>
+<td>nyt256</td>
+<td>256</td>
+<td>250,000</td>
+<td>1,024</td>
+<td>3</td>
+<td>95 % R@1</td>
+<td>70,054</td>
+<td>−15.4% ± 5.0</td>
+<td>−21.0% ± 3.4</td>
+<td>−51.3% ± 3.6</td>
+<td>−54.0% ± 22.6</td>
+<td>−71.8% ± 10.7</td>
+<td>5.19 / 1.82 / 1.26</td>
+</tr>
+<tr>
+<td>nyt256</td>
+<td>256</td>
+<td>250,000</td>
+<td>4,096</td>
+<td>3</td>
+<td>95 % R@1</td>
+<td>47,541</td>
+<td>−49.0% ± 1.2</td>
+<td>−59.8% ± 3.3</td>
+<td>−79.6% ± 1.1</td>
+<td>−83.6% ± 2.3</td>
+<td>−80.4% ± 1.5</td>
+<td>7.36 / 2.08 / 1.20</td>
+</tr>
+<tr>
+<td>sift</td>
+<td>128</td>
+<td>1,000,000</td>
+<td>1,024</td>
+<td>3</td>
+<td>95 % R@1</td>
+<td>14,871</td>
+<td>−0.6% ± 0.9</td>
+<td>−1.2% ± 0.8</td>
+<td>−3.7% ± 0.7</td>
+<td>−3.5% ± 1.3</td>
+<td>−3.8% ± 0.8</td>
+<td>1.08 / 1.09 / 1.03</td>
+</tr>
+<tr>
+<td>sift</td>
+<td>128</td>
+<td>1,000,000</td>
+<td>4,096</td>
+<td>2</td>
+<td>95 % R@1</td>
+<td>7,680</td>
+<td>+1.0% ± 0.5</td>
+<td>−1.5% ± 0.5</td>
+<td>−4.1% ± 0.1</td>
+<td>−4.3% ± 0.1</td>
+<td>−5.3% ± 0.7</td>
+<td>1.12 / 1.14 / 1.04</td>
+</tr>
+<tr>
+<td>sift</td>
+<td>128</td>
+<td>1,000,000</td>
+<td>16,384</td>
+<td>3</td>
+<td>95 % R@1</td>
+<td>3,948</td>
+<td>−3.7% ± 0.1</td>
+<td>−6.0% ± 0.4</td>
+<td>−10.0% ± 0.9</td>
+<td>−9.6% ± 0.2</td>
+<td>−10.6% ± 0.8</td>
+<td>1.22 / 1.19 / 1.06</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sift</td>
+<td>SIFT1M image descriptors (TEXMEX)</td>
+</tr>
+<tr>
+<td>deep1m</td>
+<td>first 1.1M of DEEP image descriptors, unit length (ann-benchmarks <code>deep-image-96-angular</code>)</td>
+</tr>
+<tr>
+<td>glove</td>
+<td>GloVe word vectors, unit length (ann-benchmarks <code>glove-100-angular</code>)</td>
+</tr>
+<tr>
+<td>dbpedia</td>
+<td>DBpedia entities embedded with OpenAI <code>text-embedding-3-large</code>, 1,536 dimensions (Hugging Face, Qdrant)</td>
+</tr>
+<tr>
+<td>fmnist</td>
+<td>Fashion-MNIST images as raw pixels (ann-benchmarks <code>fashion-mnist-784-euclidean</code>)</td>
+</tr>
+<tr>
+<td>nyt256</td>
+<td>New York Times article embeddings, unit length (ann-benchmarks <code>nytimes-256-angular</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p>What the plain recipe does (columns "e-means 3" and "e-means 5"):</p>
+<ul>
+<li>On image descriptors, raw images and word vectors, three passes are within about ±3% of 25 Lloyd passes at
+  small <code>k</code> and 4–9% better at <code>k</code> = 16,384. Five passes are at least as good as Lloyd on all of those.</li>
+<li>On the 1,536-dimension text embeddings it depends on <code>k</code>. At 4,096 there is no real difference (±2%), at one
+  seventh of the training time (5.1 s against 36.5 s). At 16,384 (3 seeds) the three-pass index is <strong>9% worse</strong>
+  than Lloyd's, because its lists are less even (imbalance 1.40 against 1.31); with the faded size penalty it is
+  level with Lloyd's (−1.4% ± 2.1), at 17.8 s of training against 139 s.</li>
+<li>On the New York Times embeddings the difference is large: the index from three passes scans 49% fewer
+  vectors than the Lloyd index at <code>k</code> = 4,096. That file has many exact duplicate rows (section 14). Lloyd from a random start ends
+  with more than half of its 4,096 clusters holding fewer than 10 vectors and a few holding over a thousand
+  (imbalance 7.4, where 1.0 is perfectly even); a k-means++ start and 100 passes do not fix it. The revival
+  step in e-means is what helps here (imbalance 2.1).</li>
+<li>One pass is 4–13% worse than Lloyd on five of the six datasets, as on SIFT.</li>
+<li>A k-means++ start for Lloyd made the index worse on Fashion-MNIST (by 5–11% against a random start), as it
+  did for e-means on SIFT in section 4.</li>
+</ul>
+<h3 id="checked-in-a-real-faiss-index-against-faisss-own-k-means">Checked in a real Faiss index, against Faiss's own k-means</h3>
+<p>The numbers above come from my own recall arithmetic and my own Lloyd baseline. For the dataset with the
+largest effect I repeated the comparison end to end with Faiss: centroids from <code>faiss.Kmeans</code> (25 iterations,
+no subsampling), a real <code>IndexIVFFlat</code>, 40,000 held-out queries, 3 seeds, <code>k</code> = 4,096, measured at 95% recall@1.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Centroids from</th>
+<th>Distance computations per query</th>
+<th>vs Faiss k-means</th>
+<th>Query time</th>
+<th>vs Faiss k-means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Faiss k-means, 25 iterations (47 s on CPU)</td>
+<td>46,432</td>
+<td>–</td>
+<td>316 µs</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Faiss k-means as an IVF index trains it by default (10 iterations)</td>
+<td>44,036</td>
+<td>−5% ± 3</td>
+<td>291 µs</td>
+<td>−8% ± 2</td>
+</tr>
+<tr>
+<td>My Lloyd, 25 passes</td>
+<td>47,976</td>
+<td>+4% ± 8</td>
+<td>315 µs</td>
+<td>+1% ± 10</td>
+</tr>
+<tr>
+<td>e-means, 3 passes (0.4 s on GPU)</td>
+<td>24,535</td>
+<td>−47% ± 5</td>
+<td>168 µs</td>
+<td>−46% ± 6</td>
+</tr>
+<tr>
+<td>e-means, 5 passes</td>
+<td>19,378</td>
+<td>−58% ± 4</td>
+<td>130 µs</td>
+<td>−58% ± 6</td>
+</tr>
+<tr>
+<td>e-means, 3 passes + size penalty 0.3, faded</td>
+<td>9,907</td>
+<td>−79% ± 2</td>
+<td>69 µs</td>
+<td>−78% ± 3</td>
+</tr>
+<tr>
+<td>e-means, 5 passes + size penalty 0.3, faded</td>
+<td>8,362</td>
+<td>−82% ± 2</td>
+<td>57 µs</td>
+<td>−82% ± 3</td>
+</tr>
+<tr>
+<td>e-means, 3 passes + size penalty 0.1, held</td>
+<td>7,922</td>
+<td>−83% ± 3</td>
+<td>57 µs</td>
+<td>−82% ± 4</td>
+</tr>
+</tbody>
+</table></div>
+<p>So on this dataset a query is 1.9× faster with plain e-means centroids and 4.6–5.5× faster with the size
+penalty added, at the same recall. My Lloyd baseline and Faiss's k-means
+agree with each other. This is the extreme case; the same check on SIFT1M is in section 5.</p>
+<p><strong>Read this with section 14.</strong> 21% of the rows in this file are in groups of exact copies. With the copies
+removed, Faiss k-means no longer builds uneven lists and the saving above disappears.</p>
+<h2 id="4-old-ideas-the-recipe-does-not-use">4. Old ideas the recipe does not use</h2>
+<p>The recipe has five ingredients. The older literature has many more that the paper does not combine with them.
+I added them to the GPU implementation as switches (<code>experiments/emeans_lab.py</code>, which with all switches off
+reproduces <code>emeans_torch.py</code> bit for bit) and ran each one alone on top of 3-pass e-means (a dozen ideas, some in two or three variants). SIFT1M,
+<code>k</code> = 4,096, 3 seeds; change against plain 3-pass e-means. For scale: a fourth pass is worth −1.0% / −1.4%
+on the two search columns and costs 33% more time.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Idea</th>
+<th>Where it comes from</th>
+<th>Scan, 95% R@1</th>
+<th>Scan, 95% R@10</th>
+<th>Test MSE</th>
+<th>Time</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step curve: lower or higher end point, linear</td>
+<td>–</td>
+<td>−0.5 to +0.3%</td>
+<td>−0.6 to −0.4%</td>
+<td>±0.1%</td>
+<td>same</td>
+<td>no difference</td>
+</tr>
+<tr>
+<td>Step curve: exponential decay</td>
+<td>–</td>
+<td>+0.2%</td>
+<td>+0.1%</td>
+<td>+0.17%</td>
+<td>same</td>
+<td>slightly worse</td>
+</tr>
+<tr>
+<td>Step curve: constant</td>
+<td>–</td>
+<td>+2.9%</td>
+<td>+2.8%</td>
+<td>+0.12%</td>
+<td>same</td>
+<td>worse (the paper's ablation agrees)</td>
+</tr>
+<tr>
+<td>Batches 4× smaller with a 4× smaller step</td>
+<td>the direction my mixture grid favoured</td>
+<td>−1.1% ± 0.7</td>
+<td>−1.4% ± 0.3</td>
+<td>−0.02%</td>
+<td>+20%</td>
+<td>small gain, costs time</td>
+</tr>
+<tr>
+<td>Growing batches (start at 1/16 size)</td>
+<td>Smith 2018; Newling &amp; Fleuret 2016</td>
+<td>−1.5% ± 1.1</td>
+<td>−1.7% ± 0.5</td>
+<td>−0.07%</td>
+<td>+25%</td>
+<td>same as above</td>
+</tr>
+<tr>
+<td>Re-seed starved clusters at a random batch vector</td>
+<td>VQ-VAE / Jukebox codebook reset</td>
+<td>−0.7%</td>
+<td>−0.6%</td>
+<td>+0.15%</td>
+<td>same</td>
+<td>worse error (the paper's ablation agrees)</td>
+</tr>
+<tr>
+<td>Re-seed at a high-error batch vector</td>
+<td>k-means++ sampling applied online</td>
+<td>+0.1%</td>
+<td>+0.4%</td>
+<td>+0.20%</td>
+<td>same</td>
+<td>worse</td>
+</tr>
+<tr>
+<td>Split the cluster with the largest error, not the largest count</td>
+<td>Gersho 1979; Fritzke 1997 (LBG-U)</td>
+<td>+0.9%</td>
+<td>−0.1%</td>
+<td>−0.03%</td>
+<td>same</td>
+<td>no gain (+3% scan at <code>k</code> = 16,384)</td>
+</tr>
+<tr>
+<td>Also relocate low-utility clusters</td>
+<td>Fritzke 1997 (LBG-U)</td>
+<td>−0.1 to +0.4%</td>
+<td>−0.7 to +0.3%</td>
+<td>±0.1%</td>
+<td>3.6×</td>
+<td>no gain, slow</td>
+</tr>
+<tr>
+<td>Soft start: each vector also pulls its 2nd–8th nearest centroid</td>
+<td>neural gas, Martinetz 1993</td>
+<td>−0.4 to +0.2%</td>
+<td>−0.6 to −0.4%</td>
+<td>±0.1%</td>
+<td>1.6–2×</td>
+<td>no gain, slow</td>
+</tr>
+<tr>
+<td>Look-ahead on the centroids</td>
+<td>Nesterov momentum</td>
+<td>+0.9 to +4.8%</td>
+<td>+1.0 to +3.5%</td>
+<td>up to +0.18%</td>
+<td>same</td>
+<td>worse</td>
+</tr>
+<tr>
+<td>k-means++ start (on a subsample)</td>
+<td>Arthur &amp; Vassilvitskii 2007</td>
+<td>+2.2% ± 0.5</td>
+<td>+1.6% ± 1.0</td>
+<td>−0.01%</td>
+<td>1.6×</td>
+<td>worse for search</td>
+</tr>
+<tr>
+<td>Codebook doubling before the main passes</td>
+<td>Linde, Buzo, Gray 1980</td>
+<td>−1.2%</td>
+<td>−1.2%</td>
+<td>−0.12%</td>
+<td>1.45×</td>
+<td>same as spending the time on a 4th pass</td>
+</tr>
+<tr>
+<td>One exact Lloyd pass at the end</td>
+<td>Bottou &amp; Bengio 1995</td>
+<td>−0.4%</td>
+<td>−0.5%</td>
+<td>−0.03%</td>
+<td>1.3×</td>
+<td>worse than a 4th online pass</td>
+</tr>
+<tr>
+<td>Stricter revival (threshold 0.3 instead of 0.1 of the mean)</td>
+<td>–</td>
+<td>−0.5% ± 0.8</td>
+<td>−1.1% ± 0.4</td>
+<td>0.00%</td>
+<td>same</td>
+<td>small gain</td>
+</tr>
+<tr>
+<td><strong>Size penalty when assigning ("conscience")</strong></td>
+<td>DeSieno 1988; balanced k-means</td>
+<td><strong>−4.1 to −5.3%</strong></td>
+<td><strong>−4.1 to −5.3%</strong></td>
+<td>±0.04%</td>
+<td>+4%</td>
+<td><strong>largest gain</strong> (but see section 14)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Apart from the last row, nothing here beats spending the same time on an extra pass. The paper's step curve,
+revival rule and random start all held up, and the things the paper already ablated (constant step, re-seeding
+from the batch) came out the same way here.</p>
+<h2 id="5-a-size-penalty">5. A size penalty</h2>
+<h3 id="what-it-is">What it is</h3>
+<p>When a vector picks its centroid, busy centroids are handicapped:</p>
+<p><code>assign x to the j that minimises  |x − c_j|² + λ · D · (k · n_j / n − 1)</code></p>
+<p>where <code>n_j / n</code> is cluster j's running share of the data (e-means already keeps it), <code>D</code> is the running mean
+squared distance, and <code>λ</code> is a strength with no units. Training takes about 2–4% longer.</p>
+<p>This is the assignment step for the objective "clustering error + (λ·D/2) × imbalance", where
+imbalance = <code>k · Σ (n_j/n)²</code> (1.0 when all clusters are the same size). Imbalance is exactly what an
+inverted-file index pays for uneven lists: with one list probed per query, the expected number of vectors
+scanned is <code>(n/k) × imbalance</code>. So <code>λ</code> is an exchange rate between clustering error and list balance.</p>
+<p><strong>Prior art.</strong> The penalty is DeSieno's "conscience" for competitive learning (1988). The
+same linear size penalty is used for search indexes as balanced k-means: Liu et al. 2018 (FCFC), SPANN 2021,
+Microsoft SPTAG, Lance, and MicroNN 2025 in mini-batch form. Published results are mixed: SPANN reports a
+gain, while Tavenard, Jégou &amp; Amsaleg 2011 and an Elastic engineering post report that balancing hurt. What
+I did not find elsewhere: the penalty combined with the e-means running totals, a fade-out version that ends
+as plain k-means, a strength expressed in units of the running error, and a rule for that strength. Those
+absences come from one literature search, not a proof.</p>
+<p>Two versions, same strength <code>λ</code>:</p>
+<ul>
+<li><strong>Faded</strong>: <code>λ</code> follows the cosine curve down to zero, so training ends as plain k-means.</li>
+<li><strong>Held</strong>: <code>λ</code> stays to the end.</li>
+</ul>
+<h3 id="results">Results</h3>
+<p>Section 3's table shows the penalty against Lloyd in its right-hand columns. Here it is against plain 3-pass
+e-means, which takes the same training time (vectors scanned for 95% recall@1):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Faded, λ = 0.3</th>
+<th>Held, λ = 0.3</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SIFT, k = 1,024 / 4,096 / 16,384</td>
+<td>−3.1% / −5.4% / −6.5%</td>
+<td>−3.2% / −6.5% / −7.1%</td>
+<td>2–3 seeds, spread about ±1</td>
+</tr>
+<tr>
+<td>DEEP, k = 4,096 / 16,384</td>
+<td>−6.4% / −6.1%</td>
+<td>−7.9% / −6.5%</td>
+<td>2–3 seeds</td>
+</tr>
+<tr>
+<td>DBpedia text embeddings, k = 4,096</td>
+<td>+0.5% (95% R@1), −1.6% (90% R@10)</td>
+<td>+0.9%, −1.6%</td>
+<td>no real effect; 2 seeds</td>
+</tr>
+<tr>
+<td>DBpedia text embeddings, k = 16,384</td>
+<td>−9.5% ± 0.5</td>
+<td>(0.1 held: −10.4% ± 1.5)</td>
+<td>3 seeds; plain e-means is 9% behind Lloyd here, so this only brings it level</td>
+</tr>
+<tr>
+<td>Fashion-MNIST, k = 256 / 1,024</td>
+<td>−2.9% ± 3.8 / −6.4% ± 0.3</td>
+<td>−3.5% / −5.7%</td>
+<td>3 seeds</td>
+</tr>
+<tr>
+<td>GloVe, k = 4,096</td>
+<td>+0.9% ± 2.4 (95% R@1), +1.8% ± 0.6 (90% R@10)</td>
+<td>+3.5% ± 1.7, +4.8% ± 0.6</td>
+<td>neutral to slightly worse faded; worse held</td>
+</tr>
+<tr>
+<td>GloVe, k = 16,384 (90% R@1)</td>
+<td>+0.7%</td>
+<td>+8.6%</td>
+<td>2 seeds</td>
+</tr>
+<tr>
+<td>New York Times, k = 1,024 / 4,096</td>
+<td>−42% / −60%</td>
+<td>−66% / −62%</td>
+<td>3 seeds; plain e-means is itself 15–49% below Lloyd here</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>The gain depends on the data: very large on New York Times (a duplicate-rows effect, section 14),
+  3–8% on image descriptors and raw images, nothing on the text embeddings at <code>k</code> = 4,096 and 10% at 16,384
+  (where it only repairs what plain e-means lost against Lloyd), and a small loss on word vectors.</li>
+<li>The faded version lost less in this round: its worst case was +1 to +2% on GloVe (section 14 adds a worse
+  case, Last.fm). The held version is 1–2 points
+  better on image descriptors and 4–9% worse on GloVe.</li>
+<li>It stacks with extra passes. SIFT1M, <code>k</code> = 16,384: five passes with the held penalty scan 15% fewer
+  vectors than 25 Lloyd passes, against 6% for five plain passes; two passes with the penalty beat ten without.</li>
+<li>It is not a substitute for revival, but nearly: with revival switched off and the penalty on, the SIFT index
+  is still better than plain e-means with revival (−5.8% / −6.1% at <code>k</code> = 16,384, 2 seeds).</li>
+<li>The naive full-pass version does not work. Lloyd with the same penalty, using cluster sizes from the previous
+  pass, oscillates and ends far worse above λ ≈ 0.1 (+50% to +75% scan cost at λ = 0.3). Published balanced k-means
+  avoids this with sequential or flow-based assignment; with per-batch running sizes the plain rule is stable.</li>
+</ul>
+<h3 id="strength">Strength</h3>
+<p>Held penalty at each strength, change in vectors scanned against plain 3-pass e-means (last column: 25 Lloyd
+passes, for reference):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data</th>
+<th>k</th>
+<th>Seeds</th>
+<th>Scan cost at</th>
+<th>λ=0.03</th>
+<th>λ=0.1</th>
+<th>λ=0.2</th>
+<th>λ=0.3</th>
+<th>λ=0.5</th>
+<th>λ=1</th>
+<th>λ=2</th>
+<th>Lloyd 25</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dbp</td>
+<td>4,096</td>
+<td>2</td>
+<td>95% R@10</td>
+<td>−2.4 ± 0.5</td>
+<td>−3.5 ± 0.6</td>
+<td>−3.3 ± 0.4</td>
+<td>−2.0 ± 0.1</td>
+<td>+0.5 ± 0.2</td>
+<td>+15.3 ± 0.4</td>
+<td></td>
+<td>−2.5 ± 0.4</td>
+</tr>
+<tr>
+<td>deep1m</td>
+<td>4,096</td>
+<td>3</td>
+<td>95% R@10</td>
+<td>−2.9 ± 0.5</td>
+<td>−5.0 ± 0.3</td>
+<td>−5.6 ± 0.1</td>
+<td>−5.3 ± 0.4</td>
+<td>−4.4 ± 0.2</td>
+<td>−0.7 ± 0.5</td>
+<td></td>
+<td>−0.1 ± 0.6</td>
+</tr>
+<tr>
+<td>deep1m</td>
+<td>16,384</td>
+<td>2</td>
+<td>95% R@10</td>
+<td>−2.7 ± 0.1</td>
+<td>−5.7 ± 0.1</td>
+<td>−6.3 ± 0.2</td>
+<td>−6.5 ± 0.2</td>
+<td>−5.6 ± 0.1</td>
+<td>−2.3 ± 0.3</td>
+<td></td>
+<td>+5.3 ± 0.2</td>
+</tr>
+<tr>
+<td>glove</td>
+<td>4,096</td>
+<td>3</td>
+<td>95% R@1</td>
+<td>+3.3 ± 2.2</td>
+<td>+2.7 ± 2.2</td>
+<td>+4.0 ± 2.5</td>
+<td>+3.5 ± 1.7</td>
+<td>+9.5 ± 1.7</td>
+<td>+25.6 ± 2.3</td>
+<td></td>
+<td>+1.5 ± 2.6</td>
+</tr>
+<tr>
+<td>nyt256</td>
+<td>1,024</td>
+<td>3</td>
+<td>95% R@10</td>
+<td>−31.2 ± 6.3</td>
+<td>−47.4 ± 25.5</td>
+<td>−71.3 ± 9.7</td>
+<td>−70.2 ± 15.3</td>
+<td>−70.4 ± 9.4</td>
+<td>−58.4 ± 3.1</td>
+<td></td>
+<td>+19.2 ± 6.3</td>
+</tr>
+<tr>
+<td>nyt256</td>
+<td>4,096</td>
+<td>3</td>
+<td>95% R@10</td>
+<td>−67.3 ± 4.3</td>
+<td>−66.2 ± 7.7</td>
+<td>−70.1 ± 3.7</td>
+<td>−68.1 ± 0.6</td>
+<td>−58.3 ± 17.0</td>
+<td>−34.7 ± 26.7</td>
+<td></td>
+<td>+97.6 ± 9.8</td>
+</tr>
+<tr>
+<td>sift</td>
+<td>1,024</td>
+<td>3</td>
+<td>95% R@10</td>
+<td>−1.8 ± 0.3</td>
+<td>−3.2 ± 0.1</td>
+<td>−3.4 ± 0.2</td>
+<td>−3.5 ± 0.3</td>
+<td>−2.6 ± 0.2</td>
+<td>−0.9 ± 0.5</td>
+<td>+5.4 ± 0.2</td>
+<td>+0.4 ± 0.2</td>
+</tr>
+<tr>
+<td>sift</td>
+<td>4,096</td>
+<td>2</td>
+<td>95% R@10</td>
+<td>−3.4 ± 0.0</td>
+<td>−5.3 ± 0.3</td>
+<td>−6.3 ± 0.4</td>
+<td>−6.0 ± 0.3</td>
+<td>−5.4 ± 0.0</td>
+<td>−2.9 ± 0.4</td>
+<td>+3.5 ± 0.6</td>
+<td>−0.6 ± 0.5</td>
+</tr>
+<tr>
+<td>sift</td>
+<td>16,384</td>
+<td>2</td>
+<td>95% R@10</td>
+<td>−3.1 ± 0.0</td>
+<td>−6.1 ± 0.0</td>
+<td>−7.6 ± 0.5</td>
+<td>−7.7 ± 0.3</td>
+<td>−7.3 ± 0.5</td>
+<td>−4.1 ± 0.1</td>
+<td>+4.0 ± 0.2</td>
+<td>+3.2 ± 0.0</td>
+</tr>
+</tbody>
+</table></div>
+<p>The useful range is wide (0.1 to 0.5). Above 1 the centroids are pulled too far and the index gets worse.</p>
+<h3 id="in-a-real-faiss-index">In a real Faiss index</h3>
+<p>SIFT1M, <code>k</code> = 16,384, a real Faiss <code>IndexIVFFlat</code> per set of centroids, 20,000 held-out queries, 3 seeds, at
+95% recall@1; change against centroids from my 25 Lloyd passes:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Centroids from</th>
+<th>Distance computations per query</th>
+<th>Change</th>
+<th>Query time</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lloyd, 25 passes</td>
+<td>4,387</td>
+<td>–</td>
+<td>28 µs</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Faiss k-means as an IVF index trains it by default (10 iterations; 1 seed)</td>
+<td>4,504</td>
+<td>+2%</td>
+<td>29 µs</td>
+<td>+4%</td>
+</tr>
+<tr>
+<td>e-means, 3 passes</td>
+<td>4,268</td>
+<td>−2.7% ± 2.3</td>
+<td>27 µs</td>
+<td>−2% ± 4</td>
+</tr>
+<tr>
+<td>e-means, 5 passes</td>
+<td>4,129</td>
+<td>−5.9% ± 1.3</td>
+<td>27 µs</td>
+<td>−4% ± 1</td>
+</tr>
+<tr>
+<td>e-means, 3 passes + penalty 0.3, faded</td>
+<td>3,967</td>
+<td>−9.6% ± 0.5</td>
+<td>26 µs</td>
+<td>−6% ± 1</td>
+</tr>
+<tr>
+<td>e-means, 3 passes + penalty 0.3, held</td>
+<td>3,988</td>
+<td>−9.1% ± 1.5</td>
+<td>26 µs</td>
+<td>−5% ± 2</td>
+</tr>
+<tr>
+<td>e-means, 5 passes + penalty 0.3, held</td>
+<td>3,765</td>
+<td>−14.1% ± 1.6</td>
+<td>26 µs</td>
+<td>−8% ± 1</td>
+</tr>
+</tbody>
+</table></div>
+<p>The distance counts agree with my arithmetic (−10% and −15% against Lloyd in section 3 and above). Query time
+improves less than the distance count because, at this <code>k</code>, finding the nearest lists among 16,384 centroids
+is a large fixed part of each query. The New York Times check is in section 3: there the penalty takes query
+time from 316 µs (Faiss k-means) to 57–69 µs.</p>
+<h3 id="it-also-lowers-the-clustering-error-itself-when-clusters-are-starved">It also lowers the clustering error itself when clusters are starved</h3>
+<p>The penalty was added for the search index, but it also changes the centroids' own error on held-out vectors
+(3 passes, change against plain 3-pass e-means):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Faded 0.3: test MSE</th>
+<th>Train MSE</th>
+<th>Clusters with fewer than 10 vectors, plain → faded</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>New York Times, k = 4,096 (61 vectors per cluster)</td>
+<td>−1.6% ± 0.04</td>
+<td>−1.9%</td>
+<td>216 → 44 (seed 0)</td>
+</tr>
+<tr>
+<td>New York Times, k = 1,024</td>
+<td>−0.7% ± 0.1</td>
+<td>−0.7%</td>
+<td></td>
+</tr>
+<tr>
+<td>SIFT, k = 16,384 (61 per cluster)</td>
+<td>−0.43% ± 0.09</td>
+<td>−0.10%</td>
+<td></td>
+</tr>
+<tr>
+<td>DEEP, k = 16,384</td>
+<td>−0.2% ± 0.1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>SIFT / DEEP / DBpedia at k ≤ 4,096, GloVe</td>
+<td>0.0 to +0.1%</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>For scale, on SIFT at <code>k</code> = 16,384 no number of plain passes reached this: plain e-means levels off at −0.45%
+against Lloyd after 25 passes, and three passes with the faded penalty are at about −0.6%. The effect shows up
+where there are few vectors per cluster. A plausible reason, not tested: in high dimensions the best
+quantizers have nearly equal-sized cells (Gersho 1979), k-means gets stuck in solutions that are less even
+than that, and the penalty steers away from them early on.</p>
+<h3 id="how-strong-a-rule-and-where-it-fails">How strong? A rule, and where it fails</h3>
+<p>Scan cost at a fixed recall depends on two things the training controls: how even the lists are and how good
+the centroids are. Fit, per dataset and <code>k</code>, over runs that use <strong>no penalty</strong> (different pass counts,
+revival thresholds, batch sizes):</p>
+<p><code>log(scan cost) = a · log(imbalance) + b · log(training error) + constant</code></p>
+<p>Raising <code>λ</code> moves along a trade-off curve whose slope is <code>d(error)/d(imbalance) = −λ·D/2</code>. Cost is lowest
+where the two effects cancel:</p>
+<p><code>λ* = 2a / (b · imbalance)</code></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data</th>
+<th>k</th>
+<th>Runs in fit</th>
+<th>Recall target</th>
+<th>a</th>
+<th>b</th>
+<th>R²</th>
+<th>Predicted strength</th>
+<th>Best on the grid (scan change)</th>
+<th>At the predicted strength</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dbp</td>
+<td>4,096</td>
+<td>10</td>
+<td>R@1 95 %</td>
+<td>0.30</td>
+<td>5.8</td>
+<td>0.80</td>
+<td>0.10</td>
+<td>0.1 (−0.9%)</td>
+<td>0.1 (−0.9%)</td>
+</tr>
+<tr>
+<td>dbp</td>
+<td>4,096</td>
+<td>10</td>
+<td>R@10 95 %</td>
+<td>0.27</td>
+<td>5.0</td>
+<td>0.92</td>
+<td>0.10</td>
+<td>0.1 (−3.5%)</td>
+<td>0.1 (−3.5%)</td>
+</tr>
+<tr>
+<td>deep1m</td>
+<td>4,096</td>
+<td>27</td>
+<td>R@1 95 %</td>
+<td>0.84</td>
+<td>5.0</td>
+<td>0.95</td>
+<td>0.33</td>
+<td>0.3 (−7.9%)</td>
+<td>0.3 (−7.9%)</td>
+</tr>
+<tr>
+<td>deep1m</td>
+<td>4,096</td>
+<td>27</td>
+<td>R@10 95 %</td>
+<td>0.80</td>
+<td>4.5</td>
+<td>0.99</td>
+<td>0.35</td>
+<td>0.2 (−5.6%)</td>
+<td>0.3 (−5.3%)</td>
+</tr>
+<tr>
+<td>deep1m</td>
+<td>16,384</td>
+<td>18</td>
+<td>R@1 95 %</td>
+<td>0.62</td>
+<td>4.6</td>
+<td>0.99</td>
+<td>0.26</td>
+<td>0.3 (−6.5%)</td>
+<td>0.3 (−6.5%)</td>
+</tr>
+<tr>
+<td>deep1m</td>
+<td>16,384</td>
+<td>18</td>
+<td>R@10 95 %</td>
+<td>0.62</td>
+<td>3.7</td>
+<td>0.99</td>
+<td>0.32</td>
+<td>0.3 (−6.5%)</td>
+<td>0.3 (−6.5%)</td>
+</tr>
+<tr>
+<td>glove</td>
+<td>4,096</td>
+<td>27</td>
+<td>R@1 95 %</td>
+<td>0.93</td>
+<td>7.0</td>
+<td>0.85</td>
+<td>0.26</td>
+<td>0.1 (+2.7%)</td>
+<td>0.3 (+3.5%)</td>
+</tr>
+<tr>
+<td>nyt256</td>
+<td>1,024</td>
+<td>9</td>
+<td>R@1 95 %</td>
+<td>0.46</td>
+<td>−5.9</td>
+<td>0.74</td>
+<td>–</td>
+<td>0.03 (fit not usable)</td>
+<td></td>
+</tr>
+<tr>
+<td>nyt256</td>
+<td>1,024</td>
+<td>9</td>
+<td>R@10 95 %</td>
+<td>0.23</td>
+<td>−8.0</td>
+<td>0.67</td>
+<td>–</td>
+<td>0.03 (fit not usable)</td>
+<td></td>
+</tr>
+<tr>
+<td>sift</td>
+<td>1,024</td>
+<td>21</td>
+<td>R@1 95 %</td>
+<td>0.47</td>
+<td>4.8</td>
+<td>0.94</td>
+<td>0.19</td>
+<td>0.2 (−3.8%)</td>
+<td>0.2 (−3.8%)</td>
+</tr>
+<tr>
+<td>sift</td>
+<td>1,024</td>
+<td>21</td>
+<td>R@10 95 %</td>
+<td>0.51</td>
+<td>4.4</td>
+<td>0.98</td>
+<td>0.22</td>
+<td>0.3 (−3.5%)</td>
+<td>0.2 (−3.4%)</td>
+</tr>
+<tr>
+<td>sift</td>
+<td>4,096</td>
+<td>116</td>
+<td>R@1 95 %</td>
+<td>0.61</td>
+<td>4.3</td>
+<td>0.78</td>
+<td>0.28</td>
+<td>0.3 (−6.5%)</td>
+<td>0.3 (−6.5%)</td>
+</tr>
+<tr>
+<td>sift</td>
+<td>4,096</td>
+<td>116</td>
+<td>R@10 95 %</td>
+<td>0.61</td>
+<td>4.0</td>
+<td>0.93</td>
+<td>0.30</td>
+<td>0.2 (−6.3%)</td>
+<td>0.3 (−6.0%)</td>
+</tr>
+<tr>
+<td>sift</td>
+<td>16,384</td>
+<td>48</td>
+<td>R@1 95 %</td>
+<td>0.53</td>
+<td>3.0</td>
+<td>0.84</td>
+<td>0.34</td>
+<td>0.2 (−7.9%)</td>
+<td>0.3 (−7.0%)</td>
+</tr>
+<tr>
+<td>sift</td>
+<td>16,384</td>
+<td>48</td>
+<td>R@10 95 %</td>
+<td>0.46</td>
+<td>2.8</td>
+<td>0.84</td>
+<td>0.31</td>
+<td>0.3 (−7.7%)</td>
+<td>0.3 (−7.7%)</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>On SIFT and DEEP (image descriptors), <code>a</code> ≈ 0.5–0.8 and <code>b</code> ≈ 3–5, the rule says λ ≈ 0.2–0.35, and the
+  measured optimum is 0.2–0.3 at every <code>k</code>. The form of the rule was fixed on SIFT; DEEP was run afterwards.</li>
+<li>On the 1,536-dimension text embeddings the rule says 0.1 and the grid agrees; the gain there is small
+  (−1% to −3.5%, and only 10 runs in the fit).</li>
+<li><strong>On GloVe the rule is wrong.</strong> It predicts 0.26; every held strength made the index worse. The two-factor
+  model does not capture what the penalty does to word vectors.</li>
+<li>On the New York Times embeddings the fit is meaningless (error and imbalance move together across the
+  penalty-free runs), yet any strength from 0.03 to 0.5 cuts scan cost by half or more.</li>
+</ul>
+<p>So the rule explains why 0.3 is right where the penalty helps, and it is not a reliable test of whether the
+penalty helps.</p>
+<h3 id="in-the-scikit-learn-estimator">In the scikit-learn estimator</h3>
+<p><code>EMeans(n_clusters, balance=0.3)</code> is the faded version; <code>balance_end=1.0</code> holds it. Default is <code>balance=0</code>
+(the paper's algorithm).</p>
+<p>CPU only, scikit-learn API, New York Times embeddings (250,000 × 256), <code>k</code> = 4,096, 3 seeds. Error is the mean
+squared distance to the nearest centre; the last two columns are from a real Faiss <code>IndexIVFFlat</code> built on each
+set of centres, at 95% recall@1 (10,000 queries):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Estimator</th>
+<th>Fit time</th>
+<th>Train error</th>
+<th>Test error</th>
+<th>Clusters under 10 vectors</th>
+<th>Imbalance</th>
+<th>Distance computations per query</th>
+<th>Query time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>KMeans()</code> (k-means++, to convergence: 115 iterations)</td>
+<td>480 s</td>
+<td>0.7360</td>
+<td>0.7587</td>
+<td>1,598</td>
+<td>5.9</td>
+<td>41,043</td>
+<td>273 µs</td>
+</tr>
+<tr>
+<td><code>KMeans(init="random", max_iter=25)</code></td>
+<td>10.5 s</td>
+<td>+4.6%</td>
+<td>+4.0%</td>
+<td>2,398</td>
+<td>7.1</td>
+<td>+15%</td>
+<td>+19%</td>
+</tr>
+<tr>
+<td><code>MiniBatchKMeans()</code></td>
+<td>37 s</td>
+<td>+4.2%</td>
+<td>+3.7%</td>
+<td>2,202</td>
+<td>13.3</td>
+<td>+45%</td>
+<td>+43%</td>
+</tr>
+<tr>
+<td><code>EMeans(n_epochs=3)</code></td>
+<td>2.2 s</td>
+<td>+0.3%</td>
+<td>+0.4%</td>
+<td>211</td>
+<td>2.1</td>
+<td>−29% ± 9</td>
+<td>−23%</td>
+</tr>
+<tr>
+<td><code>EMeans(n_epochs=3, balance=0.3)</code></td>
+<td>2.2 s</td>
+<td>−1.8%</td>
+<td>−1.2%</td>
+<td>37</td>
+<td>1.20</td>
+<td>−73% ± 5</td>
+<td>−71%</td>
+</tr>
+<tr>
+<td><code>EMeans(n_epochs=5, balance=0.3)</code></td>
+<td>3.5 s</td>
+<td>−2.4%</td>
+<td>−1.6%</td>
+<td>16</td>
+<td>1.16</td>
+<td>−78% ± 1</td>
+<td>−75%</td>
+</tr>
+<tr>
+<td><code>EMeans(n_epochs=3, balance=0.1, balance_end=1.0)</code></td>
+<td>2.2 s</td>
+<td>−1.5%</td>
+<td>−1.0%</td>
+<td>29</td>
+<td>1.15</td>
+<td>−82% ± 1</td>
+<td>−80%</td>
+</tr>
+</tbody>
+</table></div>
+<p>On this dataset <code>EMeans(balance=0.3)</code> is about 200× faster to fit than scikit-learn's default <code>KMeans</code>, ends
+with lower error on both the training and the held-out vectors, and gives an index that answers queries 3.5×
+faster. This is the favourable case: 61 vectors per cluster, and a file in which 21% of the rows are in groups
+of exact copies, which is where the search gain comes from (section 14).</p>
+<p>The same comparison on an ordinary dataset, Fashion-MNIST (60,000 × 784, <code>k</code> = 1,024, 3 seeds): <code>KMeans()</code> takes
+48 s; <code>EMeans(n_epochs=3, balance=0.3)</code> takes 0.65 s, has the same held-out error (−0.05%; training error
++0.3%), and its index needs 9.4% ± 1.2 fewer distance computations. Five passes: 1.1 s, −0.24% held-out error,
+−10.8% distance computations. On GloVe the switch gains nothing.</p>
+<h2 id="6-product-quantization">6. Product quantization</h2>
+<p>The README test used the paper's batch formula as published. The authors' released code uses one eighth of that
+batch size when the data has 16 dimensions or fewer, which is the case for product-quantization sub-vectors
+(8 dimensions here). With that rule (16 codebooks × 256 codes, held-out reconstruction error, 3 seeds, change
+against Lloyd 25):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Trained on</th>
+<th>Rule</th>
+<th>1 pass</th>
+<th>2</th>
+<th>3</th>
+<th>5</th>
+<th>10</th>
+<th>Lloyd 100</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1M vectors</td>
+<td>as published</td>
+<td>+0.77%</td>
+<td>−0.34%</td>
+<td>−0.73%</td>
+<td>−0.57%</td>
+<td>−1.00%</td>
+<td>−1.00%</td>
+</tr>
+<tr>
+<td></td>
+<td>time</td>
+<td>1.9 s</td>
+<td>1.7 s</td>
+<td>2.4 s</td>
+<td>2.9 s</td>
+<td>5.4 s</td>
+<td>30.9 s (Lloyd 25: 7.1 s)</td>
+</tr>
+<tr>
+<td></td>
+<td>low-dimension rule</td>
+<td>+0.08%</td>
+<td>−0.84%</td>
+<td>−1.05%</td>
+<td>−1.19%</td>
+<td>−1.35%</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>time</td>
+<td>6.7 s</td>
+<td>7.2 s</td>
+<td>10.6 s</td>
+<td>9.6 s</td>
+<td>19.1 s</td>
+<td></td>
+</tr>
+<tr>
+<td>100k vectors</td>
+<td>as published</td>
+<td>+2.95%</td>
+<td>+0.49%</td>
+<td>−0.25%</td>
+<td>−0.87%</td>
+<td>−0.72%</td>
+<td>−0.99%</td>
+</tr>
+<tr>
+<td></td>
+<td>time</td>
+<td>0.7 s</td>
+<td>0.7 s</td>
+<td>1.1 s</td>
+<td>1.1 s</td>
+<td>1.2 s</td>
+<td>6.7 s (Lloyd 25: 1.7 s)</td>
+</tr>
+<tr>
+<td></td>
+<td>low-dimension rule</td>
+<td>+2.02%</td>
+<td>−0.18%</td>
+<td>−0.65%</td>
+<td>−1.12%</td>
+<td>−1.48%</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>time</td>
+<td>5.1 s</td>
+<td>4.9 s</td>
+<td>7.4 s</td>
+<td>6.6 s</td>
+<td>6.4 s</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>With the low-dimension rule the result improves with every extra pass, and three passes on 1M vectors beat
+  100 Lloyd passes.</li>
+<li>In my GPU code the small batches are slow: 16 codebooks times several hundred tiny updates is mostly
+  per-call overhead, so the rule costs 3–6× the time of the large-batch version and is slower than Lloyd 25
+  at three passes. On a CPU, or with the 16 codebooks batched into one tensor, that overhead would largely go
+  away; I did not build that.</li>
+<li>The size penalty of section 5 does not help here. With the faded penalty the three-pass result is −0.61%
+  instead of −1.05%, and five passes give −0.79% instead of −1.19%. In 8 dimensions the best codebooks are not
+  equal-sized, so pushing toward balance costs error.</li>
+</ul>
+<h2 id="7-gaussian-mixtures">7. Gaussian mixtures</h2>
+<p>The README has the GPU experiment: the recipe applied to EM for diagonal-covariance mixtures matches 40–57
+passes of ordinary EM in three. Two additions.</p>
+<h3 id="a-scikit-learn-style-estimator-on-cpu">A scikit-learn-style estimator on CPU</h3>
+<p><code>online_gmm_sklearn.OnlineGaussianMixture</code> (numpy and scipy only) is a drop-in for
+<code>GaussianMixture(covariance_type="diag")</code>: <code>fit</code>, <code>predict</code>, <code>predict_proba</code>, <code>score</code>, <code>score_samples</code>,
+<code>sample</code>, <code>bic</code>, <code>aic</code>. Diagonal and spherical covariances; full and tied are refused. No <code>partial_fit</code>
+(the step curve needs the total number of updates). It passes scikit-learn's estimator checks (89 tests pass,
+2 skipped for the array API), gives the same per-row scores as scikit-learn for the same parameters to 1e-9,
+and matches the GPU version's held-out score (−80.871 against −80.877 at 1M rows, 256 components).</p>
+<p>Against <code>sklearn.mixture.GaussianMixture</code> on the same CPU (SIFT in 64 PCA dimensions, held-out log-likelihood
+per row, higher is better):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Method</th>
+<th>Passes</th>
+<th>Time</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1M rows, 256 components</td>
+<td><code>GaussianMixture()</code> defaults (1 seed)</td>
+<td>68</td>
+<td>320 s</td>
+<td>−80.862</td>
+</tr>
+<tr>
+<td></td>
+<td><code>GaussianMixture</code>, random start</td>
+<td>30 / 65 / 100</td>
+<td>122 / 252 / 394 s</td>
+<td>−80.957 / −80.860 / −80.844</td>
+</tr>
+<tr>
+<td></td>
+<td><code>OnlineGaussianMixture</code> (3 seeds)</td>
+<td>3</td>
+<td>1.3 s</td>
+<td>−80.871</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>10</td>
+<td>3.8 s</td>
+<td>−80.844</td>
+</tr>
+<tr>
+<td>1M rows, 1,024 components</td>
+<td><code>OnlineGaussianMixture</code></td>
+<td>3 / 5</td>
+<td>4.1 / 6.0 s</td>
+<td>−78.207 / −78.172</td>
+</tr>
+<tr>
+<td>100k rows, 256 components</td>
+<td><code>GaussianMixture()</code> defaults (3 seeds)</td>
+<td>62</td>
+<td>26.3 s</td>
+<td>−81.808</td>
+</tr>
+<tr>
+<td></td>
+<td><code>OnlineGaussianMixture</code></td>
+<td>3 / 10 / 30</td>
+<td>0.22 / 0.37 / 0.99 s</td>
+<td>−81.988 / −81.864 / −81.811</td>
+</tr>
+<tr>
+<td>100k rows, 64 components</td>
+<td><code>GaussianMixture()</code> defaults</td>
+<td>55</td>
+<td>6.4 s</td>
+<td>−84.259</td>
+</tr>
+<tr>
+<td></td>
+<td><code>OnlineGaussianMixture</code></td>
+<td>3 / 10</td>
+<td>0.20 / 0.40 s</td>
+<td>−84.291 / −84.267</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>At a million rows: about 250× faster than scikit-learn's defaults at three passes for 0.009 less, and about
+  100× faster at equal quality (ten passes against 100).</li>
+<li>At 100,000 rows and 256 components (about 400 rows per component) three passes are 0.18 short; it takes about
+  30 passes to match, which is still about 26× faster.</li>
+<li>Where it loses: well-separated clusters. On 20,000 points in 12 separated blobs a random start is 3.8 worse
+  than scikit-learn and more passes do not fix it; k-means++ seeds do, so the estimator uses them by default
+  up to 64 components (that cut-off is a judgement, not a fitted value). On iris, wine and digits three passes
+  are 0.06–0.13 worse than scikit-learn. Below about 100,000 rows with few components there is no time to gain.</li>
+<li>The textbook online-EM step rule (Cappé &amp; Moulines 2009, with or without iterate averaging, no revival) was
+  0.27 to 5.4 worse than the recipe at 1M rows.</li>
+<li>Timings shared the machine with GPU jobs; trust the ratios. scikit-learn at 1M is one seed.</li>
+</ul>
+<h3 id="two-more-old-ideas-tested-on-the-gpu-version-both-negative">Two more old ideas, tested on the GPU version: both negative</h3>
+<p><code>experiments/gmm_lab.py</code>, three passes, 3 seeds, change in held-out log-likelihood:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Idea</th>
+<th>Source</th>
+<th>sift64</th>
+<th>synth</th>
+<th>skewed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deterministic annealing (flatter responsibilities early)</td>
+<td>Ueda &amp; Nakano 1998</td>
+<td>−0.01</td>
+<td>−0.30</td>
+<td>−0.16</td>
+</tr>
+<tr>
+<td>Equal-prior start (ignore mixture weights early)</td>
+<td>soft cousin of the size penalty</td>
+<td>+0.02</td>
+<td>−0.29</td>
+<td>−0.17</td>
+</tr>
+<tr>
+<td>Stricter revival threshold (0.3)</td>
+<td>–</td>
+<td>−0.03</td>
+<td>−0.28</td>
+<td>−0.66</td>
+</tr>
+<tr>
+<td>Batch ÷ 8, step ÷ 2</td>
+<td>settings shift</td>
+<td>−0.02</td>
+<td>+0.63</td>
+<td>−0.50</td>
+</tr>
+</tbody>
+</table></div>
+<p>Both annealing ideas make the model commit later, which nearly switches revival off (a handful of revivals per run against
+166 on synth and 823 on skewed), and revival is what finds the better solutions on the synthetic sets. The size-penalty idea that
+helps k-means does not carry over to mixtures in this form. No settings shift is good on all three datasets.</p>
+<h2 id="8-topic-models-lda-and-nmf">8. Topic models (LDA) and NMF</h2>
+<h3 id="lda-the-recipe-as-published-does-not-transfer">LDA: the recipe as published does not transfer</h3>
+<p>Variational LDA already has a well-known online form (Hoffman, Blei &amp; Bach 2010), and it is the recipe's update
+with a different step rule: a decayed running total of topic-word counts. So the test is narrower here: do the
+cosine step curve, the batch and step formulas, a repair step for dead or duplicate topics, and a final exact
+clean-up beat Hoffman's rule? <code>experiments/lda_torch.py</code>, validated against scikit-learn's batch LDA (perplexity
+equal to 0.0001% over 10 passes from the same start).</p>
+<p>UCI New York Times bag of words, 100,000 documents, 8,000-word vocabulary, 100 topics, 3 seeds. Held-out
+perplexity by document completion on 10,000 documents; lower is better.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>1 pass</th>
+<th>2</th>
+<th>3</th>
+<th>5</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Full-batch variational EM</td>
+<td>3474</td>
+<td>2503</td>
+<td>2253</td>
+<td>2115</td>
+<td>2071</td>
+</tr>
+<tr>
+<td>Recipe, published formulas</td>
+<td>2208</td>
+<td>2289</td>
+<td>2295</td>
+<td>2203</td>
+<td>2233</td>
+</tr>
+<tr>
+<td>Recipe, step ÷ 4</td>
+<td>2160</td>
+<td>2108</td>
+<td>2101 ± 16</td>
+<td>2078 ± 4</td>
+<td>2090</td>
+</tr>
+<tr>
+<td>Hoffman's online rule at its best published setting (batch 4,096, κ = 0.5, τ0 = 64)</td>
+<td>2146 ± 16</td>
+<td>2104</td>
+<td>2098 ± 15</td>
+<td>2100 ± 15</td>
+<td>2108</td>
+</tr>
+<tr>
+<td>Hoffman's rule + the repair step</td>
+<td>2152</td>
+<td>–</td>
+<td>2087 ± 15</td>
+<td>–</td>
+<td>–</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>With the published formulas the step is 4–8× too large for LDA: the result gets worse after the first pass.</li>
+<li>With the step divided by four, the recipe ties Hoffman's rule at 1–3 passes and is about 1% better at 5–10.
+  Three online passes (22 s) match 5–7 full-batch passes (52–69 s).</li>
+<li>Full-batch EM is not slow on this problem. It reaches its best value in 10–15 passes and then overfits, so
+  there is much less to gain than with k-means.</li>
+<li>The repair step helps a little (10 points at 3 passes, on Hoffman's rule too). The final clean-up does nothing.</li>
+<li>Library defaults run in the same code are far behind Hoffman's best setting: gensim's settings 2259,
+  scikit-learn's (batch 128) 2667 at one pass (1 seed each).</li>
+<li>The best batch and step lie on a line of constant memory, batch ÷ step ≈ 33,000 documents (a third of the
+  corpus); the formula's choice is about 4,700. No new formula was fitted.</li>
+</ul>
+<h3 id="nmf-it-transfers">NMF: it transfers</h3>
+<p><code>experiments/nmf_torch.py</code>: the same recipe on top of HALS updates from decayed Gram statistics (the running
+totals of Mairal et al. 2010). TF-IDF of the same 100,000 documents, 100 components, CPU, 3 seeds; held-out
+relative reconstruction error.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Error</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Recipe, published formulas, 1 pass</td>
+<td>0.80698</td>
+<td>3.5 s</td>
+</tr>
+<tr>
+<td>Recipe, published formulas, 3 passes</td>
+<td>0.80398</td>
+<td>7.3 s</td>
+</tr>
+<tr>
+<td>Full-batch HALS, 30 / 100 passes</td>
+<td>0.80443 / 0.80369</td>
+<td>32 s / 107 s</td>
+</tr>
+<tr>
+<td>scikit-learn <code>NMF()</code> (1 seed)</td>
+<td>0.80314</td>
+<td>193 s</td>
+</tr>
+<tr>
+<td>scikit-learn <code>MiniBatchNMF()</code></td>
+<td>0.81938</td>
+<td>19 s</td>
+</tr>
+<tr>
+<td>Textbook running average (batch 512), 3 passes</td>
+<td>0.80827</td>
+<td>31 s</td>
+</tr>
+</tbody>
+</table></div>
+<p>Three passes match 34–79 full passes and come within 0.1% of scikit-learn's converged <code>NMF</code> in about 4% of its
+time; scikit-learn's own mini-batch version is 2% worse and slower. Revival never triggered here and the step
+curve made no difference: the gain comes from large batches with fast forgetting.</p>
+<h2 id="9-hidden-markov-models">9. Hidden Markov models</h2>
+<p><code>experiments/hmm_torch.py</code>: a categorical hidden Markov model trained by Baum-Welch (full passes) or by the
+recipe (mini-batches of 256-character chunks, decayed expected counts, revival by splitting a state, last-pass
+clean-up). The full-pass code matches <code>hmmlearn</code> to 9e-16 from the same start.</p>
+<p>Data: text8 (English Wikipedia as 27 symbols), 20M characters for training, 5M held out. Score: held-out bits
+per character, lower is better. For scale, single-letter frequencies give 4.125 and a previous-letter model 3.438.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>64 states (3 seeds)</th>
+<th>Time</th>
+<th>256 states (2 seeds)</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Baum-Welch, 20 passes</td>
+<td>3.196</td>
+<td>46 s</td>
+<td>2.927</td>
+<td>150 s</td>
+</tr>
+<tr>
+<td>Baum-Welch, 60 passes</td>
+<td>3.037</td>
+<td>137 s</td>
+<td>2.589</td>
+<td>452 s</td>
+</tr>
+<tr>
+<td>Baum-Welch, 100 passes</td>
+<td>3.015</td>
+<td>228 s</td>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Recipe, formulas fed the number of chunks: 3 passes</td>
+<td>3.096</td>
+<td>6.7 s</td>
+<td>2.864</td>
+<td>21.7 s</td>
+</tr>
+<tr>
+<td>Same, 10 passes</td>
+<td>3.048</td>
+<td>21 s</td>
+<td>2.610</td>
+<td>70 s</td>
+</tr>
+<tr>
+<td>Recipe, formulas fed the number of characters: 1 pass</td>
+<td>3.027</td>
+<td>18.8 s</td>
+<td>2.646</td>
+<td>11.6 s</td>
+</tr>
+<tr>
+<td>Same, 3 passes</td>
+<td>2.982</td>
+<td>19.9 s</td>
+<td>2.532</td>
+<td>29.3 s</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>The recipe transfers once the formulas are given the number of symbols rather than the number of sequences,
+  which makes the batches small (64–256 chunks). Then one pass equals 62–80 Baum-Welch passes at 64 states and
+  about 40 at 256 states, for roughly 8–26× less time.</li>
+<li>Three such passes were not matched by Baum-Welch within 100 passes (64 states) or 60 passes (256 states). One
+  seed continued to 200 passes reached 2.993, against 2.976 for the recipe.</li>
+<li>Fed the number of chunks, as a literal reading would have it, the batch is about a million characters and
+  three passes are worth only 22–33 Baum-Welch passes.</li>
+<li>On a synthetic set with a known 64-state model (true score 2.880) the two end close: Baum-Welch 2.969 after
+  150 passes (43 s), the recipe 2.950 after 10 passes (22.5 s).</li>
+<li>Which ingredients matter is different here. Many small updates do the work. The cosine curve does not help (a
+  constant step is equal or better), revival is worth under 0.01 bits and the clean-up nothing.</li>
+<li>The textbook online step rule at its best setting, with revival, reached 3.038 at 64 states: 0.06 worse than
+  the recipe at the same batch size.</li>
+<li>Growing the number of states by splitting (start at a quarter, double twice) was worse than a fixed size in
+  every small test and was dropped.</li>
+<li>Small batches are slow on this GPU kernel (3–20× more per pass), which is why one small-batch pass takes as
+  long as three large-batch ones. The 256-state numbers are 2 seeds, and Baum-Welch there was still improving
+  at 60 passes.</li>
+</ul>
+<h2 id="10-recommender-factorization-als">10. Recommender factorization (ALS)</h2>
+<p><code>experiments/als_torch.py</code>: alternating least squares for explicit ratings, and an online version in the
+recipe's shape: mini-batches of users solved exactly and never stored (like assignments in k-means), decayed
+per-item normal-equation totals, items re-solved each batch, cosine step, last-pass clean-up. Full ALS matches
+an independent numpy implementation to 4e-8.</p>
+<p>MovieLens-20M, rank 64, 3 seeds, 10% of ratings held out; held-out RMSE, lower is better. The ridge strength was
+tuned for full ALS and used for both.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Passes</th>
+<th>RMSE</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ALS</td>
+<td>10 / 20 / 40 sweeps</td>
+<td>0.7755 / 0.7737 / 0.7729</td>
+<td>11 / 22 / 45 s</td>
+</tr>
+<tr>
+<td>Online, settings from the formulas</td>
+<td>1 / 3 / 10</td>
+<td>0.7817 / 0.7770 / 0.7752</td>
+<td>no gain: a pass costs about as many sweeps as it is worth</td>
+</tr>
+<tr>
+<td>Online, batch 4,096 users, step 1.0</td>
+<td>1</td>
+<td>0.7735</td>
+<td>5.3 s</td>
+</tr>
+<tr>
+<td></td>
+<td>2 / 3 / 10</td>
+<td>0.7724 / 0.7723 / 0.7718</td>
+<td>14 s for 3</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>With the paper's formulas there is nothing to gain; the formula's step is far too small for this problem.</li>
+<li>With a batch of about 3% of the users and a step of 1, one pass reaches in about 5 s what ALS reaches in
+  about 27 s, and from two passes on the held-out error is below anything ALS reached in 40 sweeps.</li>
+<li>That second gain is regularization, not better optimization: the online solution fits the training ratings
+  worse than ALS (0.6061 against 0.6034) and predicts held-out ratings better. Raising the ridge strength for
+  ALS closes most of the gap; on MovieLens-1M with each method at its own best ridge the online version still
+  led by 0.0013–0.0018.</li>
+<li>Ingredients: the last-pass clean-up matters (+0.0011 without it), the cosine curve does not at this batch
+  size, and no repair step was needed (no dead or exploding factors).</li>
+<li>An online pass costs 3–5 ALS sweeps of time in this implementation. No biases, no implicit feedback; the
+  block-update method iALS++ was not built for comparison.</li>
+</ul>
+<h2 id="11-pagerank">11. PageRank</h2>
+<p>A short CPU study on the web-Google graph (875,713 pages, 5.1M links, damping 0.85), sweeps and seconds to a
+residual of 1e-6 / 1e-10 (<code>experiments/pagerank_sweeps.py</code>):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Sweeps</th>
+<th>Seconds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Power iteration (update everything from the previous sweep)</td>
+<td>65 / 119</td>
+<td>0.74 / 1.35</td>
+</tr>
+<tr>
+<td>Gauss-Seidel (use each new value at once)</td>
+<td>34 / 62</td>
+<td>5.4 / 9.9 (slow only because of scipy's triangular solve)</td>
+</tr>
+<tr>
+<td>256 blocks, fresh values between blocks</td>
+<td>34 / 80</td>
+<td>0.38 / 0.90</td>
+</tr>
+<tr>
+<td>Fading running total (step 0.5)</td>
+<td>135 / 249</td>
+<td>2.0 / 3.6</td>
+</tr>
+<tr>
+<td>Cosine step 1 → 0.1 over 150 sweeps</td>
+<td>80 / not reached</td>
+<td>1.1 / –</td>
+</tr>
+</tbody>
+</table></div>
+<p>Only one of the recipe's ingredients means anything here: update in pieces and use fresh values, which is the
+known Gauss-Seidel idea and halves the sweeps. PageRank is a deterministic fixed point with no noise to average
+away, so forgetting, a step curve, timed repair and a final clean-up either do nothing or slow it down.</p>
+<h2 id="12-my-implementation-against-the-authors-code">12. My implementation against the authors' code</h2>
+<p>The authors' code is public (<code>contrib/e_means</code> in the Faiss repository). The Faiss release installed here
+(1.16.0) does not ship it, and I had written mine from the paper. I read theirs and compared; section 14 runs it.
+The main recipe matches: cosine step to 10% indexed by batch, revival every 5 updates below 0.1 × mean,
+donors drawn in proportion to mass without replacement, mass halved, alternating-sign split, last-pass mean
+from assignments recorded while the centroids move, one permutation per pass.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Difference</th>
+<th>Theirs</th>
+<th>Mine</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step equal to 1</td>
+<td>no decay; only clusters the batch touched are rewritten</td>
+<td>decayed everything to zero, giving 0/0</td>
+<td>broke my 15- and 25-pass runs; <strong>fixed</strong>, see section 2</td>
+</tr>
+<tr>
+<td>16 dimensions or fewer</td>
+<td>batch size ÷ 8; revival off for 2 dimensions or fewer</td>
+<td>no rule</td>
+<td>my first product-quantization test used 8× their batch; rerun in section 6; batch rule now in <code>EMeans</code> and <code>common.laws(d=...)</code></td>
+</tr>
+<tr>
+<td>More than 2M vectors</td>
+<td>no size rule in the shipped code</td>
+<td>batch ÷ 8 (from the paper's text)</td>
+<td>none so far (all runs ≤ 1.1M)</td>
+</tr>
+<tr>
+<td>Tail of each pass</td>
+<td>kept as a smaller batch</td>
+<td>dropped (up to one batch of vectors per pass unused)</td>
+<td>small</td>
+</tr>
+<tr>
+<td>Split size</td>
+<td>±1e-4</td>
+<td>±2⁻⁷ (the paper's value)</td>
+<td><strong>not negligible on Last.fm</strong>: about 10× more near-empty clusters; <strong>fixed</strong> to ±1e-4, see section 14</td>
+</tr>
+<tr>
+<td>Initial mass, formula constants</td>
+<td>2⁻¹⁶, full precision</td>
+<td>1e-10, rounded</td>
+<td>negligible (batch and step agree within 1%)</td>
+</tr>
+<tr>
+<td>Precision</td>
+<td>BF16 on CUDA</td>
+<td>FP32</td>
+<td>paper reports ≤ 0.13%</td>
+</tr>
+</tbody>
+</table></div>
+<p>When this section was written I had not run their code, so "matches" meant the same algorithm on paper and
+the same headline numbers as their Table 5 for SIFT1M (−0.35% reported, −0.37% measured). Section 14 runs it.</p>
+<h2 id="13-caveats">13. Caveats</h2>
+<ul>
+<li>One machine, one GPU type. GPU timings are training only and exclude data loading and scoring; CPU timings
+  for the mixture estimator and the scikit-learn comparison shared the machine with GPU jobs.</li>
+<li>Seeds: 2–5 per configuration for the search experiments, 3 for most others, 1 for some large runs (marked in
+  the tables). Where the spread is not shown the number is one seed.</li>
+<li>Search cost is exact-distance scanning inside the probed lists (IVF-Flat). No compressed vectors (IVF-PQ),
+  no graph indexes, no re-ranking. Queries are held-out vectors from the same dataset, not real query logs.</li>
+<li>The largest dataset is 1.1M vectors; <code>k</code> goes up to 16,384. Nothing here is at the paper's 100M–10B scale.</li>
+<li>The size penalty was tuned on SIFT and then tried on five other datasets. It helped on three, was mixed on one
+  (text embeddings: nothing at one <code>k</code>, 10% at another) and hurt slightly on one (GloVe). The recheck in
+  section 14 adds one dataset where it clearly hurts (Last.fm) and shows the largest gain depends on duplicate
+  rows. No dataset here tells you which case yours is; measure it.</li>
+<li>The strength rule in section 5 is a two-factor model fitted per dataset. It was right on three datasets and
+  wrong on one, and it needs pilot runs, so it is an explanation more than a tool.</li>
+<li>Prior art for each idea comes from literature searches made the same night. Where I write that something
+  was not found, that is the search coming up empty, not a claim of novelty.</li>
+<li>Sections 2–13 compare my implementation only; section 14 is the only part that runs the authors' code.</li>
+<li>The mixture, topic-model, hidden-Markov and factorization experiments each use one or two datasets.</li>
+</ul>
+<h2 id="14-recheck-with-the-authors-code-and-what-it-changed">14. Recheck with the authors' code, and what it changed</h2>
+<p>Added 2026-11-11, after the sections above. Everything before this point compared my own implementation with
+my own or Faiss's k-means. Here the authors' released NumPy e-means (<code>faiss/contrib/e_means</code>, their defaults)
+runs next to my <code>EMeans</code> and Faiss k-means (25 iterations, no subsampling), and every set of centroids is
+loaded into a real Faiss <code>IndexIVFFlat</code>. 10,000 held-out queries, 3 seeds, CPU only. The size penalty is added
+to the authors' class by overriding its assignment method; their files are not edited. Datasets: New York
+Times (256-d, 250,000 rows), Last.fm (65-d, 252,385), SIFT 1M, and 300,000 rows each of CC-News (768-d),
+landmark images (768-d) and Yahoo Answers (384-d).</p>
+<p>Change in distance computations per query at 95% recall@1 against Faiss k-means, mean ± spread over seeds, in
+percent. "held" keeps the penalty at 0.1 for the whole run; "faded" starts at 0.3 and fades to zero.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Dataset, <code>k</code></th>
+<th>Faiss k-means: list imbalance</th>
+<th>Faiss k-means: distance computations</th>
+<th>Authors', 3 passes</th>
+<th>Authors', 5 passes</th>
+<th>Authors' + penalty, held</th>
+<th>Authors' + penalty, faded</th>
+<th>Mine, 3 passes</th>
+<th>Mine, 5 passes</th>
+<th>Mine + penalty, held</th>
+<th>Mine + penalty, faded</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NYT, as distributed, 4,096</td>
+<td>7.34</td>
+<td>45,441</td>
+<td>−45 ± 1</td>
+<td>−56 ± 6</td>
+<td>−83 ± 1</td>
+<td>−75 ± 2</td>
+<td>−41 ± 5</td>
+<td>−52 ± 5</td>
+<td>−85 ± 1</td>
+<td>−78 ± 2</td>
+</tr>
+<tr>
+<td>NYT, as distributed, 1,024</td>
+<td>4.01</td>
+<td>63,583</td>
+<td>−13 ± 24</td>
+<td>−7 ± 22</td>
+<td>−61 ± 4</td>
+<td>−43 ± 16</td>
+<td>−14 ± 25</td>
+<td>−15 ± 23</td>
+<td>−53 ± 11</td>
+<td>−42 ± 15</td>
+</tr>
+<tr>
+<td>Last.fm, 4,096</td>
+<td>6.63</td>
+<td>3,126</td>
+<td>−36 ± 2</td>
+<td>–</td>
+<td>−3 ± 6</td>
+<td>+6 ± 6</td>
+<td>−34 ± 2</td>
+<td>−25 ± 2</td>
+<td>−13 ± 6</td>
+<td>+5 ± 1</td>
+</tr>
+<tr>
+<td>Last.fm, 1,024</td>
+<td>6.49</td>
+<td>10,901</td>
+<td>−19 ± 4</td>
+<td>–</td>
+<td>−19 ± 3</td>
+<td>−12 ± 3</td>
+<td>−16 ± 1</td>
+<td>−6 ± 3</td>
+<td>−29 ± 9</td>
+<td>−11 ± 3</td>
+</tr>
+<tr>
+<td>Last.fm, copies removed, 4,096</td>
+<td>6.25</td>
+<td>2,911</td>
+<td>−31 ± 4</td>
+<td>–</td>
+<td>−12 ± 9</td>
+<td>−1 ± 5</td>
+<td>−28 ± 5</td>
+<td>–</td>
+<td>−13 ± 6</td>
+<td>+7 ± 3</td>
+</tr>
+<tr>
+<td>SIFT 1M, 16,384</td>
+<td>1.22</td>
+<td>4,366</td>
+<td>−1 ± 2</td>
+<td>−7 ± 2</td>
+<td>−9 ± 4</td>
+<td>−11 ± 1</td>
+<td>−2 ± 3</td>
+<td>−6 ± 2</td>
+<td>−10 ± 1</td>
+<td>−12 ± 3</td>
+</tr>
+<tr>
+<td>CC-News, 4,096</td>
+<td>1.33</td>
+<td>2,170</td>
+<td>+2 ± 6</td>
+<td>−2 ± 4</td>
+<td>−8 ± 7</td>
+<td>−8 ± 2</td>
+<td>−2 ± 4</td>
+<td>0 ± 3</td>
+<td>−6 ± 2</td>
+<td>−4 ± 5</td>
+</tr>
+<tr>
+<td>CC-News, 1,024</td>
+<td>1.20</td>
+<td>4,164</td>
+<td>+4 ± 3</td>
+<td>+5 ± 6</td>
+<td>−3 ± 3</td>
+<td>−3 ± 3</td>
+<td>+2 ± 6</td>
+<td>+1 ± 4</td>
+<td>−1 ± 7</td>
+<td>−3 ± 4</td>
+</tr>
+<tr>
+<td>Landmark, 4,096</td>
+<td>1.21</td>
+<td>716</td>
+<td>−5 ± 2</td>
+<td>−5 ± 3</td>
+<td>−8 ± 2</td>
+<td>−8 ± 4</td>
+<td>−3 ± 3</td>
+<td>−5 ± 1</td>
+<td>−7 ± 2</td>
+<td>−5 ± 2</td>
+</tr>
+<tr>
+<td>Landmark, 1,024</td>
+<td>1.15</td>
+<td>1,814</td>
+<td>0 ± 1</td>
+<td>−1 ± 1</td>
+<td>−2 ± 0</td>
+<td>−4 ± 1</td>
+<td>−1 ± 2</td>
+<td>−2 ± 3</td>
+<td>−4 ± 1</td>
+<td>−2 ± 1</td>
+</tr>
+<tr>
+<td>Yahoo Answers, 4,096</td>
+<td>1.17</td>
+<td>2,238</td>
+<td>0 ± 6</td>
+<td>−3 ± 5</td>
+<td>0 ± 3</td>
+<td>0 ± 3</td>
+<td>+5 ± 4</td>
+<td>+3 ± 5</td>
+<td>−1 ± 1</td>
+<td>+1 ± 1</td>
+</tr>
+<tr>
+<td>Yahoo Answers, 1,024</td>
+<td>1.10</td>
+<td>5,166</td>
+<td>−1 ± 5</td>
+<td>−1 ± 5</td>
+<td>+3 ± 5</td>
+<td>+4 ± 5</td>
+<td>−4 ± 1</td>
+<td>−2 ± 1</td>
+<td>+3 ± 6</td>
+<td>0 ± 2</td>
+</tr>
+</tbody>
+</table></div>
+<p>List imbalance is <code>k·Σ(n_j/n)²</code>: 1 for equal lists, and the factor by which an average probe scans more than
+that. Full tables with training time, held-out error and query time are in <code>results/check/summary.md</code>.</p>
+<h3 id="what-holds">What holds</h3>
+<ul>
+<li><strong>Plain e-means, as the paper says.</strong> Three passes of the authors' code give indexes as cheap to search as 25
+  iterations of Faiss k-means on SIFT, CC-News, landmark and Yahoo, and much cheaper on NYT and Last.fm. It
+  trains 5–8× faster on the same CPU (SIFT 1M, <code>k</code> = 16,384: 101 s against 816 s).</li>
+<li><strong>My estimator matches theirs</strong> after the fix below: held-out error within 0.3% and search cost within
+  about one seed spread on every row. It trains faster (SIFT: 12.5 s) because the two are built differently, not
+  because the algorithm differs.</li>
+</ul>
+<h3 id="a-bug-this-exposed-in-my-estimator">A bug this exposed in my estimator</h3>
+<p>Before the fix, my estimator on Last.fm at <code>k</code> = 4,096 was 120% <em>worse</em> than Faiss k-means where the authors'
+code was 36% better. The cause was one constant. When a near-empty cluster is revived it takes half of a
+large one, and the two halves are pushed apart by a small relative offset. The paper gives ±2⁻⁷; the authors'
+code uses ±1e-4, and so does <code>EMeans</code> now. With the larger offset, Last.fm ended with 495 of 4,096 lists
+holding fewer than 10 vectors; with the smaller, 60 (authors': 51; seed 0). On NYT, CC-News and SIFT the two offsets
+give the same error and balance. Every "Mine" column above is from the fixed estimator. Sections 2–11 were
+run before the fix and have not been rerun; Last.fm is not used in them.</p>
+<h3 id="what-does-not-hold-the-size-penalty-as-a-general-improvement">What does not hold: the size penalty as a general improvement</h3>
+<ul>
+<li><strong>Small gains on three datasets.</strong> On SIFT, CC-News and landmark the penalty removes a further 3–10% of the
+  distance computations at the larger <code>k</code> (authors' code; 2–9% with mine), less at <code>k</code> = 1,024.</li>
+<li><strong>Nothing on Yahoo Answers.</strong></li>
+<li><strong>A loss on Last.fm at <code>k</code> = 4,096.</strong> Plain e-means is 36% cheaper than Faiss k-means there; with the penalty
+  it is 3% cheaper to 6% dearer. The penalty does not even out the lists on this data: imbalance goes from 3.1
+  to 4.0–4.3, and the largest list holds 4,561 vectors without it and 8,138 (held) or 3,404 (faded) with it
+  (seed 0). At <code>k</code> = 1,024 the held penalty is neutral with the authors' code and helps with mine.</li>
+<li><strong>The New York Times result is about duplicate rows.</strong> 53,047 of the 250,000 rows (21%) are in 20,985
+  groups of exact copies, the largest of 204. Faiss k-means does poorly on this file: about 2,400 of its 4,096
+  lists end up with fewer than 10 vectors and the rest carry the load (imbalance 7.34). Remove the copies
+  (217,938 rows left) and Faiss k-means is no longer uneven: imbalance 1.56, against 1.67 for the authors'
+  e-means and 1.12 with the penalty.</li>
+</ul>
+<p>On the copy-free file no method reaches 95% recall within 256 probes, so the comparison has to be made lower
+down (<code>experiments/summarize_check_targets.py</code>; a seed that never reaches a target is left out, and the number
+in brackets is how many seeds did):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Centroids from</th>
+<th>R@1 70%: distance computations</th>
+<th>Change</th>
+<th>R@1 80%</th>
+<th>Change</th>
+<th>R@1 85%</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Faiss k-means, 25 iterations</td>
+<td>1,974</td>
+<td>–</td>
+<td>8,744</td>
+<td>–</td>
+<td>13,790</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Authors' e-means, 3 passes</td>
+<td>3,078</td>
+<td>+56% ± 13 [3]</td>
+<td>12,639</td>
+<td>+46% ± 24 [3]</td>
+<td>18,964</td>
+<td>+38% ± 17 [3]</td>
+</tr>
+<tr>
+<td>Authors' + penalty 0.1, held</td>
+<td>1,972</td>
+<td>0% ± 11 [3]</td>
+<td>9,734</td>
+<td>+14% ± 27 [3]</td>
+<td>11,527</td>
+<td>−26% [1]</td>
+</tr>
+<tr>
+<td>Authors' + penalty 0.3, faded</td>
+<td>2,454</td>
+<td>+25% ± 8 [3]</td>
+<td>11,768</td>
+<td>+36% ± 21 [3]</td>
+<td>16,510</td>
+<td>+15% ± 10 [2]</td>
+</tr>
+<tr>
+<td>Mine, 3 passes</td>
+<td>3,083</td>
+<td>+56% ± 7 [3]</td>
+<td>12,729</td>
+<td>+47% ± 20 [3]</td>
+<td>18,975</td>
+<td>+39% ± 15 [3]</td>
+</tr>
+<tr>
+<td>Mine + penalty 0.1, held</td>
+<td>2,309</td>
+<td>+17% ± 22 [3]</td>
+<td>12,181</td>
+<td>+39% ± 37 [3]</td>
+<td>11,631</td>
+<td>−13% [1]</td>
+</tr>
+<tr>
+<td>Mine + penalty 0.3, faded</td>
+<td>2,151</td>
+<td>+9% ± 7 [3]</td>
+<td>10,487</td>
+<td>+21% ± 16 [3]</td>
+<td>14,104</td>
+<td>+13% [1]</td>
+</tr>
+</tbody>
+</table></div>
+<p>So on the copy-free file Faiss k-means is the cheapest or tied, plain e-means is 40–55% dearer, and the penalty
+only brings e-means back toward Faiss k-means. With the penalty most seeds do not reach 85% at all.</p>
+<p>Why the copies matter: 146 groups have ten or more copies. They hold 1% of the rows, and one of them
+is the true nearest neighbour for 29% of the queries (queries that are not themselves copies of anything).
+Recall on those queries decides the whole comparison; on all other queries every index below is at 93–98%.
+Share of queries for which the index returns a row at the true nearest distance (seed 0):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Index</th>
+<th>Probes</th>
+<th>Queries whose nearest row has 10+ copies</th>
+<th>All other queries without a copy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authors' + penalty held, file as distributed</td>
+<td>32 / 128</td>
+<td>49% / 97%</td>
+<td>93% / 96%</td>
+</tr>
+<tr>
+<td>Authors' + penalty held, copies removed</td>
+<td>32 / 128</td>
+<td>10% / 40%</td>
+<td>94% / 96%</td>
+</tr>
+<tr>
+<td>Faiss k-means, file as distributed</td>
+<td>32 / 128</td>
+<td>67% / 100%</td>
+<td>94% / 98%</td>
+</tr>
+<tr>
+<td>Faiss k-means, copies removed</td>
+<td>32 / 128</td>
+<td>10% / 37%</td>
+<td>94% / 97%</td>
+</tr>
+</tbody>
+</table></div>
+<p>With the copies in, each such group counts as ten to two hundred points when its list's centroid is computed,
+which pulls the centroid onto it; that is the likely reason those lists are probed early. With the copies out,
+the same row is one point in an ordinary list and is found late or never.
+The file is the benchmark as distributed, and real collections do contain duplicates, so the original result
+is not wrong. But it is a result about a handful of heavily duplicated rows, not about clumpy data in general,
+and I found no second dataset that shows it.</p>
+<h3 id="what-to-take-from-this">What to take from this</h3>
+<ul>
+<li>For building a Faiss IVF index, the authors' e-means with its defaults is what I would use.</li>
+<li>Faiss k-means does poorly on a file with many exact copies; e-means' revival step repairs most of that,
+  and the size penalty the rest. Removing the copies first also repairs it.</li>
+<li>The size penalty is worth a trial where lists come out uneven for reasons other than dense clumps, and it
+  is worth about 10% at large <code>k</code> on SIFT-like data. It is not a default.</li>
+</ul>
+<p>To reproduce: <code>experiments/prep_h5.py</code> (data), <code>centroid_sets.py</code> (centroids; set <code>EMEANS_AUTHORS</code> to the authors'
+<code>e_means</code> directory), <code>faiss_ivf_bench.py</code> (indexes), <code>summarize_check.py</code> and <code>summarize_check_targets.py</code>
+(tables). Logs are in <code>results/check/</code>.</p>
+</main>
+<footer class="site"><div class="wrap">An independent reproduction. The method is the work of the paper's authors
+(<a href="https://arxiv.org/abs/2611.09501">arXiv 2611.09501</a>); this site is not affiliated with them. Code MIT,
+<a href="https://github.com/Barneyjm/e-means-repro">github.com/Barneyjm/e-means-repro</a>. Built from the repository's Markdown by <code>site/build.py</code>.</div></footer>
+</body>
+</html>

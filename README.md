@@ -4,7 +4,8 @@ An independent check of the paper **"e-means: outperforming k-means (in one-tent
 (Bessa, Mazaré, Szilvasy, Touvron, Picard, Douze, Jégou; [arXiv 2611.09501](https://arxiv.org/abs/2611.09501), Nov 2026),
 plus a version of the algorithm that drops into scikit-learn, and follow-up experiments on whether the same recipe
 helps search indexes, product quantization, Gaussian mixtures, topic models, hidden Markov models and recommender
-factorization. The longer follow-up write-up is [EXTENSIONS.md](EXTENSIONS.md).
+factorization. The longer follow-up write-up is [EXTENSIONS.md](EXTENSIONS.md). Both are also on the project site,
+https://barneyjm.github.io/e-means-repro/.
 
 Everything here was written from the text of the paper. It is **not the authors' code**. Theirs is in the Faiss
 repository (`contrib/e_means`); the Faiss release installed here (1.16.0) does not ship it. I later read it and list the differences in
@@ -320,6 +321,7 @@ its scoring are two commands. Two processes on one Apple GPU at the same time ca
 | `experiments/centroid_sets.py`, `prep_h5.py`, `summarize_check.py`, `summarize_check_targets.py` | Recheck against the authors' released code (`EXTENSIONS.md` section 14; logs in `results/check/`) |
 | `experiments/lda_torch.py`, `nmf_torch.py`, `hmm_torch.py`, `als_torch.py` | The recipe applied to topic models, NMF, hidden Markov models and ALS |
 | `results/` | Raw logs for every number above (`results/beyond/` for the follow-up experiments) |
+| `site/build.py`, `docs/` | The GitHub Pages site, generated from this README, EXTENSIONS.md and `results/check/` (`pip install -e ".[site]"`, then `python site/build.py`) |
 
 ## Notes
 

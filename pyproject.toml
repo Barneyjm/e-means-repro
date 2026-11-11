@@ -14,6 +14,7 @@ dependencies = ["numpy", "scipy", "scikit-learn>=1.6"]
 [project.optional-dependencies]
 experiments = ["torch", "faiss-cpu"]
 test = ["pytest"]
+site = ["markdown"]
 
 [tool.setuptools]
 py-modules = ["emeans_sklearn", "online_gmm_sklearn"]
