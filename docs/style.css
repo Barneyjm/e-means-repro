@@ -110,6 +110,17 @@ section > .smallchart { max-width: 560px; }
 .smallchart .legend { margin: 0.4em 0; font-size: 13px; gap: 4px 16px; }
 .sw { display: inline-block; width: 18px; height: 0; border-top: 2.5px solid; }
 .sw.dash { border-top-style: dashed; }
+.smallchart .legend { flex-direction: column; gap: 3px; }
+.legend .lg { display: grid; grid-template-columns: 8.5em 1fr; align-items: baseline; }
+.legend .lg b { font-weight: 600; }
+.legend .lg .items { display: flex; flex-wrap: wrap; gap: 2px 14px; min-width: 0; }
+rect.pale { opacity: 0.45; }
+.rolekey { display: grid; gap: 6px; font-family: var(--sans); font-size: 14px; margin-top: 1.2em; max-width: 72ch; }
+.rolekey span { display: flex; align-items: baseline; gap: 8px; }
+.rolekey .sws { flex: none; width: 42px; display: flex; gap: 4px; transform: translateY(-3px); }
+.rolekey .sws .sw { width: 18px; }
+.rolekey b { flex: none; min-width: 7.5em; }
+.panel figcaption .sub { font-weight: 400; color: var(--muted); margin-left: 4px; }
 svg.chart { width: 100%; height: auto; display: block; font-family: var(--sans); background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; }
 svg.chart .grid { stroke: var(--rule); stroke-width: 1; }
 svg.chart .frame { stroke: var(--muted); stroke-width: 1; }

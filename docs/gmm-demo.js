@@ -158,7 +158,7 @@
     if (O.done) { const [p, v] = histO[histO.length - 1]; ctx.fillStyle = colO; ctx.beginPath(); ctx.arc(xs(p), ys(v), 3.5 * dpr, 0, 2 * Math.PI); ctx.fill(); }
     const yL = plotB + gap, yE = yL + strip;
     ctx.fillStyle = muted; ctx.textAlign = "right"; ctx.textBaseline = "middle";
-    ctx.fillText("EM", X0 - 6 * dpr, yL + strip / 2); ctx.fillText("Online", X0 - 6 * dpr, yE + strip / 2);
+    ctx.fillText("Classic", X0 - 6 * dpr, yL + strip / 2); ctx.fillText("e-means", X0 - 6 * dpr, yE + strip / 2);
     ctx.strokeStyle = rule; ctx.lineWidth = 1 * dpr; ctx.beginPath();
     ctx.moveTo(X0, yL + strip - 3 * dpr); ctx.lineTo(X1, yL + strip - 3 * dpr); ctx.moveTo(X0, yE + strip - 3 * dpr); ctx.lineTo(X1, yE + strip - 3 * dpr); ctx.stroke();
     ctx.strokeStyle = colA; ctx.lineWidth = 2 * dpr; ctx.beginPath();
@@ -178,7 +178,7 @@
     let txt = "Starved: components with under 10% of the average weight.";
     if (O.done) {
       const match = histA.find(r => r[0] > 0 && r[1] >= o);
-      txt = `Online after ${cfg.T} pass${cfg.T === 1 ? "" : "es"}: ${o.toFixed(3)}. ` + (match ? `EM first reaches it at pass ${match[0]}.` : A.done ? `EM did not reach it in ${cfg.TL} passes.` : "EM has not reached it yet.");
+      txt = `e-means-style after ${cfg.T} pass${cfg.T === 1 ? "" : "es"}: ${o.toFixed(3)}. ` + (match ? `Classic EM first reaches it at pass ${match[0]}.` : A.done ? `Classic EM did not reach it in ${cfg.TL} passes.` : "Classic EM has not reached it yet.");
     }
     $("gStC").textContent = txt;
   }
