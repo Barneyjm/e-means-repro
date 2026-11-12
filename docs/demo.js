@@ -4,11 +4,11 @@
   const D = window.EMDemo, $ = id => document.getElementById(id);
   const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const ui = {};
-  ["kind", "n", "k", "te", "tl", "sp", "laws", "b", "a", "cosine", "revive"].forEach(id => ui[id] = $(id));
+  ["kind", "n", "k", "te", "tl", "sp", "laws", "b", "a", "cosine", "revive", "lam", "lamEnd"].forEach(id => ui[id] = $(id));
   const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let seed = 1, X = null, dataKey = "", C0 = null, L = null, E = null, clock = 0, playing = !reduceMotion, last = 0;
-  let histL = [], histE = [], cfg = null;
+  let histL = [], histE = [], cfg = null, seenAt = null;
 
   const speed = () => +(0.1 * Math.pow(50, +ui.sp.value)).toFixed(2);   // 0.1 to 5 passes per second
   function settings() {
@@ -19,13 +19,15 @@
       ui.b.value = Math.log2(B); ui.a.value = a0.toFixed(2);
     }
     ui.b.disabled = ui.a.disabled = ui.laws.checked;
-    return { kind: ui.kind.value, n, k, T, TL: +ui.tl.value, B: Math.min(B, n), a0, cosine: ui.cosine.checked, revive: ui.revive.checked };
+    return { kind: ui.kind.value, n, k, T, TL: +ui.tl.value, B: Math.min(B, n), a0, cosine: ui.cosine.checked, revive: ui.revive.checked,
+      lam: +ui.lam.value, lamEnd: +ui.lamEnd.value };
   }
   function showValues() {
     $("nOut").textContent = (+ui.n.value).toLocaleString("en");
     $("kOut").textContent = ui.k.value; $("teOut").textContent = ui.te.value; $("tlOut").textContent = ui.tl.value;
     $("spOut").textContent = speed();
     $("bOut").textContent = cfg ? cfg.B.toLocaleString("en") : ""; $("aOut").textContent = cfg ? cfg.a0.toFixed(2) : "";
+    $("lamOut").textContent = (+ui.lam.value).toFixed(2);
   }
 
   function restart() {
@@ -35,7 +37,7 @@
     C0 = D.initCentres(X, cfg.n, cfg.k, seed);
     L = new D.Lloyd(X, cfg.n, cfg.k, C0, cfg.TL);
     E = new D.EMeans(X, cfg.n, cfg.k, C0, cfg, seed);
-    clock = 0;
+    clock = 0; seenAt = new Float64Array(cfg.n).fill(-1e9);
     const m0 = D.measure(X, cfg.n, C0, cfg.k).mse;
     histL = [[0, m0]]; histE = [[0, m0, null]];
     showValues(); frame(true);
@@ -49,6 +51,7 @@
     if (L.updates !== before) histL.push([L.pass, D.measure(X, n, L.C, cfg.k).mse]);
     while (!E.done && E.epoch * n + (E.b + 1) * E.B <= c) {
       E.step();
+      if (E.batch) for (const i of E.batch) seenAt[i] = now;
       histE.push([E.done ? E.T : E.epoch + E.b * E.B / n, D.measure(X, n, E.C, cfg.k).mse, E.done ? null : E.alpha]);
     }
     for (const ev of L.events.concat(E.events)) if (ev.wall === undefined) ev.wall = now;
@@ -77,53 +80,100 @@
     return C;
   }
 
+  // Cells of the current assignment rule: Voronoi cells, or with the size penalty the cells of
+  // |x - c_j|^2 + bias_j, whose borders are still straight lines. Each cell is the square clipped by one half-plane per other centre.
+  function cells(C, k, bias) {
+    const out = [];
+    for (let i = 0; i < k; i++) {
+      let poly = [[0, 0], [1, 0], [1, 1], [0, 1]];
+      const xi = C[2 * i], yi = C[2 * i + 1], bi = bias ? bias[i] : 0;
+      for (let j = 0; j < k && poly.length; j++) {
+        if (j === i) continue;
+        const xj = C[2 * j], yj = C[2 * j + 1], ax = 2 * (xj - xi), ay = 2 * (yj - yi);
+        const rhs = xj * xj + yj * yj - xi * xi - yi * yi + (bias ? bias[j] : 0) - bi;
+        if (ax === 0 && ay === 0) { if (rhs < 0 || (rhs === 0 && j < i)) poly = []; continue; }
+        const next = [];
+        for (let q = 0; q < poly.length; q++) {
+          const P = poly[q], Q = poly[(q + 1) % poly.length];
+          const fp = ax * P[0] + ay * P[1] - rhs, fq = ax * Q[0] + ay * Q[1] - rhs;
+          if (fp <= 0) next.push(P);
+          if ((fp < 0 && fq > 0) || (fp > 0 && fq < 0)) { const t = fp / (fp - fq); next.push([P[0] + t * (Q[0] - P[0]), P[1] + t * (Q[1] - P[1])]); }
+        }
+        poly = next;
+      }
+      out.push(poly);
+    }
+    return out;
+  }
+
   function drawPoints(cv, alg, isE, now) {
     const { ctx, w, dpr } = sizeCanvas(cv, 1), n = cfg.n, k = cfg.k, s = w;
-    const light = css("--pt-l"), muted = css("--muted");
-    ctx.fillStyle = css("--surface"); ctx.fillRect(0, 0, s, s);
-    const r = 1.5 * dpr, lab = alg.lab;
-    const lloydPos = isE ? -1 : (alg.done ? n : alg.pos);
+    const light = css("--pt-l"), fg = css("--fg"), bg = css("--surface");
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, s, s);
+    const C = shownCentres(alg, now), tweening = C !== alg.C;
+    // cells: faint tint per cluster, thin borders
+    const polys = cells(C, k, isE && !tweening ? alg.bias : null);
+    ctx.lineWidth = 1 * dpr; ctx.strokeStyle = fg;
+    polys.forEach((poly, j) => {
+      if (poly.length < 3) return;
+      ctx.beginPath(); poly.forEach(([x, y], q) => q ? ctx.lineTo(x * s, (1 - y) * s) : ctx.moveTo(x * s, (1 - y) * s)); ctx.closePath();
+      ctx.globalAlpha = 0.13; ctx.fillStyle = `hsl(${hue(j)} 60% ${light})`; ctx.fill();
+      ctx.globalAlpha = 0.28; ctx.stroke();
+    });
+    // points: one neutral colour; for Lloyd, points not yet reached in this pass are fainter
+    const r = 1.3 * dpr;
+    ctx.fillStyle = fg;
+    let sweepX = null;
+    if (!isE && !alg.done && alg.pass > 0 || (!isE && !alg.done && alg.pos > 0)) sweepX = alg.pos < n ? X[2 * alg.order[alg.pos]] : 1;
     for (let i = 0; i < n; i++) {
-      const j = lab[i], x = X[2 * i] * s, y = (1 - X[2 * i + 1]) * s;
-      if (j < 0) { ctx.globalAlpha = 0.35; ctx.fillStyle = muted; }
-      else { ctx.globalAlpha = !isE && i >= lloydPos ? 0.28 : 0.6; ctx.fillStyle = `hsl(${hue(j)} 60% ${light})`; }
-      ctx.fillRect(x - r, y - r, 2 * r, 2 * r);
+      const x = X[2 * i];
+      ctx.globalAlpha = sweepX !== null && x > sweepX ? 0.16 : 0.42;
+      ctx.fillRect(x * s - r, (1 - X[2 * i + 1]) * s - r, 2 * r, 2 * r);
     }
     ctx.globalAlpha = 1;
-    if (isE && alg.batch) {
-      const rb = 2.6 * dpr;
-      for (const i of alg.batch) {
-        const j = lab[i];
-        ctx.fillStyle = `hsl(${hue(j)} 70% ${light})`;
-        ctx.beginPath(); ctx.arc(X[2 * i] * s, (1 - X[2 * i + 1]) * s, rb, 0, 2 * Math.PI); ctx.fill();
+    if (sweepX !== null) {
+      ctx.strokeStyle = css("--lloyd"); ctx.lineWidth = 2 * dpr;
+      ctx.beginPath(); ctx.moveTo(sweepX * s, 0); ctx.lineTo(sweepX * s, s); ctx.stroke();
+    }
+    // e-means: points used by recent batches, fading out over 0.4 s
+    if (isE) {
+      ctx.fillStyle = css("--plain");
+      const rb = 2 * dpr;
+      for (let i = 0; i < n; i++) {
+        const age = (now - seenAt[i]) / 400;
+        if (age >= 1) continue;
+        ctx.globalAlpha = 0.9 * (1 - age);
+        ctx.fillRect(X[2 * i] * s - rb, (1 - X[2 * i + 1]) * s - rb, 2 * rb, 2 * rb);
       }
+      ctx.globalAlpha = 1;
     }
     // revival: dashed path from the stranded centre to the busy cluster it splits, and a ring there
     for (const ev of alg.events) {
       if (ev.type !== "revive") continue;
       const age = (now - ev.wall) / 1100;
       if (age >= 1) continue;
-      const pen = css("--penalty");
-      ctx.globalAlpha = 1 - age; ctx.strokeStyle = pen; ctx.lineWidth = 1.5 * dpr;
+      ctx.globalAlpha = 1 - age; ctx.strokeStyle = css("--penalty"); ctx.lineWidth = 1.5 * dpr;
       ctx.setLineDash([4 * dpr, 4 * dpr]);
       ctx.beginPath(); ctx.moveTo(ev.from[0] * s, (1 - ev.from[1]) * s); ctx.lineTo(ev.to[0] * s, (1 - ev.to[1]) * s); ctx.stroke();
       ctx.setLineDash([]); ctx.lineWidth = 2.5 * dpr;
       ctx.beginPath(); ctx.arc(ev.to[0] * s, (1 - ev.to[1]) * s, (7 + 18 * age) * dpr, 0, 2 * Math.PI); ctx.stroke();
       ctx.globalAlpha = 1;
     }
-    const C = shownCentres(alg, now), fg = css("--fg"), bg = css("--surface");
     for (let j = 0; j < k; j++) {
       const x = C[2 * j] * s, y = (1 - C[2 * j + 1]) * s;
-      ctx.beginPath(); ctx.arc(x, y, 6 * dpr, 0, 2 * Math.PI);
+      ctx.beginPath(); ctx.arc(x, y, 5.5 * dpr, 0, 2 * Math.PI);
       ctx.fillStyle = `hsl(${hue(j)} 70% ${light})`; ctx.fill();
-      ctx.lineWidth = 3.5 * dpr; ctx.strokeStyle = bg; ctx.stroke();
-      ctx.lineWidth = 1.6 * dpr; ctx.strokeStyle = fg; ctx.stroke();
+      ctx.lineWidth = 3 * dpr; ctx.strokeStyle = bg; ctx.stroke();
+      ctx.lineWidth = 1.5 * dpr; ctx.strokeStyle = fg; ctx.stroke();
     }
     const cleanup = isE && alg.events.length && alg.events[alg.events.length - 1].type === "cleanup" ? alg.events[alg.events.length - 1] : null;
     if (cleanup && now - cleanup.wall < 2500) {
+      const msg = "Clean-up: each centre moved to the mean of its last-pass points";
+      ctx.font = `${12 * dpr}px ${css("--sans")}`; ctx.textBaseline = "top";
+      const tw = ctx.measureText(msg).width;
       ctx.globalAlpha = 1 - Math.max(0, (now - cleanup.wall - 1500) / 1000);
-      ctx.font = `${13 * dpr}px ${css("--sans")}`; ctx.fillStyle = fg; ctx.textBaseline = "top";
-      ctx.fillText("Clean-up: each centre moved to the mean of its last-pass points", 10 * dpr, 10 * dpr);
+      ctx.fillStyle = bg; ctx.fillRect(6 * dpr, 6 * dpr, tw + 10 * dpr, 20 * dpr);
+      ctx.fillStyle = fg; ctx.fillText(msg, 11 * dpr, 10 * dpr);
       ctx.globalAlpha = 1;
     }
   }
@@ -238,7 +288,7 @@
   });
   $("restart").addEventListener("click", () => { restart(); setPlaying(true); });
   $("reseed").addEventListener("click", () => { seed++; restart(); setPlaying(true); });
-  for (const id of ["kind", "n", "k", "te", "tl", "laws", "b", "a", "cosine", "revive"])
+  for (const id of ["kind", "n", "k", "te", "tl", "laws", "b", "a", "cosine", "revive", "lam", "lamEnd"])
     ui[id].addEventListener("input", () => { if (id === "b" || id === "a") ui.laws.checked = false; restart(); setPlaying(playing || clock === 0); });
   ui.sp.addEventListener("input", showValues);
 

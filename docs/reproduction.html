@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="site"><div class="wrap"><a class="name" href="index.html">e-means-repro</a><nav><a href="index.html">Overview</a><a href="demo.html">Demo</a><a href="reproduction.html" aria-current=page>Reproduction</a><a href="extensions.html">Follow-up experiments</a><a href="https://github.com/Barneyjm/e-means-repro">Code</a></nav></div></header>
+<header class="site"><div class="wrap"><a class="name" href="index.html">e-means-repro</a><nav><a href="index.html">Overview</a><a href="demo.html">k-means demo</a><a href="followups.html">Other algorithms</a><a href="reproduction.html" aria-current=page>Reproduction</a><a href="extensions.html">Full write-up</a><a href="https://github.com/Barneyjm/e-means-repro">Code</a></nav></div></header>
 <main class="wrap doc">
 <h1 id="e-means-repro">e-means-repro</h1>
 <p>An independent check of the paper <strong>"e-means: outperforming k-means (in one-tenth the epochs)"</strong>
@@ -751,8 +751,8 @@ its scoring are two commands. Two processes on one Apple GPU at the same time ca
 <td>Raw logs for every number above (<code>results/beyond/</code> for the follow-up experiments)</td>
 </tr>
 <tr>
-<td><code>site/build.py</code>, <code>site/demo*</code>, <code>docs/</code></td>
-<td>The GitHub Pages site, generated from this README, EXTENSIONS.md and <code>results/check/</code>, plus the interactive Lloyd vs e-means demo (<code>site/demo-core.js</code> has the same update rules as <code>EMeans</code>) (<code>pip install -e ".[site]"</code>, then <code>python site/build.py</code>)</td>
+<td><code>site/</code>, <code>docs/</code></td>
+<td>The GitHub Pages site (<code>python site/build.py</code> writes <code>docs/</code>): pages from this README, EXTENSIONS.md and <code>results/check/</code>, charts of the follow-up results (<code>site/charts.py</code>), and two animations whose update rules match <code>EMeans</code> (<code>site/demo-core.js</code>) and <code>OnlineGaussianMixture</code> (<code>site/gmm-core.js</code>) (<code>pip install -e ".[site]"</code>, then <code>python site/build.py</code>)</td>
 </tr>
 </tbody>
 </table></div>

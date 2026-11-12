@@ -320,7 +320,7 @@ its scoring are two commands. Two processes on one Apple GPU at the same time ca
 | `experiments/centroid_sets.py`, `prep_h5.py`, `summarize_check.py`, `summarize_check_targets.py` | Recheck against the authors' released code (`EXTENSIONS.md` section 14; logs in `results/check/`) |
 | `experiments/lda_torch.py`, `nmf_torch.py`, `hmm_torch.py`, `als_torch.py` | The recipe applied to topic models, NMF, hidden Markov models and ALS |
 | `results/` | Raw logs for every number above (`results/beyond/` for the follow-up experiments) |
-| `site/build.py`, `site/demo*`, `docs/` | The GitHub Pages site, generated from this README, EXTENSIONS.md and `results/check/`, plus the interactive Lloyd vs e-means demo (`site/demo-core.js` has the same update rules as `EMeans`) (`pip install -e ".[site]"`, then `python site/build.py`) |
+| `site/`, `docs/` | The GitHub Pages site (`python site/build.py` writes `docs/`): pages from this README, EXTENSIONS.md and `results/check/`, charts of the follow-up results (`site/charts.py`), and two animations whose update rules match `EMeans` (`site/demo-core.js`) and `OnlineGaussianMixture` (`site/gmm-core.js`) (`pip install -e ".[site]"`, then `python site/build.py`) |
 
 ## Notes
 

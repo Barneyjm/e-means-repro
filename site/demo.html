@@ -21,6 +21,7 @@
       <li><var>α</var> falls along a cosine from <var>α</var><sub>0</sub> to <var>α</var><sub>0</sub>/10 over the run.</li>
       <li>Every 5 updates, a cluster whose <var>N</var> is under 10% of the average takes half of a busy cluster, picked in proportion to <var>N</var> (orange rings).</li>
       <li>After the last pass, each centre becomes the exact mean of the points it won during that pass.</li>
+      <li>Optional, not in the paper: a size penalty that makes busy clusters a little more expensive to join (follow-up section 5).</li>
     </ul>
   </div>
 </div>
@@ -43,6 +44,10 @@
   <label><span>Starting step <var>α</var><sub>0</sub></span> <output id="aOut"></output><input type="range" id="a" min="0.01" max="1" step="0.01" value="0.4"></label>
   <label class="check"><input type="checkbox" id="cosine" checked> <span>Cosine step schedule (off: constant <var>α</var><sub>0</sub>)</span></label>
   <label class="check"><input type="checkbox" id="revive" checked> <span>Revival of near-empty clusters</span></label>
+  <label><span>Size penalty <var>λ</var> (e-means only)</span> <output id="lamOut"></output><input type="range" id="lam" min="0" max="1" step="0.05" value="0"></label>
+  <label><span>Penalty over the run</span>
+    <select id="lamEnd"><option value="0">Fades to zero</option><option value="1">Held</option></select>
+  </label>
   <div class="buttons">
     <button type="button" id="play">Pause</button>
     <button type="button" id="step">One e-means update</button>
@@ -63,6 +68,10 @@
     <p class="stats" id="stE"></p>
   </figure>
 </div>
+
+<p class="caption">Shaded regions are the cells each centre currently owns. Lloyd's points brighten as the pass reaches them; the order
+inside a pass does not change Lloyd's result, so the demo sweeps left to right. Blue points are the batches e-means used in the last
+fraction of a second. With the size penalty on, e-means' cells are those of the penalised rule, so their borders shift away from busy centres.</p>
 
 <figure class="chartfig">
   <figcaption>Error (mean squared distance to the nearest centre, × 10<sup>4</sup>, log scale) against passes over the data. Below: when each algorithm updates its centres; e-means tick height is the step <var>α</var>.</figcaption>

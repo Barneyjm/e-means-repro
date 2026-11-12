@@ -100,7 +100,35 @@ footer.site .wrap { padding-block: 20px 32px; }
 .chartfig { margin-top: 24px; }
 .chartfig canvas { width: 100%; height: 300px; display: block; border: 1px solid var(--rule); border-radius: 4px; }
 .stats { font-family: var(--sans); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; margin: 6px 0 0; min-height: 2.6em; }
+.chartgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 32px; margin-top: 1em; }
+.smallchart { margin: 1.5em 0 0; min-width: 0; }
+.chartgrid .smallchart { margin: 0; }
+section > .smallchart { max-width: 560px; }
+.smallchart h3 { margin: 0 0 0.3em; font-size: 1.05rem; }
+.smallchart > p { font-size: 15px; margin: 0 0 0.5em; }
+.smallchart figcaption { font-family: var(--sans); font-size: 13px; color: var(--muted); margin-top: 4px; }
+.smallchart .legend { margin: 0.4em 0; font-size: 13px; gap: 4px 16px; }
+.sw { display: inline-block; width: 18px; height: 0; border-top: 2.5px solid; }
+.sw.dash { border-top-style: dashed; }
+svg.chart { width: 100%; height: auto; display: block; font-family: var(--sans); background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; }
+svg.chart .grid { stroke: var(--rule); stroke-width: 1; }
+svg.chart .frame { stroke: var(--muted); stroke-width: 1; }
+svg.chart .ref { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+svg.chart text { fill: var(--muted); font-size: 12px; }
+svg.chart .axis { font-size: 12px; }
+svg.chart .rowlabel { fill: var(--fg); font-size: 12px; }
+svg.chart .clip { fill: var(--fg); font-size: 11px; }
+svg.chart polyline { fill: none; stroke-width: 2.2; }
+svg.chart .dash { stroke-dasharray: 6 4; }
+svg.chart .m { stroke: var(--surface); stroke-width: 1.5; }
+.s-full { stroke: var(--lloyd); fill: var(--lloyd); color: var(--lloyd); }
+.s-recipe { stroke: var(--plain); fill: var(--plain); color: var(--plain); }
+.s-alt { stroke: var(--penalty); fill: var(--penalty); color: var(--penalty); }
+.s-alt2 { stroke: var(--zero); fill: var(--zero); color: var(--zero); }
+polyline.s-full, polyline.s-recipe, polyline.s-alt, polyline.s-alt2 { fill: none; }
+svg.chart rect.bar { stroke: none; }
 @media (max-width: 640px) {
+  .chartgrid { grid-template-columns: 1fr; }
   .compare, .panels { grid-template-columns: 1fr; }
   .chartfig canvas { height: 260px; }
   body { font-size: 17px; }

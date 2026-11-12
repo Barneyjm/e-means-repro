@@ -2,9 +2,12 @@
 
 Usage: python site/build.py      (needs the `markdown` package: pip install -e ".[site]")
 The Markdown files stay the source of truth; docs/ is generated and committed so Pages can serve it as is."""
-import collections, glob, html, json, os, re, shutil
+import collections, glob, html, json, os, re, shutil, sys
 import numpy as np
 import markdown
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import charts  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "docs")
@@ -92,7 +95,7 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="
 
 def page(title, desc, current, body, wide=False, scripts=()):
     nav = "".join(f'<a href="{href}"{" aria-current=page" if href == current else ""}>{lab}</a>' for href, lab in
-                  [("index.html", "Overview"), ("demo.html", "Demo"), ("reproduction.html", "Reproduction"), ("extensions.html", "Follow-up experiments"), (REPO, "Code")])
+                  [("index.html", "Overview"), ("demo.html", "k-means demo"), ("followups.html", "Other algorithms"), ("reproduction.html", "Reproduction"), ("extensions.html", "Full write-up"), (REPO, "Code")])
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -180,7 +183,8 @@ km.cluster_centers_, km.labels_, km.predict(X_new)</code></pre>
 <section>
   <h2>Read more</h2>
   <ul class="links">
-    <li><a href="demo.html">Demo</a>: Lloyd's k-means and e-means side by side on 2-D points, with sliders for the settings.</li>
+    <li><a href="demo.html">k-means demo</a>: Lloyd's k-means and e-means side by side on 2-D points, with sliders for the settings.</li>
+    <li><a href="followups.html">Other algorithms</a>: an animated Gaussian mixture (EM against the online recipe) and charts for product quantization, NMF, topic models, hidden Markov models, ALS and PageRank.</li>
     <li><a href="reproduction.html">Reproduction</a>: what the paper claims, what I measured, the algorithm, how to rerun it.</li>
     <li><a href="extensions.html">Follow-up experiments</a>: search indexes on more datasets, a dozen older ideas tried on top of the recipe, the recipe applied to product quantization, mixtures, topic models, NMF, hidden Markov models, ALS and PageRank, and the recheck against the authors' code.</li>
     <li><a href="{repo}/tree/main/results">Raw logs</a> for every number on this site.</li>
@@ -290,7 +294,35 @@ footer.site .wrap { padding-block: 20px 32px; }
 .chartfig { margin-top: 24px; }
 .chartfig canvas { width: 100%; height: 300px; display: block; border: 1px solid var(--rule); border-radius: 4px; }
 .stats { font-family: var(--sans); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; margin: 6px 0 0; min-height: 2.6em; }
+.chartgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 32px; margin-top: 1em; }
+.smallchart { margin: 1.5em 0 0; min-width: 0; }
+.chartgrid .smallchart { margin: 0; }
+section > .smallchart { max-width: 560px; }
+.smallchart h3 { margin: 0 0 0.3em; font-size: 1.05rem; }
+.smallchart > p { font-size: 15px; margin: 0 0 0.5em; }
+.smallchart figcaption { font-family: var(--sans); font-size: 13px; color: var(--muted); margin-top: 4px; }
+.smallchart .legend { margin: 0.4em 0; font-size: 13px; gap: 4px 16px; }
+.sw { display: inline-block; width: 18px; height: 0; border-top: 2.5px solid; }
+.sw.dash { border-top-style: dashed; }
+svg.chart { width: 100%; height: auto; display: block; font-family: var(--sans); background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; }
+svg.chart .grid { stroke: var(--rule); stroke-width: 1; }
+svg.chart .frame { stroke: var(--muted); stroke-width: 1; }
+svg.chart .ref { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+svg.chart text { fill: var(--muted); font-size: 12px; }
+svg.chart .axis { font-size: 12px; }
+svg.chart .rowlabel { fill: var(--fg); font-size: 12px; }
+svg.chart .clip { fill: var(--fg); font-size: 11px; }
+svg.chart polyline { fill: none; stroke-width: 2.2; }
+svg.chart .dash { stroke-dasharray: 6 4; }
+svg.chart .m { stroke: var(--surface); stroke-width: 1.5; }
+.s-full { stroke: var(--lloyd); fill: var(--lloyd); color: var(--lloyd); }
+.s-recipe { stroke: var(--plain); fill: var(--plain); color: var(--plain); }
+.s-alt { stroke: var(--penalty); fill: var(--penalty); color: var(--penalty); }
+.s-alt2 { stroke: var(--zero); fill: var(--zero); color: var(--zero); }
+polyline.s-full, polyline.s-recipe, polyline.s-alt, polyline.s-alt2 { fill: none; }
+svg.chart rect.bar { stroke: none; }
 @media (max-width: 640px) {
+  .chartgrid { grid-template-columns: 1fr; }
   .compare, .panels { grid-template-columns: 1fr; }
   .chartfig canvas { height: 260px; }
   body { font-size: 17px; }
@@ -317,7 +349,13 @@ def main():
     open(os.path.join(OUT, "demo.html"), "w").write(page(
         "Lloyd vs e-means demo", "Lloyd's k-means and e-means run side by side on the same 2-D points, with sliders.", "demo.html",
         open(os.path.join(ROOT, "site", "demo.html"), encoding="utf-8").read(), wide=True, scripts=("demo-core.js", "demo.js")))
-    for f in ("demo-core.js", "demo.js"):
+    body = open(os.path.join(ROOT, "site", "followups.html"), encoding="utf-8").read()
+    for key, fig in charts.all_charts().items():
+        body = body.replace("{" + key + "}", fig)
+    open(os.path.join(OUT, "followups.html"), "w").write(page(
+        "e-means follow-ups", "The e-means recipe applied to mixtures, NMF, topic models, hidden Markov models, ALS and PageRank, with an animated mixture model.",
+        "followups.html", body, wide=True, scripts=("demo-core.js", "gmm-core.js", "gmm-demo.js")))
+    for f in ("demo-core.js", "demo.js", "gmm-core.js", "gmm-demo.js"):
         shutil.copy(os.path.join(ROOT, "site", f), os.path.join(OUT, f))
     print("wrote", ", ".join(sorted(os.listdir(OUT))))
 

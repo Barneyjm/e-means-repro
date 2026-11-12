@@ -1,0 +1,80 @@
+<header class="intro">
+  <p class="kicker">Follow-up experiments</p>
+  <h1>The recipe on other algorithms</h1>
+  <p class="lede">The e-means recipe is: update after every batch, keep forgetting running totals, a step that starts large
+  and ends small, re-seed what dies, clean up from the last pass, settings from formulas. I tried it on other classic
+  algorithms. The mixture model is animated below; the rest are charts of the measured results.</p>
+</header>
+
+<section>
+  <h2>Gaussian mixtures, side by side</h2>
+  <p>Ordinary EM computes each point's share in every component, sums over all points, and rebuilds the model once per
+  pass. The online version does the same on a batch and moves running totals of weight, sum and sum of squares a
+  step toward the batch's, with the same step curve, revival and clean-up as e-means. Ellipses are each component at
+  two standard deviations (solid) and one (dashed); a thicker line means more weight.</p>
+
+  <div class="controls">
+    <label><span>Data</span>
+      <select id="gKind">
+        <option value="uneven">Uneven blobs</option>
+        <option value="clumps">Tight clumps on a sparse background</option>
+        <option value="uniform">Uniform square</option>
+      </select>
+    </label>
+    <label><span>Points</span> <output id="gNOut"></output><input type="range" id="gN" min="1000" max="6000" step="500" value="3000"></label>
+    <label><span>Components</span> <output id="gKOut"></output><input type="range" id="gK" min="2" max="32" step="1" value="12"></label>
+    <label><span>Online passes</span> <output id="gTeOut"></output><input type="range" id="gTe" min="1" max="10" step="1" value="3"></label>
+    <label><span>EM passes</span> <output id="gTlOut"></output><input type="range" id="gTl" min="1" max="100" step="1" value="40"></label>
+    <label><span>Speed, passes per second</span> <output id="gSpOut"></output><input type="range" id="gSp" min="0" max="1" step="0.01" value="0.4"></label>
+    <label class="check"><input type="checkbox" id="gLaws" checked> <span>Batch size and starting step from the paper's formulas</span></label>
+    <label><span>Batch size <var>B</var></span> <output id="gBOut"></output><input type="range" id="gB" min="2" max="11" step="1" value="7"></label>
+    <label><span>Starting step <var>α</var><sub>0</sub></span> <output id="gAOut"></output><input type="range" id="gA" min="0.01" max="1" step="0.01" value="0.4"></label>
+    <label class="check"><input type="checkbox" id="gRevive" checked> <span>Revival of starved components</span></label>
+    <div class="buttons">
+      <button type="button" id="gPlay">Pause</button>
+      <button type="button" id="gStep">One online update</button>
+      <button type="button" id="gRestart">Restart</button>
+      <button type="button" id="gReseed">New points and start</button>
+    </div>
+  </div>
+
+  <div class="panels">
+    <figure class="panel">
+      <figcaption><i class="key lloyd"></i>EM, one update per pass</figcaption>
+      <canvas id="gA_cv" aria-label="Ordinary EM on the points"></canvas>
+      <p class="stats" id="gStA"></p>
+    </figure>
+    <figure class="panel">
+      <figcaption><i class="key emeans"></i>Online recipe</figcaption>
+      <canvas id="gO_cv" aria-label="The online recipe on the points"></canvas>
+      <p class="stats" id="gStO"></p>
+    </figure>
+  </div>
+  <figure class="chartfig">
+    <figcaption>Average log-likelihood per point (higher is better) against passes over the data. The random start is far below the scale and is left off. Below: when each method updates; online tick height is the step <var>α</var>.</figcaption>
+    <canvas id="gC" aria-label="Log-likelihood against passes for both methods"></canvas>
+    <p class="stats" id="gStC"></p>
+  </figure>
+  <p>Measured with this page's code over 20 random starts per setting (3,000 points; 6, 12 and 24 components; three
+  data sets): ordinary EM needs a median of 15–29 passes to reach the log-likelihood of 3 online passes, and in 6 of the
+  180 starts it did not get there within 200. Both start from the same random points, with equal weights and the
+  overall variance; the update rules are those of <code>OnlineGaussianMixture</code>
+  (<a href="https://github.com/Barneyjm/e-means-repro/blob/main/site/gmm-core.js">gmm-core.js</a>).</p>
+  {gmm}
+</section>
+
+<section>
+  <h2>k-means, further</h2>
+  <div class="chartgrid">{passes}{penalty}</div>
+</section>
+
+<section>
+  <h2>Other algorithms</h2>
+  <p>In every chart the dark yellow line is the usual full-pass method and the blue lines are the recipe. A dashed blue line
+  uses the paper's formulas as published where they did not fit. Other colours are other baselines.</p>
+  <div class="chartgrid">{pq}{nmf}{hmm}{lda}{als}{pagerank}</div>
+  <p>The pattern: the recipe pays where the full-pass method needs many passes (k-means, mixtures, hidden Markov models, NMF),
+  pays little where it already converges in about ten passes (LDA, ALS), and has nothing to average where there is no
+  noise (PageRank). The formulas were fitted on k-means; outside it, batch size and step had to be chosen again in every
+  case except NMF and mixtures. Details and caveats: <a href="extensions.html">full write-up</a>.</p>
+</section>

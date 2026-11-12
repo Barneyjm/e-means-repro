@@ -1,6 +1,7 @@
 // Lloyd's k-means and e-means on 2-D points, written to step through one update at a time for the demo page.
 // The e-means update follows emeans_sklearn.EMeans: decayed counts N and sums S (centre = S / N), cosine step from
-// a0 to a0 / 10, revival every 5 updates, split offset 1e-4, last-pass mean at the end, tail of each pass unused.
+// a0 to a0 / 10, revival every 5 updates, split offset 1e-4, last-pass mean at the end, tail of each pass unused,
+// and the optional size penalty (EMeans(balance=..., balance_end=...)).
 (function (root) {
   "use strict";
 
@@ -55,10 +56,10 @@
     return C;
   }
 
-  function nearest(x, y, C, k) {
+  function nearest(x, y, C, k, bias) {
     let best = 0, bd = Infinity;
     for (let j = 0; j < k; j++) {
-      const dx = x - C[2 * j], dy = y - C[2 * j + 1], d = dx * dx + dy * dy;
+      const dx = x - C[2 * j], dy = y - C[2 * j + 1], d = dx * dx + dy * dy + (bias ? bias[j] : 0);
       if (d < bd) { bd = d; best = j; }
     }
     return best;
@@ -85,9 +86,11 @@
   function lawStep(n, k, B, T) { return Math.min(1, 0.824 * Math.pow(k, -0.46) * Math.pow(B, 0.9) * Math.pow(n, -0.45) * Math.pow(T, -0.11)); }
 
   // Lloyd: assign every point with the current centres, then move each centre to the mean of its points. One update per pass.
+  // The order inside a pass does not change the result; the demo sweeps left to right so the pass is visible.
   class Lloyd {
     constructor(X, n, k, C0, passes) {
-      Object.assign(this, { X, n, k, passes, C: Float64Array.from(C0), lab: new Int32Array(n).fill(-1),
+      const order = Int32Array.from({ length: n }, (_, i) => i).sort((a, b) => X[2 * a] - X[2 * b]);
+      Object.assign(this, { X, n, k, passes, order, C: Float64Array.from(C0), lab: new Int32Array(n).fill(-1),
         sum: new Float64Array(2 * k), cnt: new Float64Array(k), pos: 0, pass: 0, updates: 0, events: [] });
     }
     get done() { return this.pass >= this.passes; }
@@ -97,7 +100,7 @@
       while (!this.done) {
         const target = Math.min(Math.floor(upto) - this.pass * n, n);
         for (; this.pos < target; this.pos++) {
-          const i = this.pos, x = X[2 * i], y = X[2 * i + 1], j = nearest(x, y, C, k);
+          const i = this.order[this.pos], x = X[2 * i], y = X[2 * i + 1], j = nearest(x, y, C, k);
           lab[i] = j; cnt[j]++; sum[2 * j] += x; sum[2 * j + 1] += y;
         }
         if (this.pos < n) break;
@@ -113,6 +116,7 @@
     constructor(X, n, k, C0, opt, seed) {
       const B = Math.min(opt.B, n), nb = Math.floor(n / B);
       Object.assign(this, { X, n, k, B, nb, T: opt.T, a0: opt.a0, revive: opt.revive, cosine: opt.cosine, M: opt.T * nb,
+        lam: opt.lam || 0, lamEnd: opt.lamEnd || 0, errSum: 0, errCnt: 1e-10, bias: null,
         C: Float64Array.from(C0), N: new Float64Array(k).fill(1e-10), S: new Float64Array(2 * k),
         lab: new Int32Array(n).fill(-1), last: new Int32Array(n).fill(-1), r: rng(seed * 15485863 + 11),
         t: 0, epoch: 0, b: 0, perm: null, batch: null, alpha: opt.a0, revivals: 0, done: false, events: [] });
@@ -129,12 +133,25 @@
       const ids = this.perm.subarray(this.b * B, (this.b + 1) * B);
       const alpha = this.stepAlpha(this.t);
       this.alpha = alpha; this.t++;
+      // size penalty: lam * fade * running mean distortion * (relative size - 1), from the second update on
+      let bias = null;
+      if (this.lam > 0 && this.t > 1) {
+        const fade = this.lamEnd + (1 - this.lamEnd) * 0.5 * (1 + Math.cos(Math.PI * (this.t - 1) / this.M));
+        const tot = N.reduce((a, b) => a + b, 0), scale = this.lam * fade * this.errSum / this.errCnt;
+        bias = new Float64Array(k);
+        for (let j = 0; j < k; j++) bias[j] = scale * (N[j] * k / tot - 1);
+      }
+      this.bias = bias;
       const nj = new Float64Array(k), sj = new Float64Array(2 * k);
+      let dsum = 0;
       for (const i of ids) {
-        const x = X[2 * i], y = X[2 * i + 1], a = nearest(x, y, C, k);
+        const x = X[2 * i], y = X[2 * i + 1], a = nearest(x, y, C, k, bias);
+        const dx = x - C[2 * a], dy = y - C[2 * a + 1];
+        dsum += dx * dx + dy * dy;
         lab[i] = a; if (this.epoch === this.T - 1) last[i] = a;
         nj[a]++; sj[2 * a] += x; sj[2 * a + 1] += y;
       }
+      if (this.lam > 0) { this.errSum = (1 - alpha) * this.errSum + alpha * dsum; this.errCnt = (1 - alpha) * this.errCnt + alpha * ids.length; }
       if (alpha >= 1) {
         for (let j = 0; j < k; j++) if (nj[j] > 0) { N[j] = nj[j]; S[2 * j] = sj[2 * j]; S[2 * j + 1] = sj[2 * j + 1]; }
       } else {
@@ -178,7 +195,7 @@
       for (let i = 0; i < n; i++) { const j = last[i]; cnt[j]++; sum[2 * j] += X[2 * i]; sum[2 * j + 1] += X[2 * i + 1]; }
       const before = Float64Array.from(C);
       for (let j = 0; j < k; j++) if (cnt[j] > 0) { C[2 * j] = sum[2 * j] / cnt[j]; C[2 * j + 1] = sum[2 * j + 1] / cnt[j]; }
-      this.batch = null; this.done = true;
+      this.batch = null; this.bias = null; this.done = true;
       this.events.push({ type: "cleanup", before, at: this.T * n });
     }
   }
